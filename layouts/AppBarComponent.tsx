@@ -10,10 +10,12 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import { useCallback, useState } from "react";
 import { en } from "../constants/labels";
 import { AccountCircle, Logout, Settings } from "@mui/icons-material";
-import { Menu, MenuItem, MenuProps } from "@mui/material";
+import { Icon, Menu, MenuItem, MenuProps, Tooltip } from "@mui/material";
 import { toast } from "react-toastify";
 import { ROUTES } from "../constants/routes";
 import { useRouter } from "next/router";
+import { SvgIcon } from "./PageLayout";
+import CALogo from "../public/images/CALogo.svg";
 
 const drawerWidth = 240;
 
@@ -73,23 +75,37 @@ const AppBarComponent = ({
             justifyContent="space-between"
             width={"100%"}
           >
-            <Typography variant="h6" noWrap component="div">
-              {en.heading}
-            </Typography>
+            <Box width="35px" height="35px" sx={{ cursor: "pointer" }}>
+              <SvgIcon
+                onClick={() => router.push(ROUTES.dashboard)}
+                src="/images/CALogo.svg"
+                sx={{ maxWidth: "100%" }}
+                alt="Home"
+              />
+            </Box>
+
             {/* <IconButton size="small" color="inherit">
               <Badge badgeContent={12} color="error">
                 <Notifications />
               </Badge>
             </IconButton> */}
-            <IconButton
-              size="small"
-              edge="end"
-              aria-haspopup="true"
-              onClick={(e) => setAnchorEl(e.currentTarget)}
-              color="inherit"
+            <Box
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+              gap={2}
             >
-              <AccountCircle />
-            </IconButton>
+              <Typography>{"Aryan Jain"}</Typography>
+              <IconButton
+                size="small"
+                edge="end"
+                aria-haspopup="true"
+                onClick={(e) => setAnchorEl(e.currentTarget)}
+                color="inherit"
+              >
+                <AccountCircle />
+              </IconButton>
+            </Box>
           </Box>
         </Toolbar>
       </AppBar>

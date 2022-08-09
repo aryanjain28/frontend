@@ -1,8 +1,15 @@
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
+import { styled } from "@mui/system";
 import { useState } from "react";
 import AppBarComponent from "./AppBarComponent";
 import DrawerComponent, { DrawerHeader } from "./DrawerComponent";
+
+export const SvgIcon = styled("img")({
+  display: "flex",
+  height: "inherit",
+  width: "inherit",
+});
 
 export default function PageLayout({
   showLayout = true,
