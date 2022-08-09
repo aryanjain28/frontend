@@ -16,6 +16,7 @@ export const en = {
 
   // login and signUp
   login: "Login",
+  newHere: "New joinee?",
   signUp: "Sign-Up",
   fName: "First Name",
   lName: "Last Name",
@@ -23,6 +24,7 @@ export const en = {
   password: "Password",
   cnfPassword: "Confirm Password",
   heading: "CA",
+  forgotPwd: "Forgot Password?",
 
   // toast messages
   toast: {

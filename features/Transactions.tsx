@@ -40,7 +40,11 @@ function Transactions() {
         {transactions.map(({ label, icon, count }) => {
           return (
             <Grid item xs={2}>
-              <Box p={2} borderRadius={"10px"} sx={{ boxShadow: 3 }}>
+              <Box
+                p={2}
+                borderRadius={"10px"}
+                sx={{ boxShadow: 3, cursor: "pointer" }}
+              >
                 <Grid
                   container
                   xs={12}

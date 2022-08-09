@@ -71,11 +71,9 @@ export const RegisterForm = () => {
   return (
     <Grid
       container
-      sx={{ boxShadow: 3 }}
-      borderRadius="15px"
       direction="column"
       alignItems="center"
-      justifyContent="end"
+      justifyContent="center"
       py={4}
     >
       {Object.keys(newUserDetails).map((key) => {
@@ -111,21 +109,13 @@ export const RegisterForm = () => {
           />
         );
       })}
-      <Box display="flex" alignItems="center" justifyContent="center" gap={3}>
-        <Button
-          label={en.signUp}
-          icon={<PersonAddIcon />}
-          onClick={handleSignUpClick}
-          isLoading={isLoading}
-          sx={{ my: 3 }}
-        />
-        <Button
-          label={en.login}
-          icon={<Key />}
-          onClick={() => router.push(ROUTES.login)}
-          sx={{ my: 3 }}
-        />
-      </Box>
+      <Button
+        label={en.signUp}
+        icon={<PersonAddIcon />}
+        onClick={handleSignUpClick}
+        isLoading={isLoading}
+        sx={{ my: 3, width: "80%" }}
+      />
     </Grid>
   );
 };

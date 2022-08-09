@@ -4,6 +4,7 @@ import {
   Icon,
   IconButton,
   InputAdornment,
+  Link,
   TextField,
 } from "@mui/material";
 import { useState } from "react";
@@ -15,8 +16,6 @@ import { Box } from "@mui/system";
 import { useRouter } from "next/router";
 import { ROUTES } from "../constants/routes";
 import AccountIcon from "@mui/icons-material/AccountCircleOutlined";
-import KeyIcon from "@mui/icons-material/KeyOutlined";
-import PersonAddIcon from "@mui/icons-material/PersonAddOutlined";
 
 export const LoginForm = () => {
   const [authDetails, setAuthDetails] = useState<{
@@ -63,11 +62,9 @@ export const LoginForm = () => {
   return (
     <Grid
       container
-      sx={{ boxShadow: 3 }}
-      borderRadius="15px"
       direction="column"
       alignItems="center"
-      justifyContent="end"
+      justifyContent="center"
       py={4}
     >
       <FormInput
@@ -108,21 +105,17 @@ export const LoginForm = () => {
         handleEndIconClick={() => setShowPassword(!showPassword)}
         endIcon={showPassword ? <VisibilityOff /> : <Visibility />}
       />
-      <Box display="flex" alignItems="center" justifyContent="center" gap={3}>
-        <Button
-          label={en.login}
-          icon={<Key />}
-          onClick={handleLoginClick}
-          isLoading={isLoading}
-          sx={{ my: 3 }}
-        />
-        <Button
-          label={en.signUp}
-          icon={<PersonAddIcon />}
-          onClick={() => router.push(ROUTES.signUp)}
-          sx={{ my: 3 }}
-        />
-      </Box>
+      <Button
+        label={en.login}
+        icon={<Key />}
+        onClick={handleLoginClick}
+        isLoading={isLoading}
+        sx={{ my: 3 }}
+        fullWidth
+      />
+      <Link href={ROUTES.forgotPassword} sx={{ cursor: "pointer" }}>
+        {en.forgotPwd}
+      </Link>
     </Grid>
   );
 };

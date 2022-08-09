@@ -14,6 +14,7 @@ export const API_ROUTES = {
 export const ROUTES = {
   login: "/app/login",
   signUp: "/app/registerUser",
+  forgotPassword: "/app/forgotPassword",
   dashboard: "/app/dashboard",
   myFirm: "/app/myFirm",
   dayBook: "/app/daybook",
