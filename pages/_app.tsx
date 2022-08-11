@@ -7,7 +7,8 @@ import { useRouter } from "next/router";
 import { API_ROUTES, ROUTES } from "../constants/routes";
 import { en } from "../constants/labels";
 import React, { useEffect } from "react";
-import FullPageLoader from "../features/Loader";
+import "react-date-range/dist/styles.css";
+import "react-date-range/dist/theme/default.css";
 
 export const queryClient = new QueryClient({
   defaultOptions: {

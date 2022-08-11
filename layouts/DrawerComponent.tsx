@@ -20,6 +20,9 @@ import ReportsIcon from "@mui/icons-material/EqualizerOutlined";
 import { ROUTES } from "../constants/routes";
 import { Box } from "@mui/system";
 import { useRouter } from "next/router";
+import { ExpandLess, ExpandMore, StarBorder } from "@mui/icons-material";
+import { useState } from "react";
+import { Collapse } from "@mui/material";
 
 const drawerWidth = 240;
 
@@ -78,6 +81,7 @@ const DrawerComponent = ({
   setOpen: () => void;
 }) => {
   const router = useRouter();
+  const [openNestedChild, setOpenNestedChild] = useState(false);
 
   const drawerElements = [
     {
@@ -93,10 +97,21 @@ const DrawerComponent = ({
       children: [],
     },
     {
-      label: "Daybook",
+      label: "Tasks",
       icon: <DayBookIcon />,
-      route: ROUTES.dayBook,
-      children: [],
+      route: ROUTES.tasks,
+      children: [
+        {
+          label: "All Tasks",
+          icon: <DayBookIcon />,
+          route: ROUTES.tasks,
+        },
+        {
+          label: "My Tasks",
+          icon: <DayBookIcon />,
+          route: ROUTES.myTasks,
+        },
+      ],
     },
     {
       label: "GST Invoice",
@@ -138,7 +153,7 @@ const DrawerComponent = ({
       </DrawerHeader>
       <Divider />
       <List>
-        {drawerElements.map(({ label, icon, route }, index) => {
+        {drawerElements.map(({ label, icon, route, children }, index) => {
           const isSelected = router.pathname.includes(route);
           return (
             <Box
@@ -150,7 +165,11 @@ const DrawerComponent = ({
                 key={label}
                 disablePadding
                 sx={{ display: "block" }}
-                onClick={() => router.push(route)}
+                onClick={() =>
+                  children.length < 1
+                    ? router.push(route)
+                    : setOpenNestedChild(!openNestedChild)
+                }
               >
                 <ListItemButton
                   sx={{
@@ -173,7 +192,28 @@ const DrawerComponent = ({
                     primary={label}
                     sx={{ opacity: open ? 1 : 0 }}
                   />
+                  {children.length > 0 &&
+                    (openNestedChild ? <ExpandLess /> : <ExpandMore />)}
                 </ListItemButton>
+                {
+                  <Collapse in={openNestedChild} timeout="auto" unmountOnExit>
+                    {children.map(({ label, icon, route }) => (
+                      <List component="div" disablePadding>
+                        <ListItemButton
+                          sx={{ pl: 4 }}
+                          onClick={() => router.push(route)}
+                        >
+                          <ListItemIcon
+                            sx={{ ...(isSelected && { color: "#ffffff" }) }}
+                          >
+                            {icon}
+                          </ListItemIcon>
+                          <ListItemText primary={label} />
+                        </ListItemButton>
+                      </List>
+                    ))}
+                  </Collapse>
+                }
               </ListItem>
             </Box>
           );

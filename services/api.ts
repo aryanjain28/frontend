@@ -1,10 +1,21 @@
 import axios, { Axios, AxiosRequestHeaders } from "axios";
+import { useGetLocalStorage } from "../hooks/auth.hooks";
 
-const axiosInstance = axios.create({
+export const axiosInstance = axios.create({
   baseURL: `${process.env.NEXT_PUBLIC_BACKEND_API_BASE_URL}/`,
   headers: {
     "Access-Control-Allow-Origin": "*",
     "Access-Control-Allow-Headers": "*",
+  },
+  withCredentials: false,
+});
+
+const axiosInstancePrivate = axios.create({
+  baseURL: `${process.env.NEXT_PUBLIC_BACKEND_API_BASE_URL}/`,
+  headers: {
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Headers": "*",
+    Authorization: `Bearer ${useGetLocalStorage().accessToken}`,
   },
   withCredentials: false,
 });
@@ -14,7 +25,9 @@ export function GET<Params, Response>(
   params?: Params,
   headers?: AxiosRequestHeaders
 ): Promise<Response> {
-  return axiosInstance.get(url, { params, headers }).then((res) => res.data);
+  return axiosInstancePrivate
+    .get(url, { params, headers })
+    .then((res) => res.data);
 }
 
 export function POST<Payload, Response>(
@@ -22,7 +35,9 @@ export function POST<Payload, Response>(
   data: Payload,
   headers?: AxiosRequestHeaders
 ): Promise<Response> {
-  return axiosInstance.post(url, data, { headers }).then((res) => res.data);
+  return axiosInstancePrivate
+    .post(url, data, { headers })
+    .then((res) => res.data);
 }
 
 export function PUT<Payload, Response>(
@@ -30,7 +45,9 @@ export function PUT<Payload, Response>(
   data: Payload,
   headers?: AxiosRequestHeaders
 ): Promise<Response> {
-  return axiosInstance.put(url, data, { headers }).then((res) => res.data);
+  return axiosInstancePrivate
+    .put(url, data, { headers })
+    .then((res) => res.data);
 }
 
 export function PATCH<Payload, Response>(
@@ -38,7 +55,9 @@ export function PATCH<Payload, Response>(
   data: Payload,
   headers?: AxiosRequestHeaders
 ): Promise<Response> {
-  return axiosInstance.patch(url, data, { headers }).then((res) => res.data);
+  return axiosInstancePrivate
+    .patch(url, data, { headers })
+    .then((res) => res.data);
 }
 
 export function DELETE<Params, Response>(
@@ -46,7 +65,7 @@ export function DELETE<Params, Response>(
   params: Params,
   headers?: AxiosRequestHeaders
 ): Promise<Response> {
-  return axiosInstance
+  return axiosInstancePrivate
     .delete(url, { data: params, headers })
     .then((res) => res.data);
 }

@@ -1,8 +1,10 @@
-import { useMutation } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import { toast } from "react-toastify";
-import { loginUser, postUser } from "../services/user.services";
+import { QUERY_KEYS } from "../constants/queryKeys";
+import { getUserDetails, loginUser, postUser } from "../services/user.services";
 import { APIError } from "../types/common.types";
 import { PostLoginUserPayload, PostUserPayload } from "../types/user.types";
+import { useGetLocalStorage } from "./auth.hooks";
 
 export const useLoginUser = () => {
   return useMutation(
@@ -17,9 +19,13 @@ export const useLoginUser = () => {
     },
     {
       onSuccess: (data, variables) => {
-        console.log(data);
         toast.success(data.message);
         localStorage.setItem("access_token", data.data.token);
+        localStorage.setItem("user_id", data.data.userId);
+        localStorage.setItem(
+          "fullname",
+          `${data.data.fName} ${data.data.lName}`
+        );
         variables.callback();
       },
       onError: (err: APIError) => {
@@ -46,4 +52,14 @@ export const usePostUser = () => {
       },
     }
   );
+};
+
+export const useGetUserDetails = () => {
+  const { userId } = useGetLocalStorage();
+  const { data, isLoading, isFetching, refetch } = useQuery(
+    [QUERY_KEYS.GET_USER_DETAILS, userId],
+    () => (userId ? getUserDetails(userId) : null),
+    { placeholderData: null }
+  );
+  return { data, isLoading: isLoading || isFetching };
 };

@@ -1,61 +1,32 @@
-import { Grid, Typography } from "@mui/material";
+import { Grid, Link, Typography } from "@mui/material";
 import { Box } from "@mui/material";
+import { useRouter } from "next/router";
 import { en } from "../constants/labels";
-import PendingIcon from "@mui/icons-material/PendingActionsOutlined";
-import ProgressIcon from "@mui/icons-material/MovingOutlined";
-import CompletedIcon from "@mui/icons-material/CheckOutlined";
-import OverdueIcon from "@mui/icons-material/RunningWithErrorsOutlined";
-import ApprovedIcon from "@mui/icons-material/ThumbUpAltOutlined";
+import { tasks } from "../utils/tasks.utils";
 
 function Tasks() {
-  const tasks = [
-    {
-      label: "Pending",
-      count: 420,
-      icon: <PendingIcon fontSize="large" />,
-    },
-    {
-      label: "In Progress",
-      count: 13,
-      icon: <ProgressIcon fontSize="large" />,
-    },
-    {
-      label: "Completed",
-      count: 151,
-      icon: <CompletedIcon fontSize="large" />,
-    },
-    {
-      label: "Overdue",
-      count: 13,
-      icon: <OverdueIcon fontSize="large" />,
-    },
-    {
-      label: "Approved",
-      count: 19,
-      icon: <ApprovedIcon fontSize="large" />,
-    },
-  ];
+  const router = useRouter();
   return (
     <Box my={2}>
       <Typography my={1} fontSize={"15px"} fontWeight={600} color="#777777">
         {en.tasks}
       </Typography>
-
       <Grid
         container
         display="flex"
         alignItems="center"
-        justifyContent="start"
+        justifyContent="space-evenly"
         xs={12}
         gap={3}
       >
-        {tasks.map(({ label, icon, count }) => {
+        {tasks.map(({ label, icon, count, route }) => {
           return (
-            <Grid item xs={2}>
+            <Grid item xs={1.8}>
               <Box
                 p={2}
                 borderRadius={"10px"}
                 sx={{ boxShadow: 3, cursor: "pointer" }}
+                onClick={() => router.push(route as string)}
               >
                 <Grid
                   container
@@ -68,7 +39,9 @@ function Tasks() {
                     {icon}
                   </Grid>
                   <Grid item xs={6}>
-                    <Typography variant="body1">{label}</Typography>
+                    <Typography variant="body1" noWrap>
+                      {label}
+                    </Typography>
                     <Typography variant="body2">{count}</Typography>
                   </Grid>
                 </Grid>

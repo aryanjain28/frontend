@@ -1,16 +1,9 @@
-import {
-  IconButton,
-  InputAdornment,
-  SvgIconTypeMap,
-  TextField,
-  Typography,
-} from "@mui/material";
-import { Box } from "@mui/system";
+import { IconButton, InputAdornment, TextField } from "@mui/material";
 import React, { ChangeEvent } from "react";
 
 export const FormInput = (props: FormInputProps) => {
   const {
-    sx,
+    sx = {},
     type = "text",
     variant = "outlined",
     placeholder,
@@ -25,39 +18,38 @@ export const FormInput = (props: FormInputProps) => {
     endIcon,
     handleStartIconClick,
     handleEndIconClick,
+    handleOnClick,
   } = props;
+
   return (
-    <Box sx={{ my: 2 }}>
-      <TextField
-        label={label}
-        type={type}
-        variant={variant}
-        size="small"
-        placeholder={placeholder}
-        value={value}
-        onChange={(e) => handleOnChange(e.target.value)}
-        onBlur={handleOnBlur}
-        multiline={Boolean(rows)}
-        rows={rows ? rows : 1}
-        error={error}
-        helperText={helperText}
-        InputProps={{
-          startAdornment: startIcon && (
-            <InputAdornment position="start">
-              <IconButton onClick={handleStartIconClick}>
-                {startIcon}
-              </IconButton>
-            </InputAdornment>
-          ),
-          endAdornment: endIcon && (
-            <InputAdornment position="end">
-              <IconButton onClick={handleEndIconClick}>{endIcon}</IconButton>
-            </InputAdornment>
-          ),
-        }}
-        {...sx}
-      />
-    </Box>
+    <TextField
+      label={label}
+      type={type}
+      variant={variant}
+      size="small"
+      placeholder={placeholder}
+      value={value}
+      onClick={(e) => handleOnClick!(e)}
+      onChange={(e) => handleOnChange(e.target.value)}
+      onBlur={handleOnBlur}
+      multiline={Boolean(rows)}
+      rows={rows ? rows : 1}
+      error={error}
+      helperText={helperText}
+      InputProps={{
+        startAdornment: startIcon && (
+          <InputAdornment position="start">
+            <IconButton onClick={handleStartIconClick}>{startIcon}</IconButton>
+          </InputAdornment>
+        ),
+        endAdornment: endIcon && (
+          <InputAdornment position="end">
+            <IconButton onClick={handleEndIconClick}>{endIcon}</IconButton>
+          </InputAdornment>
+        ),
+      }}
+      sx={sx}
+    />
   );
 };
 
@@ -65,6 +57,7 @@ interface FormInputProps {
   label: string;
   value: string | number;
   variant?: "filled" | "outlined" | "standard";
+  handleOnClick?: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
   handleOnChange: (value: string | number) => void;
   handleOnBlur?: () => void;
   type?: string;

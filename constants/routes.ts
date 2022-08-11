@@ -9,6 +9,10 @@ export const API_ROUTES = {
   GET_USER_DETAILS: "/users/user/:userId",
   POST_USER: "/users/user/signUp",
   POST_LOGIN_USER: "/users/user/login",
+
+  //Tasks
+  GET_TASKS: "/tasks",
+  GET_MY_TASKS: "/tasks/myTasks",
 };
 
 export const ROUTES = {
@@ -24,4 +28,7 @@ export const ROUTES = {
   links: "/app/links",
   settings: "/app/settings",
   reports: "/app/reports",
+
+  tasks: "/app/tasks",
+  myTasks: "/app/tasks/myTasks",
 };

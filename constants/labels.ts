@@ -7,12 +7,21 @@ export const en = {
     mobile: "+91 02226 14670",
   },
 
+  noData: "Nothing to show!",
+  searchTable: "Search Table",
+  searchTaskName: "Search By Task Name",
+
   myFirm: "My Firm",
   settings: "Settings",
   logout: "Logout",
   tasks: "Tasks",
   clients: "Clients",
   transactions: "Transactions",
+
+  dashboard: "Dashboard",
+  viewAll: "View All",
+  allTasks: "All Tasks",
+  myTasks: "My Tasks",
 
   // login and signUp
   login: "Login",

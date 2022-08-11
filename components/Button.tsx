@@ -36,7 +36,7 @@ export const Button = ({
 };
 
 interface ButtonProps {
-  onClick: () => void;
+  onClick: (e?: any) => void;
   isLoading?: boolean;
   sx?: any;
   disabled?: boolean;

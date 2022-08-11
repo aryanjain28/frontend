@@ -7,15 +7,31 @@ import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import ListItemIcon from "@mui/material/ListItemIcon";
-import { useCallback, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { en } from "../constants/labels";
-import { AccountCircle, Logout, Settings } from "@mui/icons-material";
-import { Icon, Menu, MenuItem, MenuProps, Tooltip } from "@mui/material";
+import {
+  AccountCircle,
+  Logout,
+  Notifications,
+  Settings,
+} from "@mui/icons-material";
+import {
+  Badge,
+  Grid,
+  Icon,
+  Menu,
+  MenuItem,
+  MenuProps,
+  Tooltip,
+} from "@mui/material";
 import { toast } from "react-toastify";
 import { ROUTES } from "../constants/routes";
 import { useRouter } from "next/router";
 import { SvgIcon } from "./PageLayout";
-import CALogo from "../public/images/CALogo.svg";
+import { useGetUserDetails } from "../hooks/user.hooks";
+import { useGetLocalStorage } from "../hooks/auth.hooks";
+import { formatTime } from "../utils/common.utils";
+import { taskStatus } from "../utils/tasks.utils";
 
 const drawerWidth = 240;
 
@@ -45,13 +61,24 @@ const AppBarComponent = ({
   setOpen: () => void;
 }) => {
   const router = useRouter();
+  const { fullName } = useGetLocalStorage();
+  const { data } = useGetUserDetails();
+
   const [anchorEl, setAnchorEl] = useState<MenuProps["anchorEl"] | null>(null);
+  const [anchorNot, setAnchorNot] = useState<MenuProps["anchorEl"] | null>(
+    null
+  );
 
   const handleLogout = useCallback(() => {
     localStorage.setItem("access_token", "");
     toast.success(en.toast.successLogout);
     router.push(ROUTES.login);
   }, []);
+
+  const newNotifications = useMemo(
+    () => (data?.tasks ? data?.tasks.filter((t) => t.isNew) : []),
+    [data]
+  );
 
   return (
     <>
@@ -84,18 +111,22 @@ const AppBarComponent = ({
               />
             </Box>
 
-            {/* <IconButton size="small" color="inherit">
-              <Badge badgeContent={12} color="error">
-                <Notifications />
-              </Badge>
-            </IconButton> */}
             <Box
               display="flex"
               alignItems="center"
               justifyContent="center"
               gap={2}
             >
-              <Typography>{"Aryan Jain"}</Typography>
+              <Typography>{fullName}</Typography>
+              <IconButton
+                size="small"
+                color="inherit"
+                onClick={(e) => setAnchorNot(e.currentTarget)}
+              >
+                <Badge badgeContent={newNotifications?.length} color="error">
+                  <Notifications />
+                </Badge>
+              </IconButton>
               <IconButton
                 size="small"
                 edge="end"
@@ -157,6 +188,108 @@ const AppBarComponent = ({
             <Logout fontSize="small" />
           </ListItemIcon>
           {en.logout}
+        </MenuItem>
+      </Menu>
+
+      <Menu
+        anchorEl={anchorNot}
+        open={Boolean(anchorNot)}
+        onClose={() => setAnchorNot(null)}
+        onClick={() => setAnchorNot(null)}
+        PaperProps={{
+          elevation: 0,
+          sx: {
+            overflow: "visible",
+            filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
+            mt: 1.5,
+            "& .MuiAvatar-root": {
+              width: 32,
+              height: 32,
+              ml: -0.5,
+              mr: 1,
+            },
+            "&:before": {
+              content: '""',
+              display: "block",
+              position: "absolute",
+              top: 0,
+              right: 14,
+              width: 10,
+              height: 10,
+              bgcolor: "background.paper",
+              transform: "translateY(-50%) rotate(45deg)",
+              zIndex: 0,
+            },
+          },
+        }}
+        transformOrigin={{ horizontal: "right", vertical: "top" }}
+        anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+      >
+        {newNotifications?.map((notif: any) => {
+          const status =
+            taskStatus[
+              notif.task.status as "PENDING" | "APPROVED" | "COMPLETED"
+            ];
+          return (
+            <>
+              <MenuItem>
+                <Grid
+                  container
+                  direction="row"
+                  alignItems="center"
+                  justifyContent="center"
+                  xs={12}
+                  width="400px"
+                >
+                  <Grid
+                    container
+                    direction="column"
+                    justifyContent="space-evenly"
+                    alignItems="center"
+                    xs={2}
+                  >
+                    {status.icon}
+                  </Grid>
+                  <Grid
+                    xs={10}
+                    container
+                    direction="column"
+                    alignItems="flex-start"
+                    justifyContent="space-evenly"
+                  >
+                    <Typography variant="caption">
+                      {`${notif.assignedBy.fName}, (${formatTime(
+                        notif.assignedAt
+                      )})`}
+                    </Typography>
+                    <Typography
+                      mt={0.5}
+                      variant="body2"
+                      maxWidth={"100%"}
+                      noWrap
+                    >
+                      {notif.task.name}
+                    </Typography>
+                  </Grid>
+                </Grid>
+              </MenuItem>
+              <Divider sx={{ p: 0, m: 0 }} />
+            </>
+          );
+        })}
+        <MenuItem>
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            width="100%"
+          >
+            <Typography color="GrayText">
+              {newNotifications?.length > 0
+                ? "Show All Notifications"
+                : "No New Notification"}
+            </Typography>
+          </Box>
         </MenuItem>
       </Menu>
     </>

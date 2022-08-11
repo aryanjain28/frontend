@@ -1,0 +1,40 @@
+import { User } from "./user.types";
+
+export interface Task {
+  name: string;
+  type: string;
+  status: "APPROVED" | "COMPLETED" | "PENDING";
+  client: { clientName: string; entity: string };
+  assignee: User;
+  startDate: string;
+  endDate?: string;
+  createdBy: string;
+  createdAt: string;
+  updatedAt: string;
+  totalAmount?: string;
+  paidAmount?: string;
+  balanceAmount?: string;
+  isApproved?: string;
+  updatedBy?: string;
+  approvedBy?: string;
+  approvedAt?: string;
+}
+
+export interface AssignedTask extends Task {
+  isNew: Boolean;
+  task: Task;
+  assignedAt: string;
+  assignedBy: string;
+}
+
+export interface GetAllTaskReponse {
+  status: number;
+  message: string;
+  data: Task[];
+}
+
+export interface GetUsersTasksResponse {
+  status: number;
+  message: string;
+  data: Task[];
+}
