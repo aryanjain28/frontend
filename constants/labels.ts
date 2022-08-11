@@ -10,6 +10,9 @@ export const en = {
   noData: "Nothing to show!",
   searchTable: "Search Table",
   searchTaskName: "Search By Task Name",
+  status: "Status",
+  selectDateRange: "Select Date Range",
+  addFilters: "Add Filters",
 
   myFirm: "My Firm",
   settings: "Settings",

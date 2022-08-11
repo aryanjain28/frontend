@@ -23,3 +23,13 @@ export const getNestedObjValue = (
     return null;
   }
 };
+
+export const colors = [
+  "primary",
+  "default",
+  "secondary",
+  "error",
+  "info",
+  "success",
+  "warning",
+];

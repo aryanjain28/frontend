@@ -1,12 +1,13 @@
 import { Box, Divider, Typography } from "@mui/material";
 import { useState } from "react";
-import { DataGridComponent } from "../../../../components/DataGrid/DataGrid.component";
+import DataGrid from "../../../../components/DataGrid/DataGridMain.component";
 import { en } from "../../../../constants/labels";
 import { ROUTES } from "../../../../constants/routes";
 import { BreadCrumbsComp } from "../../../../features/BreadCrumbs";
 import { useDataGrid } from "../../../../hooks/datagrid.hooks";
 import { useGetMyTasks } from "../../../../hooks/tasks.hooks";
 import PageLayout from "../../../../layouts/PageLayout";
+import { FilterMap } from "../../../../types/common.types";
 import { Task } from "../../../../types/task.types";
 import { getMyTasksColumns } from "../../../../utils/tasks.utils";
 
@@ -15,11 +16,13 @@ const MyTasks = () => {
   const columns = getMyTasksColumns();
 
   const [query, setQuery] = useState("");
+  const [filterMap, setFilterMap] = useState<FilterMap>({});
   const { paginationProps, dataGridProps } = useDataGrid({
     columns,
     data: data as Task[],
     pageSize: 10,
     query,
+    filterMap,
   });
 
   return (
@@ -45,20 +48,16 @@ const MyTasks = () => {
               {en.myTasks}
             </Typography>
           </Box>
-          {/* <Button
-        sx={{ mx: 2 }}
-        label="Add New User"
-        icon={<Add />}
-        onClick={() => router.push(`/app/customers/customer`)}
-      /> */}
         </Box>
         <Divider sx={{ my: 0 }} />
-        <DataGridComponent
+        <DataGrid
           {...dataGridProps}
           isLoading={isLoading}
           query={query}
           setQuery={setQuery}
           placeholder={en.searchTaskName}
+          filterMap={filterMap}
+          setFilterMap={(value) => setFilterMap(value)}
         />
       </Box>
     </PageLayout>

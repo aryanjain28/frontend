@@ -14,14 +14,20 @@ const MenuProps = {
 };
 
 interface SelectProps {
+  selectedOptions: (string | number)[];
+  handleSelectOption: (value: string[]) => void;
   label?: string;
   options: string[];
   sx?: any;
 }
 
-export default function SelectComponent({ sx, label, options }: SelectProps) {
-  const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
-
+export default function SelectComponent({
+  sx,
+  selectedOptions,
+  handleSelectOption,
+  label,
+  options,
+}: SelectProps) {
   return (
     <FormControl sx={{ width: 300 }}>
       <Typography fontSize="13px" color={"GrayText"} fontWeight={700}>
@@ -31,7 +37,7 @@ export default function SelectComponent({ sx, label, options }: SelectProps) {
         size="small"
         multiple
         value={selectedOptions}
-        onChange={(e) => setSelectedOptions(e.target.value as string[])}
+        onChange={(e) => handleSelectOption(e.target.value as string[])}
         renderValue={(s: string[]) => (
           <Typography variant="subtitle2" noWrap>
             {s.join(", ")}

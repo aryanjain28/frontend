@@ -17,11 +17,8 @@ export const useDataGrid = (props: useDataGridProps) => {
     let check = true;
     if (filterMap) {
       for (const [key, filterValue] of Object.entries(filterMap)) {
-        const rowValue = getNestedObjValue(row, key);
-        check =
-          typeof filterValue === "string" || typeof filterValue === "number"
-            ? rowValue === filterValue
-            : filterValue.includes(rowValue);
+        const rowValue = row[key];
+        check = filterValue.includes(rowValue) || filterValue.length < 1;
         if (check) return check;
       }
     }
@@ -75,5 +72,5 @@ interface useDataGridProps {
   pageNumber?: number;
   setPageNumber?: (page: number) => void;
   searchParam?: string;
-  filterMap?: { [key: string]: (string | number) | (string | number)[] };
+  filterMap?: { [key: string]: (string | number)[] };
 }

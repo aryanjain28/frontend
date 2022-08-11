@@ -1,9 +1,7 @@
 import { useGetAllTasks } from "../../../hooks/tasks.hooks";
-import { Add } from "@mui/icons-material";
-import { Divider, Paper, Typography } from "@mui/material";
-import { borderRadius, Box, height } from "@mui/system";
+import { Divider, Typography } from "@mui/material";
+import { Box } from "@mui/system";
 import { useState } from "react";
-import { DataGridComponent } from "../../../components/DataGrid/DataGrid.component";
 import { BreadCrumbsComp } from "../../../features/BreadCrumbs";
 import { useDataGrid } from "../../../hooks/datagrid.hooks";
 import PageLayout from "../../../layouts/PageLayout";
@@ -11,6 +9,8 @@ import { Task } from "../../../types/task.types";
 import { getTasksCol } from "../../../utils/tasks.utils";
 import { en } from "../../../constants/labels";
 import { ROUTES } from "../../../constants/routes";
+import DataGrid from "../../../components/DataGrid/DataGridMain.component";
+import { FilterMap } from "../../../types/common.types";
 
 const Tasks = () => {
   const columns = getTasksCol();
@@ -23,6 +23,7 @@ const Tasks = () => {
     pageSize: 10,
     query,
   });
+  const [filterMap, setFilterMap] = useState<FilterMap>({});
   return (
     <PageLayout>
       <Box
@@ -37,28 +38,25 @@ const Tasks = () => {
           <Box>
             <BreadCrumbsComp
               breadCrumbs={[
-                { label: "Dashboard", url: ROUTES.dashboard },
-                { label: "All Tasks", url: ROUTES.tasks },
+                { label: en.dashboard, url: ROUTES.dashboard },
+                { label: en.allTasks, url: ROUTES.tasks },
               ]}
             />
             <Typography mx={3} color="#0B1246" variant="h6">
               {en.allTasks}
             </Typography>
           </Box>
-          {/* <Button
-            sx={{ mx: 2 }}
-            label="Add New User"
-            icon={<Add />}
-            onClick={() => router.push(`/app/customers/customer`)}
-          /> */}
         </Box>
         <Divider sx={{ my: 0 }} />
-        <DataGridComponent
+        <DataGrid
           {...dataGridProps}
           isLoading={isLoading}
           showSearch
+          showFilters={false}
           query={query}
           setQuery={setQuery}
+          filterMap={filterMap}
+          setFilterMap={setFilterMap}
         />
       </Box>
     </PageLayout>
