@@ -29,7 +29,7 @@ export const FormInput = (props: FormInputProps) => {
       size="small"
       placeholder={placeholder}
       value={value}
-      onClick={(e) => handleOnClick!(e)}
+      onClick={(e) => (handleOnClick ? handleOnClick(e) : null)}
       onChange={(e) => handleOnChange(e.target.value)}
       onBlur={handleOnBlur}
       multiline={Boolean(rows)}
