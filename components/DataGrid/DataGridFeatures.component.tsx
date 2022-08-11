@@ -1,4 +1,4 @@
-import { Box, Chip } from "@mui/material";
+import { Box, Chip, Grid } from "@mui/material";
 import { en } from "../../constants/labels";
 import { FormInput } from "../../features/FormInput";
 import { TaskFiltersPopover } from "../../features/TaskFiltersPopover";
@@ -26,14 +26,16 @@ const DataGridFeatures = ({
     }
   };
   return (
-    <>
-      <Box
-        display="flex"
-        alignItems="center"
-        justifyContent="start"
-        gap={2}
-        my={2}
-      >
+    <Grid
+      container
+      direction="column"
+      alignItems="start"
+      justifyContent="space-around"
+      gap={1}
+      mt={2}
+      mb={1}
+    >
+      <Box display="flex" alignItems="center" justifyContent="start" gap={2}>
         {showSearch && (
           <FormInput
             label={placeholder || en.searchTable}
@@ -49,14 +51,12 @@ const DataGridFeatures = ({
         )}
       </Box>
 
-      {/* Displaying chips */}
       {
         <Box
           sx={{
             display: "flex",
             flexWrap: "wrap",
             gap: 0.5,
-            mb: 2,
           }}
         >
           {Object.keys(filterMap).map((key: string, index: number) =>
@@ -82,7 +82,7 @@ const DataGridFeatures = ({
           )}
         </Box>
       }
-    </>
+    </Grid>
   );
 };
 

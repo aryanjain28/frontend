@@ -10,13 +10,14 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import DashboardIcon from "@mui/icons-material/GridViewOutlined";
 import MyFirmIcon from "@mui/icons-material/BusinessOutlined";
-import DayBookIcon from "@mui/icons-material/MenuBookOutlined";
+import AllTasksIcon from "@mui/icons-material/DescriptionOutlined";
 import GstInvoiceIcon from "@mui/icons-material/LibraryBooksOutlined";
 import ClientsIcon from "@mui/icons-material/PeopleAltOutlined";
 import HrIcon from "@mui/icons-material/FeedOutlined";
 import LinksIcon from "@mui/icons-material/LinkOutlined";
 import SettingsIcon from "@mui/icons-material/SettingsOutlined";
 import ReportsIcon from "@mui/icons-material/EqualizerOutlined";
+import MyTaskIcon from "@mui/icons-material/ContactPageOutlined";
 import { ROUTES } from "../constants/routes";
 import { Box } from "@mui/system";
 import { useRouter } from "next/router";
@@ -98,17 +99,17 @@ const DrawerComponent = ({
     },
     {
       label: "Tasks",
-      icon: <DayBookIcon />,
+      icon: <AllTasksIcon />,
       route: ROUTES.tasks,
       children: [
         {
           label: "All Tasks",
-          icon: <DayBookIcon />,
+          icon: <AllTasksIcon />,
           route: ROUTES.tasks,
         },
         {
           label: "My Tasks",
-          icon: <DayBookIcon />,
+          icon: <MyTaskIcon />,
           route: ROUTES.myTasks,
         },
       ],
@@ -153,7 +154,7 @@ const DrawerComponent = ({
       </DrawerHeader>
       <Divider />
       <List>
-        {drawerElements.map(({ label, icon, route, children }, index) => {
+        {drawerElements.map(({ label, icon, route, children }) => {
           const isSelected = router.pathname.includes(route);
           return (
             <Box
@@ -192,24 +193,41 @@ const DrawerComponent = ({
                     primary={label}
                     sx={{ opacity: open ? 1 : 0 }}
                   />
-                  {children.length > 0 &&
+                  {open &&
+                    children.length > 0 &&
                     (openNestedChild ? <ExpandLess /> : <ExpandMore />)}
                 </ListItemButton>
                 {
                   <Collapse in={openNestedChild} timeout="auto" unmountOnExit>
                     {children.map(({ label, icon, route }) => (
-                      <List component="div" disablePadding>
-                        <ListItemButton
-                          sx={{ pl: 4 }}
-                          onClick={() => router.push(route)}
+                      <List disablePadding>
+                        <Box
+                          sx={{
+                            ...(router.pathname === route
+                              ? {
+                                  color: "white",
+                                  bgcolor: "#485d8c",
+                                }
+                              : { color: "black", bgcolor: "white" }),
+                          }}
                         >
-                          <ListItemIcon
-                            sx={{ ...(isSelected && { color: "#ffffff" }) }}
+                          <ListItemButton
+                            sx={{ pl: 4 }}
+                            onClick={() => router.push(route)}
                           >
-                            {icon}
-                          </ListItemIcon>
-                          <ListItemText primary={label} />
-                        </ListItemButton>
+                            <ListItemIcon
+                              sx={{
+                                color:
+                                  router.pathname === route
+                                    ? "white"
+                                    : "#757575",
+                              }}
+                            >
+                              {icon}
+                            </ListItemIcon>
+                            <ListItemText primary={label} />
+                          </ListItemButton>
+                        </Box>
                       </List>
                     ))}
                   </Collapse>
