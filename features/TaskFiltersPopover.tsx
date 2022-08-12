@@ -2,7 +2,7 @@ import { Add } from "@mui/icons-material";
 import { Box, Grid, Popover, Typography } from "@mui/material";
 import { useState } from "react";
 import { Button } from "../components/Button";
-import SelectComponent from "../components/Select";
+import { SelectMultipleComponent } from "../components/Select";
 import { en } from "../constants/labels";
 import { FilterMap } from "../types/common.types";
 import DateRangePopover from "./DateRangePopover";
@@ -51,7 +51,7 @@ export const TaskFiltersPopover = ({
             pb={4}
             gap={2}
           >
-            <SelectComponent
+            <SelectMultipleComponent
               selectedOptions={filterMap?.status || []}
               handleSelectOption={(value) =>
                 handleSelectOption("status", value)

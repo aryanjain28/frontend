@@ -6,7 +6,7 @@ const DataGridCell = (props: DataGridCellProps) => {
   const Component = col.Component;
   const value = row[col.key];
   return (
-    <TableCell sx={{ p: 1, m: 0, alignItems: "center" }}>
+    <TableCell sx={{ p: 1 }}>
       <Box>
         {Component ? (
           <Component row={row} col={col} />
@@ -19,6 +19,7 @@ const DataGridCell = (props: DataGridCellProps) => {
 };
 
 interface DataGridCellProps {
+  index: number;
   row: Row;
   col: Column;
 }

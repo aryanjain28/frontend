@@ -11,41 +11,47 @@ import { ROUTES } from "../constants/routes";
 import { Task } from "../types/task.types";
 import { ColumnG } from "../types/datagrid.types";
 import { Link, Tooltip, Typography } from "@mui/material";
-import { formatTime, formatTime2 } from "./common.utils";
-import { KeyboardArrowDown } from "@mui/icons-material";
+import { formatTime2 } from "./common.utils";
+import { KeyboardArrowDown, KeyboardArrowUp } from "@mui/icons-material";
 import { CustomTooltip } from "../features/CustomTooltip";
+import { en } from "../constants/labels";
 
 export const tasks = [
   {
-    label: "My Tasks",
+    label: en.myTasks,
     count: 42,
     icon: <MyTasksIcon fontSize="large" />,
-    route: ROUTES.tasks,
+    route: ROUTES.myTasks,
   },
   {
-    label: "Pending",
+    label: en.pending,
     count: 420,
     icon: <PendingIcon fontSize="large" />,
+    route: `${ROUTES.myTasks}/?status=PENDING`,
   },
   {
-    label: "In Progress",
+    label: en.inProgress,
     count: 13,
     icon: <ProgressIcon fontSize="large" />,
+    route: `${ROUTES.myTasks}/?status=INPROGRESS`,
   },
   {
-    label: "Completed",
+    label: en.completed,
     count: 151,
     icon: <CompletedIcon fontSize="large" />,
+    route: `${ROUTES.myTasks}/?status=COMPLETED`,
   },
   {
-    label: "Overdue",
+    label: en.overdue,
     count: 13,
     icon: <OverdueIcon fontSize="large" />,
+    route: `${ROUTES.myTasks}/?status=OVERDUE`,
   },
   {
-    label: "Approved",
+    label: en.approved,
     count: 19,
     icon: <ApprovedIcon fontSize="large" />,
+    route: `${ROUTES.myTasks}/?status=APPROVED`,
   },
 ];
 
@@ -167,7 +173,10 @@ export const getTasksCol = (): ColumnG<Task>[] => [
   // },
 ];
 
-export const getMyTasksColumns = (): ColumnG<Task>[] => [
+export const getMyTasksColumns = (
+  expandedRowId: string | null,
+  setExpandedRowId: (id: string | null) => void
+): ColumnG<Task>[] => [
   {
     headerName: "Create Date",
     key: "createdAt",
@@ -237,11 +246,21 @@ export const getMyTasksColumns = (): ColumnG<Task>[] => [
       return <Typography>{formatTime2(row.endDate!)}</Typography>;
     },
   },
-  // {
-  //   headerName: "",
-  //   key: "",
-  //   Component: ({ row }) => {
-  //     return <KeyboardArrowDown />;
-  //   },
-  // },
+  {
+    headerName: "",
+    key: "",
+    Component: ({ row }) => {
+      return expandedRowId === row.id ? (
+        <KeyboardArrowUp
+          sx={{ mr: 1, cursor: "pointer" }}
+          onClick={() => setExpandedRowId(null)}
+        />
+      ) : (
+        <KeyboardArrowDown
+          sx={{ mr: 1, cursor: "pointer" }}
+          onClick={() => setExpandedRowId(row.id)}
+        />
+      );
+    },
+  },
 ];

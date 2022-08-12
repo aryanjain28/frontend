@@ -10,3 +10,5 @@ export interface APIError {
 export interface FilterMap {
   [key: string]: (string | number)[];
 }
+
+export type TaskStatusType = "APPROVED" | "COMPLETED" | "PENDING";

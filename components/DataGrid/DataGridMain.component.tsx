@@ -17,6 +17,8 @@ const DataGrid = (props: DataGridProps) => {
     placeholder,
     filterMap,
     setFilterMap,
+    expandedRowId,
+    setExpandedRowId,
   } = props;
   return (
     <Box mx={3}>
@@ -29,7 +31,12 @@ const DataGrid = (props: DataGridProps) => {
         setFilterMap={setFilterMap}
         placeholder={placeholder}
       />
-      <DataGridTable isLoading={isLoading} columns={columns} data={data} />
+      <DataGridTable
+        isLoading={isLoading}
+        columns={columns}
+        data={data}
+        expandedRowId={expandedRowId}
+      />
     </Box>
   );
 };
@@ -46,6 +53,8 @@ interface DataGridProps {
   placeholder?: string;
   filterMap: FilterMap;
   setFilterMap: (value: FilterMap) => void;
+  expandedRowId?: string | null;
+  setExpandedRowId?: (val: string | null) => void;
 }
 
 export default DataGrid;

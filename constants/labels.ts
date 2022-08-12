@@ -25,6 +25,11 @@ export const en = {
   viewAll: "View All",
   allTasks: "All Tasks",
   myTasks: "My Tasks",
+  pending: "Pending",
+  inProgress: "In Progress",
+  completed: "Completed",
+  overdue: "Overdue",
+  approved: "Approved",
 
   // login and signUp
   login: "Login",

@@ -1,4 +1,5 @@
 import { Box, Divider, Typography } from "@mui/material";
+import { useRouter } from "next/router";
 import { useState } from "react";
 import DataGrid from "../../../../components/DataGrid/DataGridMain.component";
 import { en } from "../../../../constants/labels";
@@ -12,11 +13,17 @@ import { Task } from "../../../../types/task.types";
 import { getMyTasksColumns } from "../../../../utils/tasks.utils";
 
 const MyTasks = () => {
+  const router = useRouter();
+  const status = router.query?.status;
+
   const { data, isLoading } = useGetMyTasks();
-  const columns = getMyTasksColumns();
+  const [expandedRowId, setExpandedRowId] = useState<string | null>(null);
+  const columns = getMyTasksColumns(expandedRowId, setExpandedRowId);
 
   const [query, setQuery] = useState("");
-  const [filterMap, setFilterMap] = useState<FilterMap>({});
+  const [filterMap, setFilterMap] = useState<FilterMap>(
+    status ? { status: [`${status}`] } : {}
+  );
   const { paginationProps, dataGridProps } = useDataGrid({
     columns,
     data: data as Task[],
@@ -58,6 +65,8 @@ const MyTasks = () => {
           placeholder={en.searchTaskName}
           filterMap={filterMap}
           setFilterMap={(value) => setFilterMap(value)}
+          expandedRowId={expandedRowId}
+          setExpandedRowId={(val) => setExpandedRowId(val)}
         />
       </Box>
     </PageLayout>

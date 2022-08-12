@@ -1,9 +1,11 @@
+import { TaskStatusType } from "./common.types";
 import { User } from "./user.types";
 
 export interface Task {
+  id: string;
   name: string;
   type: string;
-  status: "APPROVED" | "COMPLETED" | "PENDING";
+  status: TaskStatusType;
   client: { clientName: string; entity: string };
   assignee: User;
   startDate: string;

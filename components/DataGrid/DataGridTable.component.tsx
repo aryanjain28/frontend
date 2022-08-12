@@ -11,6 +11,7 @@ import {
   Typography,
 } from "@mui/material";
 import { en } from "../../constants/labels";
+import { ExpandedDataGridCell } from "../../features/ExpandedTaskRow";
 import { Column, Row } from "../../types/datagrid.types";
 import DataGridCell from "./DataGridCell.component";
 import DataGridHeadCell from "./DataGridHeadCell.component";
@@ -19,6 +20,7 @@ const DataGridTableComponent = ({
   isLoading = false,
   columns,
   data,
+  expandedRowId,
 }: DataGridTableComponentProps) => {
   return (
     <Box alignItems="center">
@@ -51,13 +53,24 @@ const DataGridTableComponent = ({
             </TableHead>
             <TableBody>
               {data.length > 0 ? (
-                data.map((row) => {
+                data.map((row, index) => {
+                  const open = expandedRowId === row.id;
                   return (
-                    <TableRow>
-                      {columns.map((col) => (
-                        <DataGridCell key={col.key} row={row} col={col} />
-                      ))}
-                    </TableRow>
+                    <>
+                      <TableRow sx={{ background: open ? "#E7EBF0" : null }}>
+                        {columns.map((col) => (
+                          <DataGridCell
+                            key={col.key}
+                            row={row}
+                            col={col}
+                            index={index}
+                          />
+                        ))}
+                      </TableRow>
+                      <TableRow>
+                        <ExpandedDataGridCell row={row} open={open} />
+                      </TableRow>
+                    </>
                   );
                 })
               ) : (
@@ -92,6 +105,7 @@ interface DataGridTableComponentProps {
   isLoading: boolean;
   columns: Column[];
   data: Row[];
+  expandedRowId?: string | null;
 }
 
 export default DataGridTableComponent;
