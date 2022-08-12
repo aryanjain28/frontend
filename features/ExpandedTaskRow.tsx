@@ -1,23 +1,107 @@
-import { Box, Collapse, Grid, TableCell } from "@mui/material";
+import {
+  Box,
+  Checkbox,
+  Collapse,
+  FormControlLabel,
+  Grid,
+  TableCell,
+  Typography,
+} from "@mui/material";
 import { FormInput } from "../features/FormInput";
-import { TaskStatusType } from "../types/common.types";
 import { Row } from "../types/datagrid.types";
-import { formatTime } from "../utils/common.utils";
 import { taskStatus } from "../utils/tasks.utils";
 import { Button } from "../components/Button";
 import { SelectComponent } from "../components/Select";
+import { useState } from "react";
+import DateSelectPopover from "./DateSelectPopover";
+
+const CommFormInput = ({
+  sx = {},
+  label,
+  readOnly = false,
+  value,
+  handleChange,
+}: {
+  sx?: any;
+  label?: string;
+  readOnly?: boolean;
+  value: string;
+  handleChange: (value: string) => void;
+}) => (
+  <FormInput
+    label={""}
+    value={value}
+    handleOnChange={(value) => (readOnly ? {} : handleChange(value as string))}
+    variant="outlined"
+    topLabel={label}
+    sx={{ ...sx, background: "white" }}
+  />
+);
+
+const CommSelectInput = ({
+  label,
+  value,
+  options,
+  handleChange,
+}: {
+  label: string;
+  value: string;
+  options: string[];
+  handleChange: (item: string) => void;
+}) => (
+  <SelectComponent
+    label={label}
+    selectedOption={value}
+    handleSelectOption={(item) => handleChange(item)}
+    options={options}
+    sx={{ width: 250, background: "white" }}
+  />
+);
+
+const CommDateSelect = ({
+  key,
+  handleChange,
+  label,
+  value,
+  showCancleIcon = false,
+}: {
+  key: string;
+  handleChange: (item: Date) => void;
+  label: string;
+  value: Date | string;
+  showCancleIcon?: boolean;
+}) => (
+  <Box>
+    <Typography
+      fontSize="13px"
+      variant="subtitle2"
+      fontWeight={700}
+      color="GrayText"
+    >
+      {label}
+    </Typography>
+    <DateSelectPopover
+      date={value}
+      sx={{ width: 150, background: "white" }}
+      setDate={(item) => handleChange(item as Date)}
+      showCancleIcon={showCancleIcon}
+    />
+  </Box>
+);
 
 export const ExpandedDataGridCell = ({
   row,
   open,
+  colSpan,
 }: {
   row: Row;
   open: boolean;
+  colSpan: number;
 }) => {
-  const status = taskStatus[row.status as TaskStatusType];
+  const [formValues, setFormValues] = useState<any>(row);
   return (
-    <TableCell sx={{ p: 0.4 }} colSpan={11}>
-      <Collapse in={open} unmountOnExit timeout={100}>
+    <TableCell sx={{ p: 0.4 }} colSpan={colSpan}>
+      <Collapse in={open} unmountOnExit>
         <Box width="100%" p={1} bgcolor="#E7EBF0" borderRadius="5px">
           <Grid
             container
@@ -34,37 +118,42 @@ export const ExpandedDataGridCell = ({
                 p={1}
                 gap={1}
               >
-                <FormInput
-                  label=""
-                  value={`${row.createdBy.fName} ${row.createdBy.lName || ""}`}
-                  handleOnChange={() => {}}
-                  variant="outlined"
-                  topLabel="Created By"
-                  sx={{ /*width: 200,*/ background: "white" }}
+                <CommFormInput
+                  key="createdByName"
+                  label={"Created By"}
+                  value={formValues.createdByName}
+                  handleChange={(v) =>
+                    setFormValues({ ...formValues, createdByName: v })
+                  }
+                  readOnly
+                  sx={{ width: 230 }}
                 />
-                <FormInput
-                  label=""
-                  value={`${row.createdBy.email || ""}`}
-                  handleOnChange={() => {}}
-                  variant="outlined"
-                  topLabel="Creator's Email"
-                  sx={{ /*width: 250,*/ background: "white" }}
+                <CommFormInput
+                  key="createdByEmail"
+                  label={"Creator's Email"}
+                  value={formValues.createdByEmail}
+                  handleChange={(v) =>
+                    setFormValues({ ...formValues, createdByEmail: v })
+                  }
+                  readOnly
+                  sx={{ width: 250 }}
                 />
-                <FormInput
-                  label=""
-                  value={formatTime(row.startDate)}
-                  handleOnChange={() => {}}
-                  variant="outlined"
-                  topLabel="Start Date"
-                  sx={{ /*width: 200,*/ background: "white" }}
+                <CommDateSelect
+                  key="startDate"
+                  label={"Start Date"}
+                  value={new Date(formValues.startDate)}
+                  handleChange={(v) =>
+                    setFormValues({ ...formValues, startDate: v })
+                  }
                 />
-                <FormInput
-                  label=""
-                  value={formatTime(row.endDate)}
-                  handleOnChange={() => {}}
-                  variant="outlined"
-                  topLabel="End Date"
-                  sx={{ /*width: 200,*/ background: "white" }}
+                <CommDateSelect
+                  key="endDate"
+                  label={"End Date"}
+                  value={formValues.endDate ? new Date(formValues.endDate) : ""}
+                  handleChange={(v) =>
+                    setFormValues({ ...formValues, endDate: v })
+                  }
+                  showCancleIcon
                 />
               </Box>
               <Box
@@ -74,27 +163,74 @@ export const ExpandedDataGridCell = ({
                 p={1}
                 gap={1}
               >
-                <FormInput
-                  label=""
-                  value={row.name}
-                  handleOnChange={() => {}}
-                  variant="outlined"
-                  topLabel="Name"
-                  sx={{ width: 270, background: "white" }}
+                <CommFormInput
+                  key="name"
+                  label={"Name"}
+                  value={formValues.name}
+                  handleChange={(v) =>
+                    setFormValues({ ...formValues, name: v })
+                  }
+                  sx={{ width: 270 }}
                 />
-                <SelectComponent
+                <CommSelectInput
                   label="Task Type"
-                  selectedOption={"A"}
-                  handleSelectOption={() => {}}
-                  options={["A", "B", "C", "D", "E"]}
-                  sx={{ width: 250, background: "white" }}
+                  value={formValues.taskTypeName}
+                  handleChange={(p) =>
+                    setFormValues({ ...formValues, taskTypeName: p })
+                  }
+                  options={["GST-32", "A", "B", "C", "D", "E"]}
                 />
-                <SelectComponent
+                <CommSelectInput
                   label="Status"
-                  selectedOption={status.label}
-                  handleSelectOption={() => {}}
+                  value={formValues.status}
+                  handleChange={(p) =>
+                    setFormValues({ ...formValues, status: p })
+                  }
                   options={Object.keys(taskStatus)}
-                  sx={{ width: 250, background: "white" }}
+                />
+              </Box>
+              <Box
+                display="flex"
+                alignItems="start"
+                justifyContent="space-between"
+                p={1}
+                gap={1}
+              >
+                <CommSelectInput
+                  label="Client Name"
+                  value={formValues.clientName}
+                  handleChange={(p) =>
+                    setFormValues({ ...formValues, clientName: p })
+                  }
+                  options={[
+                    "Sonia Gandhi",
+                    "Narendra Modi",
+                    "Indira",
+                    "Congress",
+                    "Gandhi",
+                  ]}
+                />
+                <CommFormInput
+                  key="clientEntity"
+                  label={"Entity Name"}
+                  value={formValues.clientEntity}
+                  handleChange={(p) =>
+                    setFormValues({ ...formValues, clientEntity: p })
+                  }
+                />
+                <CommSelectInput
+                  label="Assignee"
+                  value={formValues.assigneeFullname}
+                  handleChange={(p) =>
+                    setFormValues({ ...formValues, assigneeFullname: p })
+                  }
+                  options={[
+                    "Aryan Jain",
+                    "Rahul",
+                    "Indira",
+                    "Congress",
+                    "Gandhi",
+                  ]}
                 />
               </Box>
             </Grid>
@@ -109,37 +245,63 @@ export const ExpandedDataGridCell = ({
               px={2}
               gap={1}
             >
-              <FormInput
-                label="Total"
-                value={row.totalAmount || "NA"}
-                handleOnChange={() => {}}
-                variant="outlined"
-                sx={{ /*width: 270,*/ background: "white" }}
-              />
-              <FormInput
-                label="Paid"
-                value={row.paidAmount || "NA"}
-                handleOnChange={() => {}}
-                variant="outlined"
-                sx={{ /*width: 270,*/ background: "white" }}
-              />
-              <FormInput
-                label="Balance"
-                value={row.balanceAmount || "NA"}
-                handleOnChange={() => {}}
-                variant="outlined"
-                sx={{ /*width: 270,*/ background: "white" }}
-              />
+              {[
+                {
+                  key: "totalAmount",
+                  label: "Total Amount",
+                  value: formValues.totalAmount,
+                },
+                {
+                  key: "paidAmount",
+                  label: "Paid Amount",
+                  value: formValues.paidAmount,
+                },
+                {
+                  key: "balanceAmount",
+                  label: "Balance Amount",
+                  value: formValues.balanceAmount,
+                },
+              ].map(({ key, label, value }) => (
+                <CommFormInput
+                  key={key}
+                  label={label}
+                  value={value}
+                  handleChange={(v) =>
+                    setFormValues({ ...formValues, [key]: v })
+                  }
+                />
+              ))}
             </Grid>
 
             <Grid
-              item
+              container
               xs={2}
               direction="column"
-              alignItems="end"
-              justifyContent="end"
+              alignItems="center"
+              justifyContent="space-between"
               height="100%"
+              gap={15}
             >
+              <Box
+                border="1px white solid"
+                display="flex"
+                alignItems="center"
+                justifyContent="center"
+                sx={{ background: "white" }}
+                borderRadius="15px"
+                width="100%"
+              >
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      color="success"
+                      checked={formValues.status === "APPROVED"}
+                    />
+                  }
+                  label="Approve"
+                  sx={{ color: "#2e7d32" }}
+                />
+              </Box>
               <Box
                 display="flex"
                 alignItems="center"
@@ -148,7 +310,11 @@ export const ExpandedDataGridCell = ({
                 height="100%"
                 p={1}
               >
-                <Button label="Update" variant="contained" onClick={() => {}} />
+                <Button
+                  label="Update"
+                  variant="contained"
+                  onClick={() => console.log(formValues)}
+                />
                 <Button
                   label="Delete"
                   variant="contained"

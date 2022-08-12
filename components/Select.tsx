@@ -2,7 +2,7 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import Checkbox from "@mui/material/Checkbox";
-import { Box, Divider, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
 
 const MenuProps = {
   PaperProps: {
@@ -84,15 +84,8 @@ export const SelectComponent = ({
         onChange={(e) => handleSelectOption(e.target.value as string)}
         sx={sx ? sx : {}}
       >
-        {options.map((option, index) => (
-          <Box p={0}>
-            <MenuItem key={`${option}_${index}`} value={option} sx={{ py: 0 }}>
-              <Typography variant="subtitle2" noWrap maxWidth={200}>
-                {option}
-              </Typography>
-            </MenuItem>
-            {index + 1 < options.length && <Divider sx={{ my: 0 }} />}
-          </Box>
+        {options.map((option) => (
+          <MenuItem value={option}>{option}</MenuItem>
         ))}
       </Select>
     </FormControl>

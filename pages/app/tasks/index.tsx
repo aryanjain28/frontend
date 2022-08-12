@@ -13,17 +13,19 @@ import DataGrid from "../../../components/DataGrid/DataGridMain.component";
 import { FilterMap } from "../../../types/common.types";
 
 const Tasks = () => {
-  const columns = getTasksCol();
+  const [expandedRowId, setExpandedRowId] = useState<string | null>(null);
+  const columns = getTasksCol(expandedRowId, setExpandedRowId);
   const { data, isLoading } = useGetAllTasks();
 
   const [query, setQuery] = useState("");
+  const [filterMap, setFilterMap] = useState<FilterMap>({});
   const { paginationProps, dataGridProps } = useDataGrid({
     columns,
     data: data as Task[],
     pageSize: 10,
     query,
+    filterMap,
   });
-  const [filterMap, setFilterMap] = useState<FilterMap>({});
   return (
     <PageLayout>
       <Box
@@ -52,11 +54,13 @@ const Tasks = () => {
           {...dataGridProps}
           isLoading={isLoading}
           showSearch
-          showFilters={false}
+          showFilters
           query={query}
           setQuery={setQuery}
           filterMap={filterMap}
           setFilterMap={setFilterMap}
+          expandedRowId={expandedRowId}
+          setExpandedRowId={(val) => setExpandedRowId(val)}
         />
       </Box>
     </PageLayout>

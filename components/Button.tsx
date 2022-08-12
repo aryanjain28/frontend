@@ -14,8 +14,7 @@ export const Button = ({
   return (
     <MUIButton
       sx={{
-        textTransform: "none",
-        fontWeight: 700,
+        textTransform: "uppercase",
         fontSize: "14px",
         height: "40px",
         ...sx,

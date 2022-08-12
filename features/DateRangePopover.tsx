@@ -17,7 +17,9 @@ const DateRangePopover = () => {
   ]);
 
   const getFormattedDateValue = (date: Range) =>
-    `${formatTime2(date.startDate + "")} - ${formatTime2(date.endDate + "")}`;
+    `${formatTime2(date.startDate + "") || ""} - ${
+      formatTime2(date.endDate + "") || ""
+    }`;
 
   return (
     <>

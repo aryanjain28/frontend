@@ -82,7 +82,7 @@ const AppBarComponent = ({
 
   return (
     <>
-      <AppBar color="transparent" position="fixed" open={open as boolean}>
+      <AppBar color="default" position="fixed" open={open as boolean}>
         <Toolbar>
           <IconButton
             color="inherit"

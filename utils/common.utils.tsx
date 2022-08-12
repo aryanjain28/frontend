@@ -6,8 +6,8 @@ export const formatTime = (timestamp: string) => {
     : "Invalid Date";
 };
 
-export const formatTime2 = (timestamp: string) => {
-  return timestamp ? moment(timestamp).format("DD/MM/YYYY") : "Invalid Date"; // August 10th, 10:35 am;
+export const formatTime2 = (timestamp: Date | string) => {
+  return timestamp ? moment(timestamp).format("DD/MM/YYYY") : null;
 };
 
 export const getNestedObjValue = (

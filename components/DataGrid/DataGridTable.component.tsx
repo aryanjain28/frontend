@@ -68,7 +68,11 @@ const DataGridTableComponent = ({
                         ))}
                       </TableRow>
                       <TableRow>
-                        <ExpandedDataGridCell row={row} open={open} />
+                        <ExpandedDataGridCell
+                          row={row}
+                          open={open}
+                          colSpan={columns.length}
+                        />
                       </TableRow>
                     </>
                   );

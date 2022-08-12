@@ -85,12 +85,15 @@ export const taskStatus = {
   },
 };
 
-export const getTasksCol = (): ColumnG<Task>[] => [
+export const getTasksCol = (
+  expandedRowId: string | null,
+  setExpandedRowId: (id: string | null) => void
+): ColumnG<Task>[] => [
   {
     headerName: "Create Date",
     key: "createdAt",
     Component: ({ row }) => {
-      return <Typography>{formatTime2(row.createdAt)}</Typography>;
+      return <Typography>{formatTime2(row.createdAt) || "NA"}</Typography>;
     },
   },
   {
@@ -154,23 +157,33 @@ export const getTasksCol = (): ColumnG<Task>[] => [
     headerName: "Start Date",
     key: "taskStartDate",
     Component: ({ row }) => {
-      return <Typography>{formatTime2(row.startDate)}</Typography>;
+      return <Typography>{formatTime2(row.startDate) || "NA"}</Typography>;
     },
   },
   {
     headerName: "End Date",
     key: "taskEndDate",
     Component: ({ row }) => {
-      return <Typography>{formatTime2(row.endDate!)}</Typography>;
+      return <Typography>{formatTime2(row.endDate!) || "NA"}</Typography>;
     },
   },
-  // {
-  //   headerName: "",
-  //   key: "",
-  //   Component: ({ row }) => {
-  //     return <KeyboardArrowDown />;
-  //   },
-  // },
+  {
+    headerName: "",
+    key: "",
+    Component: ({ row }) => {
+      return expandedRowId === row.id ? (
+        <KeyboardArrowUp
+          sx={{ mr: 1, cursor: "pointer" }}
+          onClick={() => setExpandedRowId(null)}
+        />
+      ) : (
+        <KeyboardArrowDown
+          sx={{ mr: 1, cursor: "pointer" }}
+          onClick={() => setExpandedRowId(row.id)}
+        />
+      );
+    },
+  },
 ];
 
 export const getMyTasksColumns = (
@@ -181,7 +194,7 @@ export const getMyTasksColumns = (
     headerName: "Create Date",
     key: "createdAt",
     Component: ({ row }) => {
-      return <Typography>{formatTime2(row.createdAt)}</Typography>;
+      return <Typography>{formatTime2(row.createdAt) || "NA"}</Typography>;
     },
   },
   {
@@ -236,14 +249,14 @@ export const getMyTasksColumns = (
     headerName: "Start Date",
     key: "taskStartDate",
     Component: ({ row }) => {
-      return <Typography>{formatTime2(row.startDate)}</Typography>;
+      return <Typography>{formatTime2(row.startDate) || "NA"}</Typography>;
     },
   },
   {
     headerName: "End Date",
     key: "taskEndDate",
     Component: ({ row }) => {
-      return <Typography>{formatTime2(row.endDate!)}</Typography>;
+      return <Typography>{formatTime2(row.endDate!) || "NA"}</Typography>;
     },
   },
   {

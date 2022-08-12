@@ -4,13 +4,13 @@ import { User } from "./user.types";
 export interface Task {
   id: string;
   name: string;
-  type: string;
+  type: { taskTypeName: string };
   status: TaskStatusType;
   client: { clientName: string; entity: string };
   assignee: User;
   startDate: string;
   endDate?: string;
-  createdBy: string;
+  createdBy: User | string;
   createdAt: string;
   updatedAt: string;
   totalAmount?: string;
