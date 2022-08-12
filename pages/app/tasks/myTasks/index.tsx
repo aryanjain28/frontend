@@ -15,9 +15,12 @@ import { getMyTasksColumns } from "../../../../utils/tasks.utils";
 const MyTasks = () => {
   const router = useRouter();
   const status = router.query?.status;
+  const taskId = router.query?.taskId;
 
   const { data, isLoading } = useGetMyTasks();
-  const [expandedRowId, setExpandedRowId] = useState<string | null>(null);
+  const [expandedRowId, setExpandedRowId] = useState<string | null>(
+    (taskId as string) || null
+  );
   const columns = getMyTasksColumns(expandedRowId, setExpandedRowId);
 
   const [query, setQuery] = useState("");
@@ -30,6 +33,7 @@ const MyTasks = () => {
     pageSize: 10,
     query,
     filterMap,
+    expandedRowId,
   });
 
   return (

@@ -10,6 +10,7 @@ export const useDataGrid = (props: useDataGridProps) => {
     pageNumber: parentPageNumber,
     query,
     filterMap,
+    expandedRowId,
   } = props;
   const [pageNumber, setPageNumber] = useState(parentPageNumber || 1);
 
@@ -61,7 +62,7 @@ export const useDataGrid = (props: useDataGridProps) => {
         pageNumber,
       },
     }),
-    [data, queryFilteredTableData, pageSize, pageNumber, query]
+    [data, queryFilteredTableData, pageSize, pageNumber, query, expandedRowId]
   );
 };
 
@@ -75,4 +76,5 @@ interface useDataGridProps {
   setPageNumber?: (page: number) => void;
   searchParam?: string;
   filterMap?: { [key: string]: (string | number)[] };
+  expandedRowId: string | null;
 }

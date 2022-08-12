@@ -2,6 +2,7 @@ import { useQuery } from "react-query";
 import { QUERY_KEYS } from "../constants/queryKeys";
 import { getAllTasks, getMyTasks } from "../services/task.services";
 import { User } from "../types/user.types";
+import { useGetLocalStorage } from "./auth.hooks";
 
 export const useGetAllTasks = () => {
   const { data, isLoading } = useQuery(
@@ -26,10 +27,22 @@ export const useGetAllTasks = () => {
 };
 
 export const useGetMyTasks = () => {
+  const { fullName } = useGetLocalStorage();
   const { data, isLoading } = useQuery(
     [QUERY_KEYS.GET_MY_TASKS],
     () => getMyTasks(),
     { placeholderData: [] }
   );
-  return { data, isLoading };
+  const modifiedData = data?.map((row) => ({
+    ...row,
+    assigneeFullname: fullName,
+    clientName: row.client.clientName,
+    clientEntity: row.client.entity,
+    createdByName: `${(row.createdBy as User).fName} ${
+      (row.createdBy as User).lName
+    }`,
+    createdByEmail: (row.createdBy as User).email,
+    taskTypeName: row.type.taskTypeName,
+  }));
+  return { data: modifiedData, isLoading };
 };

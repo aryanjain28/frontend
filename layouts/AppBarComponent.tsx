@@ -232,7 +232,13 @@ const AppBarComponent = ({
             ];
           return (
             <>
-              <MenuItem>
+              <MenuItem
+                onClick={() =>
+                  router.push(
+                    `${ROUTES.myTasks}/?status=${status.label}` //TODO : &taskId=${notif.task.id}`
+                  )
+                }
+              >
                 <Grid
                   container
                   direction="row"
