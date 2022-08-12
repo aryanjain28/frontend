@@ -12,7 +12,7 @@ import { Row } from "../types/datagrid.types";
 import { taskStatus } from "../utils/tasks.utils";
 import { Button } from "../components/Button";
 import { SelectComponent } from "../components/Select";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import DateSelectPopover from "./DateSelectPopover";
 
 const CommFormInput = ({
@@ -99,6 +99,10 @@ export const ExpandedDataGridCell = ({
   colSpan: number;
 }) => {
   const [formValues, setFormValues] = useState<any>(row);
+  useEffect(() => {
+    setFormValues({ ...row });
+  }, []);
+
   return (
     <TableCell sx={{ p: 0.4 }} colSpan={colSpan}>
       <Collapse in={open} unmountOnExit>

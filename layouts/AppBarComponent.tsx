@@ -235,7 +235,7 @@ const AppBarComponent = ({
               <MenuItem
                 onClick={() =>
                   router.push(
-                    `${ROUTES.myTasks}/?status=${status.label}` //TODO : &taskId=${notif.task.id}`
+                    `${ROUTES.myTasks}/?status=${status.label}&taskId=${notif.task.id}`
                   )
                 }
               >

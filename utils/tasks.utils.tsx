@@ -217,11 +217,9 @@ export const getMyTasksColumns = (
     Component: ({ row }) => {
       return (
         <CustomTooltip title={row.name}>
-          <Link href="#">
-            <Typography maxWidth="250px" noWrap>
-              {row.name}
-            </Typography>
-          </Link>
+          <Typography maxWidth="250px" noWrap>
+            {row.name}
+          </Typography>
         </CustomTooltip>
       );
     },
