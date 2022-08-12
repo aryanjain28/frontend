@@ -101,7 +101,7 @@ export const ExpandedDataGridCell = ({
   const [formValues, setFormValues] = useState<any>(row);
   useEffect(() => {
     setFormValues({ ...row });
-  }, []);
+  }, [row.id]);
 
   return (
     <TableCell sx={{ p: 0.4 }} colSpan={colSpan}>
