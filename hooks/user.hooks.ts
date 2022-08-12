@@ -22,6 +22,7 @@ export const useLoginUser = () => {
         toast.success(data.message);
         localStorage.setItem("access_token", data.data.token);
         localStorage.setItem("user_id", data.data.userId);
+        localStorage.setItem("role", data.data.role);
         localStorage.setItem(
           "fullname",
           `${data.data.fName} ${data.data.lName}`

@@ -24,6 +24,7 @@ import { useRouter } from "next/router";
 import { ExpandLess, ExpandMore, StarBorder } from "@mui/icons-material";
 import { useState } from "react";
 import { Collapse } from "@mui/material";
+import { useGetLocalStorage } from "../hooks/auth.hooks";
 
 const drawerWidth = 240;
 
@@ -83,6 +84,7 @@ const DrawerComponent = ({
 }) => {
   const router = useRouter();
   const [openNestedChild, setOpenNestedChild] = useState(false);
+  const { role } = useGetLocalStorage();
 
   const drawerElements = [
     {
@@ -90,12 +92,14 @@ const DrawerComponent = ({
       icon: <DashboardIcon />,
       route: ROUTES.dashboard,
       children: [],
+      hidden: false,
     },
     {
       label: "My Firm",
       icon: <MyFirmIcon />,
       route: ROUTES.myFirm,
       children: [],
+      hidden: false,
     },
     {
       label: "Tasks",
@@ -106,11 +110,13 @@ const DrawerComponent = ({
           label: "All Tasks",
           icon: <AllTasksIcon />,
           route: ROUTES.tasks,
+          hidden: false,
         },
         {
           label: "My Tasks",
           icon: <MyTaskIcon />,
           route: ROUTES.myTasks,
+          hidden: role === "ADMIN",
         },
       ],
     },
@@ -119,26 +125,42 @@ const DrawerComponent = ({
       icon: <GstInvoiceIcon />,
       route: ROUTES.gstInvoice,
       children: [],
+      hidden: false,
     },
     {
       label: "Client Master",
       icon: <ClientsIcon />,
       route: ROUTES.clients,
       children: [],
+      hidden: false,
     },
-    { label: "HR", icon: <HrIcon />, route: ROUTES.hr, children: [] },
-    { label: "Links", icon: <LinksIcon />, route: ROUTES.links, children: [] },
+    {
+      label: "HR",
+      icon: <HrIcon />,
+      route: ROUTES.hr,
+      children: [],
+      hidden: false,
+    },
+    {
+      label: "Links",
+      icon: <LinksIcon />,
+      route: ROUTES.links,
+      children: [],
+      hidden: false,
+    },
     {
       label: "Settings",
       icon: <SettingsIcon />,
       route: ROUTES.settings,
       children: [],
+      hidden: false,
     },
     {
       label: "Reports",
       icon: <ReportsIcon />,
       route: ROUTES.reports,
       children: [],
+      hidden: false,
     },
   ];
 
@@ -154,7 +176,7 @@ const DrawerComponent = ({
       </DrawerHeader>
       <Divider />
       <List>
-        {drawerElements.map(({ label, icon, route, children }) => {
+        {drawerElements.map(({ label, icon, route, children, hidden }) => {
           const isSelected = router.pathname.includes(route);
           return (
             <Box
@@ -199,37 +221,40 @@ const DrawerComponent = ({
                 </ListItemButton>
                 {
                   <Collapse in={openNestedChild} timeout="auto" unmountOnExit>
-                    {children.map(({ label, icon, route }) => (
-                      <List disablePadding>
-                        <Box
-                          sx={{
-                            ...(router.pathname === route
-                              ? {
-                                  color: "white",
-                                  bgcolor: "#485d8c",
-                                }
-                              : { color: "black", bgcolor: "white" }),
-                          }}
-                        >
-                          <ListItemButton
-                            sx={{ pl: 4 }}
-                            onClick={() => router.push(route)}
-                          >
-                            <ListItemIcon
+                    {children.map(
+                      ({ label, icon, route, hidden }) =>
+                        !hidden && (
+                          <List disablePadding>
+                            <Box
                               sx={{
-                                color:
-                                  router.pathname === route
-                                    ? "white"
-                                    : "#757575",
+                                ...(router.pathname === route
+                                  ? {
+                                      color: "white",
+                                      bgcolor: "#485d8c",
+                                    }
+                                  : { color: "black", bgcolor: "white" }),
                               }}
                             >
-                              {icon}
-                            </ListItemIcon>
-                            <ListItemText primary={label} />
-                          </ListItemButton>
-                        </Box>
-                      </List>
-                    ))}
+                              <ListItemButton
+                                sx={{ pl: 4 }}
+                                onClick={() => router.push(route)}
+                              >
+                                <ListItemIcon
+                                  sx={{
+                                    color:
+                                      router.pathname === route
+                                        ? "white"
+                                        : "#757575",
+                                  }}
+                                >
+                                  {icon}
+                                </ListItemIcon>
+                                <ListItemText primary={label} />
+                              </ListItemButton>
+                            </Box>
+                          </List>
+                        )
+                    )}
                   </Collapse>
                 }
               </ListItem>

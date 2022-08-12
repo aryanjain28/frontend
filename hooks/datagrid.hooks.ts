@@ -25,7 +25,9 @@ export const useDataGrid = (props: useDataGridProps) => {
     return check;
   };
 
-  const filteredTableData: any = data.filter((row: Row) => checkFilter(row));
+  const filteredTableData: any = (data || []).filter((row: Row) =>
+    checkFilter(row)
+  );
 
   const queryFilteredTableData = useMemo(
     () =>
