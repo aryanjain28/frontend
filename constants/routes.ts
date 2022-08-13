@@ -13,6 +13,8 @@ export const API_ROUTES = {
   //Tasks
   GET_TASKS: "/tasks",
   GET_MY_TASKS: "/tasks/myTasks",
+  UPDATE_TASK: "/tasks/task/:taskId",
+  DELETE_TASK: "/tasks/task/:taskId",
 };
 
 export const ROUTES = {

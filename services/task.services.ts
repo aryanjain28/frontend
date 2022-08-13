@@ -1,6 +1,13 @@
 import { API_ROUTES } from "../constants/routes";
-import { GetAllTaskReponse, GetUsersTasksResponse } from "../types/task.types";
-import { GET } from "./api";
+import {
+  DeleteTaskResponse,
+  GetAllTaskReponse,
+  GetUsersTasksResponse,
+  PatchTaskPayload,
+  PatchTaskResponse,
+} from "../types/task.types";
+import { createRoute } from "../utils/routes";
+import { DELETE, GET, PATCH } from "./api";
 
 export const getAllTasks = () => {
   const url = API_ROUTES.GET_TASKS;
@@ -10,4 +17,18 @@ export const getAllTasks = () => {
 export const getMyTasks = () => {
   const url = API_ROUTES.GET_MY_TASKS;
   return GET<undefined, GetUsersTasksResponse>(url).then((res) => res.data);
+};
+
+export const patchTask = (payload: PatchTaskPayload) => {
+  const url = createRoute(API_ROUTES.UPDATE_TASK, {
+    taskId: payload.data.id as string,
+  });
+  return PATCH<PatchTaskPayload, PatchTaskResponse>(url, payload).then(
+    (res) => res.data
+  );
+};
+
+export const deleteTask = (taskId: string) => {
+  const url = createRoute(API_ROUTES.UPDATE_TASK, { taskId });
+  return DELETE<undefined, DeleteTaskResponse>(url).then((res) => res);
 };

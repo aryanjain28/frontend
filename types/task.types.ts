@@ -40,3 +40,18 @@ export interface GetUsersTasksResponse {
   message: string;
   data: Task[];
 }
+
+export interface PatchTaskPayload {
+  data: { [key: string]: string | number | [] };
+}
+
+export interface PatchTaskResponse {
+  status: number;
+  message: string;
+  data: { [key: string]: string | number | [] };
+}
+
+export interface DeleteTaskResponse {
+  status: number;
+  message: string;
+}

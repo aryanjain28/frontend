@@ -1,4 +1,5 @@
 import moment from "moment";
+import { useGetLocalStorage } from "../hooks/auth.hooks";
 
 export const formatTime = (timestamp: string) => {
   return timestamp
@@ -22,6 +23,16 @@ export const getNestedObjValue = (
     console.error("Error: ", error);
     return null;
   }
+};
+
+export const isAdmin = () => {
+  const { role } = useGetLocalStorage();
+  return role === "ADMIN";
+};
+
+export const isStaff = () => {
+  const { role } = useGetLocalStorage();
+  return role === "STAFF";
 };
 
 export const colors = [

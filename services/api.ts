@@ -65,7 +65,7 @@ export function PATCH<Payload, Response>(
 
 export function DELETE<Params, Response>(
   url: string,
-  params: Params,
+  params?: Params,
   headers?: AxiosRequestHeaders
 ): Promise<Response> {
   return axiosInstancePrivate

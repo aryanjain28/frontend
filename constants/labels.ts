@@ -20,6 +20,7 @@ export const en = {
   tasks: "Tasks",
   clients: "Clients",
   transactions: "Transactions",
+  delete: "Delete",
 
   dashboard: "Dashboard",
   viewAll: "View All",
@@ -48,5 +49,13 @@ export const en = {
     custom404Error: "Invalid URL. Redirecting to dashboard.",
     successLogout: "User logged out successfully.",
     authFailed: "Authentication failed. Please re-login.",
+    tasksFetchedSuccess: "Fetched all tasks successfully.",
+    tasksFetchedFailed: "Failed to fetch all tasks.",
+    myTasksFetchedSuccess: "Fetched user tasks successfully.",
+    myTasksFetchedFailed: "Failed to fetch user tasks.",
+    taskUpdatedSuccess: "Updated task successfully.",
+    taskUpdatedFailed: "Failed to update task.",
+    taskDeletedSuccess: "Deleted task successfully.",
+    taskDeletedFailed: "Failed to delete task.",
   },
 };

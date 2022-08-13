@@ -10,6 +10,7 @@ interface DateSelectPopover {
   setDate: (item: Date | string) => void;
   sx?: any;
   showCancleIcon?: boolean;
+  readOnly?: boolean;
 }
 
 const DateSelectPopover = ({
@@ -17,6 +18,7 @@ const DateSelectPopover = ({
   setDate,
   sx,
   showCancleIcon = false,
+  readOnly = false,
 }: DateSelectPopover) => {
   const [datePopoverOpen, setDatePopoverOpen] = useState(null);
   return (
@@ -28,11 +30,13 @@ const DateSelectPopover = ({
         handleOnClick={(e: any) => setDatePopoverOpen(e.currentTarget)}
         handleOnChange={() => null}
         placeholder="Select Date"
-        endIcon={showCancleIcon && date && <CancelIcon fontSize="small" />}
+        endIcon={
+          !readOnly && showCancleIcon && date && <CancelIcon fontSize="small" />
+        }
         handleEndIconClick={() => setDate("")}
       />
       <Popover
-        open={Boolean(datePopoverOpen)}
+        open={Boolean(datePopoverOpen) && !readOnly}
         anchorOrigin={{
           vertical: "top",
           horizontal: "right",
