@@ -28,6 +28,7 @@ import ThreeDotsIcon from "@mui/icons-material/MoreVert";
 import { en } from "../constants/labels";
 import { useDeleteTask, usePatchTask } from "../hooks/tasks.hooks";
 import ConfimationModal from "../components/Modal";
+import moment from "moment";
 
 const CommFormInput = ({
   sx = {},
@@ -334,7 +335,7 @@ export const ExpandedDataGridCell = ({
                 alignItems="center"
                 justifyContent="space-between"
                 height="100%"
-                gap={15}
+                gap={10}
               >
                 <FormControlLabel
                   control={
@@ -353,20 +354,33 @@ export const ExpandedDataGridCell = ({
                 />
 
                 <Box
-                  display="flex"
-                  alignItems="center"
-                  justifyContent="space-evenly"
                   width="100%"
+                  display="flex"
+                  my={0.5}
+                  alignItems="center"
+                  justifyContent="start"
                 >
-                  <Button
-                    label="Update"
-                    variant="contained"
-                    onClick={() =>
-                      updateTask({ payload: { data: formValues } })
-                    }
-                    sx={{ my: 1, width: "60%" }}
-                    isLoading={isUpdating}
-                  />
+                  <Grid
+                    container
+                    direction="column"
+                    alignItems="center"
+                    justifyContent="center"
+                    width="100%"
+                  >
+                    <Button
+                      label="Update"
+                      variant="contained"
+                      onClick={() =>
+                        updateTask({ payload: { data: formValues } })
+                      }
+                      sx={{ width: "80%" }}
+                      isLoading={isUpdating}
+                    />
+                    <Typography fontSize="12px">
+                      Updated{" "}
+                      {moment(formValues.updatedAt, "YYYYMMDD").fromNow()}
+                    </Typography>
+                  </Grid>
                   <ThreeDotsIcon
                     sx={{ cursor: "pointer" }}
                     onClick={(e) => setAnchorEl(e.currentTarget)}
@@ -397,7 +411,7 @@ export const ExpandedDataGridCell = ({
           alignItems="center"
           justifyContent="center"
           py={2}
-          px={4}
+          px={6}
         >
           <Button
             label={en.delete}

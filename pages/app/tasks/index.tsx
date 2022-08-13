@@ -11,20 +11,30 @@ import { en } from "../../../constants/labels";
 import { ROUTES } from "../../../constants/routes";
 import DataGrid from "../../../components/DataGrid/DataGridMain.component";
 import { FilterMap } from "../../../types/common.types";
+import { useRouter } from "next/router";
 
 const Tasks = () => {
-  const [expandedRowId, setExpandedRowId] = useState<string | null>(null);
+  const router = useRouter();
+  const status = router.query?.status;
+  const taskId = router.query?.taskId;
+
+  const [expandedRowId, setExpandedRowId] = useState<string | null>(
+    (taskId as string) || null
+  );
   const columns = getTasksCol(expandedRowId, setExpandedRowId);
   const { data, isLoading } = useGetAllTasks();
 
   const [query, setQuery] = useState("");
-  const [filterMap, setFilterMap] = useState<FilterMap>({});
+  const [filterMap, setFilterMap] = useState<FilterMap>(
+    status ? { status: [`${status}`] } : {}
+  );
   const { paginationProps, dataGridProps } = useDataGrid({
     columns,
     data: data as Task[],
     pageSize: 10,
     query,
     filterMap,
+    expandedRowId,
   });
   return (
     <PageLayout>

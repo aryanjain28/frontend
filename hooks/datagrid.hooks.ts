@@ -76,5 +76,5 @@ interface useDataGridProps {
   setPageNumber?: (page: number) => void;
   searchParam?: string;
   filterMap?: { [key: string]: (string | number)[] };
-  expandedRowId: string | null;
+  expandedRowId?: string | null;
 }

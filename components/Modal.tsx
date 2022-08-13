@@ -44,24 +44,26 @@ export default function ConfimationModal({
           direction="column"
           alignItems="center"
           justifyContent="space-between"
-          py={2}
+          pt={2}
         >
           <DeleteOutlined color="error" sx={{ fontSize: "70px" }} />
           <Typography variant="h6" mb={3}>
             Delete Task
           </Typography>
-          <Typography px={5} mb={3}>
-            Deleting a task will permanently remove it. Are you sure about
-            deleting this?
-          </Typography>
-          <Box gap={2} display="flex" justifyContent="center" width="100%">
-            <Button label="Cancel" color="primary" onClick={handleClose} />
-            <Button
-              label="Confirm"
-              color="error"
-              onClick={handleClick}
-              variant="contained"
-            />
+          <Box p={2} bgcolor="#f8f8f8" borderRadius="12px">
+            <Typography px={5} mb={3}>
+              Deleting a task will permanently remove it. Are you sure about
+              deleting this?
+            </Typography>
+            <Box gap={2} display="flex" justifyContent="center" width="100%">
+              <Button label="Cancel" color="primary" onClick={handleClose} />
+              <Button
+                label="Confirm"
+                color="error"
+                onClick={handleClick}
+                variant="contained"
+              />
+            </Box>
           </Box>
         </Grid>
       </Box>

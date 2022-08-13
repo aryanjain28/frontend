@@ -11,47 +11,47 @@ import { ROUTES } from "../constants/routes";
 import { Task } from "../types/task.types";
 import { ColumnG } from "../types/datagrid.types";
 import { Link, Tooltip, Typography } from "@mui/material";
-import { formatTime2 } from "./common.utils";
+import { formatTime2, isAdmin } from "./common.utils";
 import { KeyboardArrowDown, KeyboardArrowUp } from "@mui/icons-material";
 import { CustomTooltip } from "../features/CustomTooltip";
 import { en } from "../constants/labels";
 
 export const tasks = [
   {
-    label: en.myTasks,
+    label: isAdmin() ? en.allTasks : en.myTasks,
     count: 42,
     icon: <MyTasksIcon fontSize="large" />,
-    route: ROUTES.myTasks,
+    route: isAdmin() ? ROUTES.tasks : ROUTES.myTasks,
   },
   {
     label: en.pending,
     count: 420,
     icon: <PendingIcon fontSize="large" />,
-    route: `${ROUTES.myTasks}/?status=PENDING`,
+    route: `${isAdmin() ? ROUTES.tasks : ROUTES.myTasks}/?status=PENDING`,
   },
   {
     label: en.inProgress,
     count: 13,
     icon: <ProgressIcon fontSize="large" />,
-    route: `${ROUTES.myTasks}/?status=INPROGRESS`,
+    route: `${isAdmin() ? ROUTES.tasks : ROUTES.myTasks}/?status=INPROGRESS`,
   },
   {
     label: en.completed,
     count: 151,
     icon: <CompletedIcon fontSize="large" />,
-    route: `${ROUTES.myTasks}/?status=COMPLETED`,
+    route: `${isAdmin() ? ROUTES.tasks : ROUTES.myTasks}/?status=COMPLETED`,
   },
   {
     label: en.overdue,
     count: 13,
     icon: <OverdueIcon fontSize="large" />,
-    route: `${ROUTES.myTasks}/?status=OVERDUE`,
+    route: `${isAdmin() ? ROUTES.tasks : ROUTES.myTasks}/?status=OVERDUE`,
   },
   {
     label: en.approved,
     count: 19,
     icon: <ApprovedIcon fontSize="large" />,
-    route: `${ROUTES.myTasks}/?status=APPROVED`,
+    route: `${isAdmin() ? ROUTES.tasks : ROUTES.myTasks}/?status=APPROVED`,
   },
 ];
 
