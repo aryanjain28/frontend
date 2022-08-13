@@ -6,6 +6,7 @@ import {
   InputAdornment,
   Link,
   TextField,
+  Typography,
 } from "@mui/material";
 import { useState } from "react";
 import { Button } from "../components/Button";
@@ -64,7 +65,11 @@ export const LoginForm = () => {
       alignItems="center"
       justifyContent="center"
       py={4}
+      width="100%"
     >
+      <Typography variant="h6" py={2}>
+        Login To Your Account
+      </Typography>
       <FormInput
         label={authDetails.email.label}
         value={authDetails.email.value}
@@ -82,6 +87,7 @@ export const LoginForm = () => {
         helperText={authDetails.email.error}
         variant="outlined"
         endIcon={<AccountIcon />}
+        sx={{ width: 270 }}
       />
       <FormInput
         type={showPassword ? "text" : "password"}
@@ -102,14 +108,14 @@ export const LoginForm = () => {
         variant="outlined"
         handleEndIconClick={() => setShowPassword(!showPassword)}
         endIcon={showPassword ? <VisibilityOff /> : <Visibility />}
+        sx={{ width: 270 }}
       />
       <Button
         label={en.login}
         icon={<Key />}
         onClick={handleLoginClick}
         isLoading={isLoading}
-        sx={{ my: 3 }}
-        fullWidth
+        sx={{ my: 3, width: 270 }}
       />
       <Link href={ROUTES.forgotPassword} sx={{ cursor: "pointer" }}>
         {en.forgotPwd}

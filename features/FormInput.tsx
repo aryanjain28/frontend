@@ -9,7 +9,7 @@ import React, { ChangeEvent } from "react";
 
 export const FormInput = (props: FormInputProps) => {
   const {
-    sx,
+    sx = {},
     type = "text",
     variant = "outlined",
     placeholder,
@@ -70,7 +70,7 @@ export const FormInput = (props: FormInputProps) => {
             </InputAdornment>
           ),
         }}
-        sx={sx ? sx : { my: 1 }}
+        sx={{ ...sx, my: 1 }}
       />
     </Box>
   );

@@ -12,7 +12,7 @@ function Login() {
   return (
     <PageLayout showLayout={false}>
       <Box display="flex" alignItems="center" justifyContent="center" my={15}>
-        <Box sx={{ boxShadow: 3 }} borderRadius="15px" width="50%">
+        <Box sx={{ boxShadow: 3 }} borderRadius="15px" width="70%">
           <Grid
             container
             direction="row"
@@ -36,8 +36,7 @@ function Login() {
                 label={en.signUp}
                 icon={<PersonAddIcon />}
                 onClick={() => router.push(ROUTES.signUp)}
-                sx={{ my: 3 }}
-                fullWidth
+                sx={{ my: 3, width: 270 }}
               />
             </Grid>
           </Grid>
