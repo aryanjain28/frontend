@@ -6,7 +6,7 @@ const DataGridCell = (props: DataGridCellProps) => {
   const Component = col.Component;
   const value = row[col.key];
   return (
-    <TableCell>
+    <TableCell sx={{ p: 1 }}>
       <Box>
         {Component ? (
           <Component row={row} col={col} />

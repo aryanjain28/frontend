@@ -33,4 +33,5 @@ export const ROUTES = {
 
   tasks: "/app/tasks",
   myTasks: "/app/tasks/myTasks",
+  createTask: "/app/tasks/createTask",
 };

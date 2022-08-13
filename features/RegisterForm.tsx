@@ -75,6 +75,7 @@ export const RegisterForm = () => {
       alignItems="center"
       justifyContent="center"
       py={4}
+      gap={3}
     >
       {Object.keys(newUserDetails).map((key, index) => {
         return (

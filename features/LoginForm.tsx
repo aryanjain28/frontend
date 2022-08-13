@@ -87,7 +87,7 @@ export const LoginForm = () => {
         helperText={authDetails.email.error}
         variant="outlined"
         endIcon={<AccountIcon />}
-        sx={{ width: 270 }}
+        sx={{ width: 270, my: 2 }}
       />
       <FormInput
         type={showPassword ? "text" : "password"}

@@ -25,6 +25,8 @@ export const en = {
   dashboard: "Dashboard",
   viewAll: "View All",
   allTasks: "All Tasks",
+  createTask: "Create Task",
+  createNewTask: "Create New Task",
   myTasks: "My Tasks",
   pending: "Pending",
   inProgress: "In Progress",

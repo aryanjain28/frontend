@@ -70,7 +70,7 @@ export const FormInput = (props: FormInputProps) => {
             </InputAdornment>
           ),
         }}
-        sx={{ ...sx, my: 1 }}
+        sx={{ ...sx }}
       />
     </Box>
   );

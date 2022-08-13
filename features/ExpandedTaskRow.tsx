@@ -126,7 +126,7 @@ const CommDateSelect = ({
 );
 
 export const ExpandedDataGridCell = ({
-  row,
+  row = {},
   open,
   colSpan,
 }: {
@@ -148,7 +148,7 @@ export const ExpandedDataGridCell = ({
     <>
       <TableCell sx={{ p: 0 }} colSpan={colSpan}>
         <Collapse in={open} unmountOnExit>
-          <Box width="100%" p={1} bgcolor="#E7EBF0" borderRadius="5px">
+          <Box p={1} bgcolor="#E7EBF0" borderRadius="5px">
             <Grid
               container
               direction="row"
@@ -160,7 +160,7 @@ export const ExpandedDataGridCell = ({
                 <Box
                   display="flex"
                   alignItems="center"
-                  justifyContent="space-between"
+                  justifyContent="space-around"
                   p={1}
                   gap={1}
                 >
@@ -209,7 +209,7 @@ export const ExpandedDataGridCell = ({
                 <Box
                   display="flex"
                   alignItems="start"
-                  justifyContent="space-between"
+                  justifyContent="space-around"
                   p={1}
                   gap={1}
                 >
@@ -242,7 +242,7 @@ export const ExpandedDataGridCell = ({
                 <Box
                   display="flex"
                   alignItems="start"
-                  justifyContent="space-between"
+                  justifyContent="space-around"
                   p={1}
                   gap={1}
                 >
@@ -294,6 +294,9 @@ export const ExpandedDataGridCell = ({
                 direction="column"
                 alignItems="center"
                 justifyContent="space-between"
+                borderLeft="#dadedf 1px solid"
+                borderRight="#dadedf 1px solid"
+                height="232px"
                 xs={2}
                 py={1}
                 px={2}
@@ -333,9 +336,8 @@ export const ExpandedDataGridCell = ({
                 xs={2}
                 direction="column"
                 alignItems="center"
-                justifyContent="space-between"
-                height="100%"
-                gap={10}
+                justifyContent={"space-between"}
+                height="232px"
               >
                 <FormControlLabel
                   control={
@@ -349,6 +351,7 @@ export const ExpandedDataGridCell = ({
                     color: "#2e7d32",
                     bgcolor: "white",
                     px: 3,
+                    my: 2,
                     borderRadius: "15px",
                   }}
                 />
@@ -376,15 +379,17 @@ export const ExpandedDataGridCell = ({
                       sx={{ width: "80%" }}
                       isLoading={isUpdating}
                     />
-                    <Typography fontSize="12px">
+                    <Typography fontSize="12px" sx={{ fontStyle: "oblique" }}>
                       Updated{" "}
                       {moment(formValues.updatedAt, "YYYYMMDD").fromNow()}
                     </Typography>
                   </Grid>
-                  <ThreeDotsIcon
-                    sx={{ cursor: "pointer" }}
-                    onClick={(e) => setAnchorEl(e.currentTarget)}
-                  />
+                  {isAdmin() && (
+                    <ThreeDotsIcon
+                      sx={{ mb: 2, cursor: "pointer" }}
+                      onClick={(e) => setAnchorEl(e.currentTarget)}
+                    />
+                  )}
                 </Box>
               </Grid>
             </Grid>
