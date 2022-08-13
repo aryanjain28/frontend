@@ -16,7 +16,7 @@ import { KeyboardArrowDown, KeyboardArrowUp } from "@mui/icons-material";
 import { CustomTooltip } from "../features/CustomTooltip";
 import { en } from "../constants/labels";
 
-export const tasks = [
+export const getTasksArr = () => [
   {
     label: isAdmin() ? en.allTasks : en.myTasks,
     count: 42,

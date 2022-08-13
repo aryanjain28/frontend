@@ -44,6 +44,9 @@ const AuthWrapper: React.FC = ({ children }) => {
     if (isLoginPage) {
       if (accessToken) {
         localStorage.setItem("access_token", "");
+        localStorage.setItem("user_id", "");
+        localStorage.setItem("role", "");
+        localStorage.setItem("fullname", "");
       }
     } else {
       // else we redirect user to login page to reauthenticate

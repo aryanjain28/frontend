@@ -32,6 +32,8 @@ import { useGetUserDetails } from "../hooks/user.hooks";
 import { useGetLocalStorage } from "../hooks/auth.hooks";
 import { formatTime } from "../utils/common.utils";
 import { taskStatus } from "../utils/tasks.utils";
+import { useGetMyTasks } from "../hooks/tasks.hooks";
+import { ModifiedTask, Task } from "../types/task.types";
 
 const drawerWidth = 240;
 
@@ -62,7 +64,7 @@ const AppBarComponent = ({
 }) => {
   const router = useRouter();
   const { fullName } = useGetLocalStorage();
-  const { data } = useGetUserDetails();
+  const { data: myTasks } = useGetMyTasks();
 
   const [anchorEl, setAnchorEl] = useState<MenuProps["anchorEl"] | null>(null);
   const [anchorNot, setAnchorNot] = useState<MenuProps["anchorEl"] | null>(
@@ -71,13 +73,16 @@ const AppBarComponent = ({
 
   const handleLogout = useCallback(() => {
     localStorage.setItem("access_token", "");
+    localStorage.setItem("user_id", "");
+    localStorage.setItem("role", "");
+    localStorage.setItem("fullname", "");
     toast.success(en.toast.successLogout);
     router.push(ROUTES.login);
   }, []);
 
   const newNotifications = useMemo(
-    () => (data?.tasks ? data?.tasks.filter((t) => t.isNew) : []),
-    [data]
+    () => (myTasks || []).filter((t) => t.isNew),
+    [myTasks]
   );
 
   return (
@@ -225,17 +230,15 @@ const AppBarComponent = ({
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
-        {newNotifications?.map((notif: any, index: number) => {
+        {newNotifications?.map((notif: ModifiedTask, index: number) => {
           const status =
-            taskStatus[
-              notif.task.status as "PENDING" | "APPROVED" | "COMPLETED"
-            ];
+            taskStatus[notif.status as "PENDING" | "APPROVED" | "COMPLETED"];
           return (
             <React.Fragment key={`$_${index}`}>
               <MenuItem
                 onClick={() =>
                   router.push(
-                    `${ROUTES.myTasks}/?status=${status.label}&taskId=${notif.task.id}`
+                    `${ROUTES.myTasks}/?status=${status.label}&taskId=${notif.id}`
                   )
                 }
               >
@@ -264,8 +267,8 @@ const AppBarComponent = ({
                     justifyContent="space-evenly"
                   >
                     <Typography variant="caption">
-                      {`${notif.assignedBy.fName}, (${formatTime(
-                        notif.assignedAt
+                      {`${notif.assignedByFullname}, (${formatTime(
+                        notif.assignedAt as string
                       )})`}
                     </Typography>
                     <Typography
@@ -274,7 +277,7 @@ const AppBarComponent = ({
                       maxWidth={"100%"}
                       noWrap
                     >
-                      {notif.task.name}
+                      {notif.name}
                     </Typography>
                   </Grid>
                 </Grid>

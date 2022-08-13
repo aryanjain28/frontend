@@ -28,6 +28,7 @@ export const useGetAllTasks = () => {
   const modifiedData = data?.map((row) => ({
     ...row,
     assigneeFullname: `${row.assignee.fName} ${row.assignee.lName}`,
+    assignedByFullname: `${row.assignedBy?.fName} ${row.assignedBy?.lName}`,
     clientName: row.client.clientName,
     clientEntity: row.client.entity,
     createdByName: `${(row.createdBy as User).fName} ${
@@ -54,6 +55,7 @@ export const useGetMyTasks = () => {
   const modifiedData = data?.map((row) => ({
     ...row,
     assigneeFullname: fullName,
+    assignedByFullname: `${row.assignedBy?.fName} ${row.assignedBy?.lName}`,
     clientName: row.client.clientName,
     clientEntity: row.client.entity,
     createdByName: `${(row.createdBy as User).fName} ${

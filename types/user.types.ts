@@ -1,5 +1,3 @@
-import { AssignedTask } from "./task.types";
-
 export interface User {
   fName: string;
   lName: string;
@@ -46,7 +44,6 @@ export interface GetUserDetailsResponse {
     lName: string;
     email: string;
     role: "ADMIN" | "STAFF";
-    tasks: AssignedTask[];
     createdAt: string;
     updatedAt: string;
   };

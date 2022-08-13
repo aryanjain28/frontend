@@ -2,10 +2,12 @@ import { Grid, Link, Typography } from "@mui/material";
 import { Box } from "@mui/material";
 import { useRouter } from "next/router";
 import { en } from "../constants/labels";
-import { tasks } from "../utils/tasks.utils";
+import { getTasksArr } from "../utils/tasks.utils";
 
 function Tasks() {
   const router = useRouter();
+  const tasks = getTasksArr();
+
   return (
     <Box my={2}>
       <Typography my={1} fontSize={"15px"} fontWeight={600} color="#777777">

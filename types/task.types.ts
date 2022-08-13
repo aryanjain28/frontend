@@ -2,6 +2,7 @@ import { TaskStatusType } from "./common.types";
 import { User } from "./user.types";
 
 export interface Task {
+  isNew: boolean;
   id: string;
   name: string;
   type: { taskTypeName: string };
@@ -20,13 +21,18 @@ export interface Task {
   updatedBy?: string;
   approvedBy?: string;
   approvedAt?: string;
+  assignedBy?: { fName: string; lName: string; email: string };
+  assignedAt?: string;
 }
 
-export interface AssignedTask extends Task {
-  isNew: Boolean;
-  task: Task;
-  assignedAt: string;
-  assignedBy: string;
+export interface ModifiedTask extends Task {
+  assigneeFullname: string;
+  assignedByFullname?: string;
+  clientName: string;
+  clientEntity: string;
+  createdByName: string;
+  createdByEmail: string;
+  taskTypeName: string;
 }
 
 export interface GetAllTaskReponse {
