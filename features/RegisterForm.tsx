@@ -76,9 +76,10 @@ export const RegisterForm = () => {
       justifyContent="center"
       py={4}
     >
-      {Object.keys(newUserDetails).map((key) => {
+      {Object.keys(newUserDetails).map((key, index) => {
         return (
           <FormInput
+            key={`${key}_${index}`}
             type={
               key === "password" || key === "cnfPassword"
                 ? showPassword

@@ -19,9 +19,9 @@ function Tasks() {
         xs={12}
         gap={3}
       >
-        {tasks.map(({ label, icon, count, route }) => {
+        {tasks.map(({ label, icon, count, route }, index) => {
           return (
-            <Grid item xs={1.8}>
+            <Grid key={`${label}_${index}`} item xs={1.8}>
               <Box
                 p={2}
                 borderRadius={"10px"}

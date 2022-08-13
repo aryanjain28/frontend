@@ -57,8 +57,6 @@ export const LoginForm = () => {
     });
   };
 
-  console.log("Inside Login form");
-
   return (
     <Grid
       container

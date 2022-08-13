@@ -54,9 +54,9 @@ function Clients() {
         justifyContent="space-between"
         xs={12}
       >
-        {clients.map(({ label, icon, count }) => {
+        {clients.map(({ label, icon, count }, index) => {
           return (
-            <Grid item xs={1.8}>
+            <Grid item xs={1.8} key={`${label}_${index}`}>
               <Box
                 p={2}
                 borderRadius={"10px"}

@@ -35,8 +35,8 @@ export const BreadCrumbsComp = (props: BreadCrumbsCompProps) => {
         </Tooltip>
       )}
       <Breadcrumbs>
-        {breadCrumbs.map(({ label, url }) => (
-          <NextLink href={url}>
+        {breadCrumbs.map(({ label, url }, index) => (
+          <NextLink key={`${label}_${index}`} href={url}>
             <Link underline="hover" color="inherit" sx={{ cursor: "pointer" }}>
               <Typography fontSize="11px">{label}</Typography>
             </Link>

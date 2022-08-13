@@ -37,9 +37,9 @@ function Transactions() {
         xs={12}
         gap={2}
       >
-        {transactions.map(({ label, icon, count }) => {
+        {transactions.map(({ label, icon, count }, index) => {
           return (
-            <Grid item xs={2}>
+            <Grid key={`${label}_${index}`} item xs={2}>
               <Box
                 p={2}
                 borderRadius={"10px"}

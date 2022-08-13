@@ -15,7 +15,6 @@ const axiosInstancePrivate = axios.create({
   headers: {
     "Access-Control-Allow-Origin": "*",
     "Access-Control-Allow-Headers": "*",
-    Authorization: `Bearer ${useGetLocalStorage().accessToken}`,
   },
   withCredentials: false,
 });
@@ -25,6 +24,10 @@ export function GET<Params, Response>(
   params?: Params,
   headers?: AxiosRequestHeaders
 ): Promise<Response> {
+  const { accessToken } = useGetLocalStorage();
+  axiosInstancePrivate.defaults.headers.common[
+    "Authorization"
+  ] = `Bearer ${accessToken}`;
   return axiosInstancePrivate
     .get(url, { params, headers })
     .then((res) => res.data);

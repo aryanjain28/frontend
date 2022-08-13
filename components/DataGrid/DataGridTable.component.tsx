@@ -10,6 +10,7 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
+import React from "react";
 import { en } from "../../constants/labels";
 import { ExpandedDataGridCell } from "../../features/ExpandedTaskRow";
 import { Column, Row } from "../../types/datagrid.types";
@@ -56,7 +57,7 @@ const DataGridTableComponent = ({
                 data.map((row, index) => {
                   const open = expandedRowId === row.id;
                   return (
-                    <>
+                    <React.Fragment key={`${row.id}_${index}`}>
                       <TableRow sx={{ background: open ? "#E7EBF0" : null }}>
                         {columns.map((col) => (
                           <DataGridCell
@@ -74,7 +75,7 @@ const DataGridTableComponent = ({
                           colSpan={columns.length}
                         />
                       </TableRow>
-                    </>
+                    </React.Fragment>
                   );
                 })
               ) : (

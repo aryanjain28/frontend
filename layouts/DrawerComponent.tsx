@@ -176,91 +176,94 @@ const DrawerComponent = ({
       </DrawerHeader>
       <Divider />
       <List>
-        {drawerElements.map(({ label, icon, route, children, hidden }) => {
-          const isSelected = router.pathname.includes(route);
-          return (
-            <Box
-              sx={{
-                ...(isSelected && { bgcolor: "#1e2746", color: "#ffffff" }),
-              }}
-            >
-              <ListItem
-                key={label}
-                disablePadding
-                sx={{ display: "block" }}
-                onClick={() =>
-                  children.length < 1
-                    ? router.push(route)
-                    : setOpenNestedChild(!openNestedChild)
-                }
+        {drawerElements.map(
+          ({ label, icon, route, children, hidden }, index) => {
+            const isSelected = router.pathname.includes(route);
+            return (
+              <Box
+                key={`${label}_${index}`}
+                sx={{
+                  ...(isSelected && { bgcolor: "#1e2746", color: "#ffffff" }),
+                }}
               >
-                <ListItemButton
-                  sx={{
-                    minHeight: 48,
-                    justifyContent: open ? "initial" : "center",
-                    px: 2.5,
-                  }}
+                <ListItem
+                  key={label}
+                  disablePadding
+                  sx={{ display: "block" }}
+                  onClick={() =>
+                    children.length < 1
+                      ? router.push(route)
+                      : setOpenNestedChild(!openNestedChild)
+                  }
                 >
-                  <ListItemIcon
+                  <ListItemButton
                     sx={{
-                      minWidth: 0,
-                      mr: open ? 3 : "auto",
-                      justifyContent: "center",
-                      ...(isSelected && { color: "#ffffff" }),
+                      minHeight: 48,
+                      justifyContent: open ? "initial" : "center",
+                      px: 2.5,
                     }}
                   >
-                    {icon}
-                  </ListItemIcon>
-                  <ListItemText
-                    primary={label}
-                    sx={{ opacity: open ? 1 : 0 }}
-                  />
-                  {open &&
-                    children.length > 0 &&
-                    (openNestedChild ? <ExpandLess /> : <ExpandMore />)}
-                </ListItemButton>
-                {
-                  <Collapse in={openNestedChild} timeout="auto" unmountOnExit>
-                    {children.map(
-                      ({ label, icon, route, hidden }) =>
-                        !hidden && (
-                          <List disablePadding>
-                            <Box
-                              sx={{
-                                ...(router.pathname === route
-                                  ? {
-                                      color: "white",
-                                      bgcolor: "#485d8c",
-                                    }
-                                  : { color: "black", bgcolor: "white" }),
-                              }}
-                            >
-                              <ListItemButton
-                                sx={{ pl: 4 }}
-                                onClick={() => router.push(route)}
+                    <ListItemIcon
+                      sx={{
+                        minWidth: 0,
+                        mr: open ? 3 : "auto",
+                        justifyContent: "center",
+                        ...(isSelected && { color: "#ffffff" }),
+                      }}
+                    >
+                      {icon}
+                    </ListItemIcon>
+                    <ListItemText
+                      primary={label}
+                      sx={{ opacity: open ? 1 : 0 }}
+                    />
+                    {open &&
+                      children.length > 0 &&
+                      (openNestedChild ? <ExpandLess /> : <ExpandMore />)}
+                  </ListItemButton>
+                  {
+                    <Collapse in={openNestedChild} timeout="auto" unmountOnExit>
+                      {children.map(
+                        ({ label, icon, route, hidden }, index) =>
+                          !hidden && (
+                            <List key={`${label}_${index}`} disablePadding>
+                              <Box
+                                sx={{
+                                  ...(router.pathname === route
+                                    ? {
+                                        color: "white",
+                                        bgcolor: "#485d8c",
+                                      }
+                                    : { color: "black", bgcolor: "white" }),
+                                }}
                               >
-                                <ListItemIcon
-                                  sx={{
-                                    color:
-                                      router.pathname === route
-                                        ? "white"
-                                        : "#757575",
-                                  }}
+                                <ListItemButton
+                                  sx={{ pl: 4 }}
+                                  onClick={() => router.push(route)}
                                 >
-                                  {icon}
-                                </ListItemIcon>
-                                <ListItemText primary={label} />
-                              </ListItemButton>
-                            </Box>
-                          </List>
-                        )
-                    )}
-                  </Collapse>
-                }
-              </ListItem>
-            </Box>
-          );
-        })}
+                                  <ListItemIcon
+                                    sx={{
+                                      color:
+                                        router.pathname === route
+                                          ? "white"
+                                          : "#757575",
+                                    }}
+                                  >
+                                    {icon}
+                                  </ListItemIcon>
+                                  <ListItemText primary={label} />
+                                </ListItemButton>
+                              </Box>
+                            </List>
+                          )
+                      )}
+                    </Collapse>
+                  }
+                </ListItem>
+              </Box>
+            );
+          }
+        )}
       </List>
     </Drawer>
   );

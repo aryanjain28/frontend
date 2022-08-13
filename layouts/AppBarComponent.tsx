@@ -7,7 +7,7 @@ import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import ListItemIcon from "@mui/material/ListItemIcon";
-import { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import { en } from "../constants/labels";
 import {
   AccountCircle,
@@ -225,13 +225,13 @@ const AppBarComponent = ({
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
-        {newNotifications?.map((notif: any) => {
+        {newNotifications?.map((notif: any, index: number) => {
           const status =
             taskStatus[
               notif.task.status as "PENDING" | "APPROVED" | "COMPLETED"
             ];
           return (
-            <>
+            <React.Fragment key={`$_${index}`}>
               <MenuItem
                 onClick={() =>
                   router.push(
@@ -280,7 +280,7 @@ const AppBarComponent = ({
                 </Grid>
               </MenuItem>
               <Divider sx={{ p: 0, m: 0 }} />
-            </>
+            </React.Fragment>
           );
         })}
         <MenuItem>

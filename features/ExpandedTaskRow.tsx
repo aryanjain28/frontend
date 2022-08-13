@@ -104,7 +104,7 @@ export const ExpandedDataGridCell = ({
   }, [row.id]);
 
   return (
-    <TableCell sx={{ p: 0.4 }} colSpan={colSpan}>
+    <TableCell sx={{ p: 0 }} colSpan={colSpan}>
       <Collapse in={open} unmountOnExit>
         <Box width="100%" p={1} bgcolor="#E7EBF0" borderRadius="5px">
           <Grid

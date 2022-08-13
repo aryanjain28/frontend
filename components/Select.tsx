@@ -84,8 +84,10 @@ export const SelectComponent = ({
         onChange={(e) => handleSelectOption(e.target.value as string)}
         sx={sx ? sx : {}}
       >
-        {options.map((option) => (
-          <MenuItem value={option}>{option}</MenuItem>
+        {options.map((option, index) => (
+          <MenuItem key={`${option}_${index}`} value={option}>
+            {option}
+          </MenuItem>
         ))}
       </Select>
     </FormControl>

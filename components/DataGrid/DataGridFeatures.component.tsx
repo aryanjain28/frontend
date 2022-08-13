@@ -60,8 +60,9 @@ const DataGridFeatures = ({
           }}
         >
           {Object.keys(filterMap).map((key: string, index: number) =>
-            filterMap[key].map((filterValue) => (
+            filterMap[key].map((filterValue, index) => (
               <Chip
+                key={`${filterValue}_${index}`}
                 variant="filled"
                 color={
                   colors[index % colors.length] as
