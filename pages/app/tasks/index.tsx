@@ -9,9 +9,13 @@ import { Task } from "../../../types/task.types";
 import { getTasksCol } from "../../../utils/tasks.utils";
 import { en } from "../../../constants/labels";
 import { ROUTES } from "../../../constants/routes";
-import DataGrid from "../../../components/DataGrid/DataGridMain.component";
 import { FilterMap } from "../../../types/common.types";
 import { useRouter } from "next/router";
+import DataGridFeatures from "../../../components/DataGrid/DataGridFeatures.component";
+import DataGridTableComponent from "../../../components/DataGrid/DataGridTable.component";
+import { Button } from "../../../components/Button";
+import { Add } from "@mui/icons-material";
+import { isAdmin } from "../../../utils/common.utils";
 
 const Tasks = () => {
   const router = useRouter();
@@ -60,18 +64,38 @@ const Tasks = () => {
           </Box>
         </Box>
         <Divider sx={{ my: 0 }} />
-        <DataGrid
-          {...dataGridProps}
-          isLoading={isLoading}
-          showSearch
-          showFilters
-          query={query}
-          setQuery={setQuery}
-          filterMap={filterMap}
-          setFilterMap={setFilterMap}
-          expandedRowId={expandedRowId}
-          setExpandedRowId={(val) => setExpandedRowId(val)}
-        />
+
+        <Box mx={3}>
+          <Box
+            display="flex"
+            alignItems="center"
+            justifyContent="space-between"
+          >
+            <DataGridFeatures
+              showSearch
+              showFilters
+              query={query}
+              setQuery={setQuery}
+              filterMap={filterMap}
+              setFilterMap={setFilterMap}
+            />
+            {!isAdmin() && (
+              <Button
+                label={en.createNewTask}
+                onClick={() => router.push(ROUTES.createTask)}
+                variant="contained"
+                icon={<Add fontSize="small" />}
+                sx={{ width: "20%" }}
+              />
+            )}
+          </Box>
+          <DataGridTableComponent
+            isLoading={isLoading}
+            columns={columns}
+            data={data || []}
+            expandedRowId={expandedRowId}
+          />
+        </Box>
       </Box>
     </PageLayout>
   );

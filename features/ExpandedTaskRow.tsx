@@ -2,128 +2,29 @@ import {
   Box,
   Checkbox,
   Collapse,
-  Divider,
   FormControlLabel,
   Grid,
-  ListItemIcon,
-  Menu,
-  MenuItem,
   MenuProps,
   Popover,
   TableCell,
   Typography,
 } from "@mui/material";
-import { FormInput } from "../features/FormInput";
 import { Row } from "../types/datagrid.types";
 import { taskStatus } from "../utils/tasks.utils";
 import { Button } from "../components/Button";
-import { SelectComponent } from "../components/Select";
 import { useEffect, useState } from "react";
-import DateSelectPopover from "./DateSelectPopover";
-import { useGetLocalStorage } from "../hooks/auth.hooks";
 import { isAdmin, isStaff } from "../utils/common.utils";
 import RupeeIcon from "@mui/icons-material/CurrencyRupeeOutlined";
-import DeleteIcon from "@mui/icons-material/DeleteOutlined";
 import ThreeDotsIcon from "@mui/icons-material/MoreVert";
 import { en } from "../constants/labels";
 import { useDeleteTask, usePatchTask } from "../hooks/tasks.hooks";
 import ConfimationModal from "../components/Modal";
 import moment from "moment";
-
-const CommFormInput = ({
-  sx = {},
-  label,
-  readOnly = false,
-  value,
-  handleChange,
-  icon,
-}: {
-  sx?: any;
-  label?: string;
-  readOnly?: boolean;
-  value: string;
-  handleChange: (value: string) => void;
-  icon?: any;
-}) => (
-  <FormInput
-    label={""}
-    value={value}
-    handleOnChange={(value) => (readOnly ? {} : handleChange(value as string))}
-    variant="outlined"
-    topLabel={`${label} ${readOnly ? "(ReadOnly)" : ""}`}
-    sx={{ ...sx, background: "white" }}
-    startIcon={icon}
-  />
-);
-
-const CommSelectInput = ({
-  sx,
-  label,
-  value,
-  options,
-  handleChange,
-  readOnly = false,
-}: {
-  sx?: any;
-  label: string;
-  value: string;
-  options: string[];
-  handleChange: (item: string) => void;
-  readOnly?: boolean;
-}) => {
-  return readOnly ? (
-    <CommFormInput
-      label={label}
-      value={value}
-      handleChange={handleChange}
-      readOnly
-      sx={sx ? sx : { width: 250, background: "white" }}
-    />
-  ) : (
-    <SelectComponent
-      label={label}
-      selectedOption={value}
-      handleSelectOption={(item) => handleChange(item)}
-      options={options}
-      sx={sx ? sx : { width: 250, background: "white" }}
-    />
-  );
-};
-const CommDateSelect = ({
-  key,
-  handleChange,
-  label,
-  value,
-  showCancleIcon = false,
-  readOnly = false,
-}: {
-  key: string;
-  handleChange: (item: Date) => void;
-  label: string;
-  value: Date | string;
-  showCancleIcon?: boolean;
-  readOnly?: boolean;
-}) => (
-  <Box>
-    <Typography
-      fontSize="13px"
-      variant="subtitle2"
-      fontWeight={700}
-      color="GrayText"
-    >
-      {`${label} ${readOnly ? "(ReadOnly)" : ""}`}
-    </Typography>
-    {
-      <DateSelectPopover
-        date={value}
-        sx={{ width: 150, background: "white" }}
-        setDate={(item) => handleChange(item as Date)}
-        showCancleIcon={showCancleIcon}
-        readOnly={readOnly}
-      />
-    }
-  </Box>
-);
+import {
+  CommDateSelect,
+  CommFormInput,
+  CommSelectInput,
+} from "./CommTaskInputs";
 
 export const ExpandedDataGridCell = ({
   row = {},
