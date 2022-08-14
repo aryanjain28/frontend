@@ -1,7 +1,7 @@
 import moment from "moment";
 import { useGetLocalStorage } from "../hooks/auth.hooks";
 
-export const formatTime = (timestamp: string) => {
+export const formatTime = (timestamp: string | Date) => {
   return timestamp
     ? moment(timestamp).format("MMMM Do, h:mm a")
     : "Invalid Date";

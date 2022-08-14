@@ -9,9 +9,11 @@ import {
   getAllTaskTypes,
   getMyTasks,
   patchTask,
+  postTask,
 } from "../services/task.services";
-import { PatchTaskPayload, Task } from "../types/task.types";
-import { User } from "../types/user.types";
+import { APIData } from "../types/common.types";
+import { PostTaskPayload, PatchTaskPayload, Task } from "../types/task.types";
+import { User } from "../types/task.types";
 import { useGetLocalStorage } from "./auth.hooks";
 
 export const useGetAllTasks = () => {
@@ -28,22 +30,25 @@ export const useGetAllTasks = () => {
 
   const modifiedData = data?.map((row) => ({
     ...row,
+    assigneeId: row.assignee.id,
     assigneeFullname: `${row.assignee.fName} ${row.assignee.lName}`,
-    assignedByFullname: `${row.assignedBy?.fName} ${row.assignedBy?.lName}`,
-    clientName: row.client.clientName,
+    clientId: row.client.client.id,
+    clientName: row.client.client.name,
     clientEntity: row.client.entity,
+    clientEntities: row.client.client.entities,
     createdByName: `${(row.createdBy as User).fName} ${
       (row.createdBy as User).lName
     }`,
     createdByEmail: (row.createdBy as User).email,
-    taskTypeName: row.type.taskTypeName,
+    taskTypeId: row.type.id,
+    taskTypeName: row.type.name,
   }));
 
   return { data: modifiedData, isLoading };
 };
 
 export const useGetMyTasks = () => {
-  const { fullName } = useGetLocalStorage();
+  const { fullName, userId } = useGetLocalStorage();
   const { data, isLoading } = useQuery(
     [QUERY_KEYS.GET_MY_TASKS],
     () => getMyTasks(),
@@ -55,17 +60,40 @@ export const useGetMyTasks = () => {
   );
   const modifiedData = data?.map((row) => ({
     ...row,
+    assigneeId: userId,
     assigneeFullname: fullName,
-    assignedByFullname: `${row.assignedBy?.fName} ${row.assignedBy?.lName}`,
-    clientName: row.client.clientName,
+    assignedByFullname: `${(row.assignedBy as User).fName} ${
+      (row.assignedBy as User).lName
+    }`,
+    clientId: row.client.client.id,
+    clientName: row.client.client.name,
     clientEntity: row.client.entity,
+    clientEntities: row.client.client.entities,
     createdByName: `${(row.createdBy as User).fName} ${
       (row.createdBy as User).lName
     }`,
     createdByEmail: (row.createdBy as User).email,
-    taskTypeName: row.type.taskTypeName,
+    taskTypeId: row.type.id,
+    taskTypeName: row.type.name,
   }));
   return { data: modifiedData, isLoading };
+};
+
+export const usePostTask = () => {
+  return useMutation(
+    ({ payload }: { payload: PostTaskPayload }) => {
+      return postTask(payload);
+    },
+    {
+      onSuccess: () => {
+        toast.success(en.toast.taskCreatedSuccess);
+      },
+      onError: (data: APIData, variables) => {
+        const serverMessage = data.response.data.message;
+        toast.error(serverMessage || en.toast.taskCreatedFailed);
+      },
+    }
+  );
 };
 
 export const usePatchTask = () => {
@@ -146,6 +174,5 @@ export const useGetTaskTypes = () => {
       onError: () => toast.error(en.toast.taskTypeFetchFailed),
     }
   );
-  const modifiedData = data?.map((p) => ({ ...p, id: p._id }));
-  return { data: modifiedData, isLoading };
+  return { data, isLoading };
 };

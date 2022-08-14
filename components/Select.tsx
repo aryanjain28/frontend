@@ -20,6 +20,7 @@ interface SelectProps {
   label?: string;
   options: string[];
   sx?: any;
+  disabled?: boolean;
 }
 
 interface SelecComponentProps {
@@ -29,6 +30,7 @@ interface SelecComponentProps {
   options: string[] | SelectType;
   sx?: any;
   isLoading?: boolean;
+  disabled?: boolean;
 }
 
 export const SelectMultipleComponent = ({
@@ -37,6 +39,7 @@ export const SelectMultipleComponent = ({
   handleSelectOption,
   label,
   options,
+  disabled = false,
 }: SelectProps) => {
   return (
     <FormControl sx={{ width: 300 }}>
@@ -76,6 +79,7 @@ export const SelectComponent = ({
   label,
   options,
   isLoading = false,
+  disabled = false,
 }: SelecComponentProps) => {
   return (
     <FormControl>
@@ -88,6 +92,7 @@ export const SelectComponent = ({
       <Select
         size="small"
         value={selectedOption}
+        disabled={disabled}
         onChange={(e) => handleSelectOption(e.target.value as string)}
         sx={sx ? sx : {}}
       >

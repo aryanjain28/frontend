@@ -8,7 +8,7 @@ import PendingTaskIcon from "@mui/icons-material/PendingActions";
 import ApprovedTaskIcon from "@mui/icons-material/Grading";
 import CompletedTaskIcon from "@mui/icons-material/Done";
 import { ROUTES } from "../constants/routes";
-import { Task } from "../types/task.types";
+import { AllTasks, ModifiedTask, Task } from "../types/task.types";
 import { ColumnG } from "../types/datagrid.types";
 import { Link, Tooltip, Typography } from "@mui/material";
 import { formatTime2, isAdmin } from "./common.utils";
@@ -88,7 +88,7 @@ export const taskStatus = {
 export const getTasksCol = (
   expandedRowId: string | null,
   setExpandedRowId: (id: string | null) => void
-): ColumnG<Task>[] => [
+): ColumnG<AllTasks>[] => [
   {
     headerName: "Create Date",
     key: "createdAt",
@@ -100,7 +100,7 @@ export const getTasksCol = (
     headerName: "Client",
     key: "client.clientName",
     Component: ({ row }) => {
-      return <Typography>{row.client.clientName}</Typography>;
+      return <Typography>{row.client.client.name}</Typography>;
     },
   },
   {
@@ -189,7 +189,7 @@ export const getTasksCol = (
 export const getMyTasksColumns = (
   expandedRowId: string | null,
   setExpandedRowId: (id: string | null) => void
-): ColumnG<Task>[] => [
+): ColumnG<ModifiedTask>[] => [
   {
     headerName: "Create Date",
     key: "createdAt",
@@ -201,14 +201,14 @@ export const getMyTasksColumns = (
     headerName: "Client",
     key: "client.clientName",
     Component: ({ row }) => {
-      return <Typography>{row.client.clientName}</Typography>;
+      return <Typography>{row.clientName}</Typography>;
     },
   },
   {
     headerName: "Entity",
     key: "client.entity",
     Component: ({ row }) => {
-      return <Typography>{row.client.entity}</Typography>;
+      return <Typography>{row.clientEntity}</Typography>;
     },
   },
   {

@@ -11,12 +11,11 @@ import {
 } from "../../../../features/CommTaskInputs";
 import { Button } from "../../../../components/Button";
 import { useGetLocalStorage } from "../../../../hooks/auth.hooks";
-import { useState } from "react";
-import { useGetTaskTypes } from "../../../../hooks/tasks.hooks";
+import { useCallback, useState } from "react";
+import { useGetTaskTypes, usePostTask } from "../../../../hooks/tasks.hooks";
 import { useGetClients } from "../../../../hooks/clients.hooks";
 import { id } from "date-fns/locale";
 import { useGetAllUsersInfo } from "../../../../hooks/user.hooks";
-import { DriveFileRenameOutlineSharp } from "@mui/icons-material";
 
 const CreateNewTask = () => {
   const { fullName, email } = useGetLocalStorage();
@@ -48,8 +47,36 @@ const CreateNewTask = () => {
   const { data: taskTypes, isLoading: taskTypesIsLoading } = useGetTaskTypes();
   const { data: clients, isLoading: clientsInfoIsLoading } = useGetClients();
   const { data: users, isLoading: usersInfoIsLoading } = useGetAllUsersInfo();
-  const getEntityOptions = (clientId: string) =>
-    (clients || []).find(({ id }) => id === clientId)?.entity;
+  const { mutate: createTask, isLoading: taskIsCreating } = usePostTask();
+
+  const getEntityOptions = useCallback(
+    (clientId: string) => {
+      return (clients || []).find(({ id }) => id === clientId)?.entities;
+    },
+    [clients, formValues.client]
+  );
+
+  const handleCreateTask = () => {
+    const payload = {
+      data: {
+        ...(formValues.startDate && { startDate: formValues.startDate }),
+        ...(formValues.endDate && { endDate: formValues.endDate }),
+        ...(formValues.name && { name: formValues.name }),
+        ...(formValues.type && { type: formValues.type }),
+        ...(formValues.client && { client: formValues.client }),
+        ...(formValues.entity && { entity: formValues.entity }),
+        ...(formValues.assignee && { assignee: formValues.assignee }),
+        ...(formValues.comments && { comments: formValues.comments }),
+        ...(formValues.totalAmount && { totalAmount: formValues.totalAmount }),
+        ...(formValues.paidAmount && { paidAmount: formValues.paidAmount }),
+        ...(formValues.balanceAmount && {
+          balanceAmount: formValues.balanceAmount,
+        }),
+      },
+    };
+    createTask({ payload });
+  };
+
   return (
     <PageLayout>
       <Box
@@ -126,7 +153,7 @@ const CreateNewTask = () => {
                     value={formValues.client}
                     label={en.client} //"Client"
                     handleChange={(client) =>
-                      setFormValues({ ...formValues, client })
+                      setFormValues({ ...formValues, client, entity: "" })
                     }
                     options={(clients || []).map(({ id, name }) => ({
                       value: id,
@@ -265,10 +292,11 @@ const CreateNewTask = () => {
                   alignItems="center"
                 >
                   <Button
-                    onClick={() => {}}
+                    onClick={handleCreateTask}
                     variant="contained"
                     color="success"
                     label="Create Task"
+                    isLoading={taskIsCreating}
                   />
                   <Typography>
                     {JSON.stringify(formValues, null, "\t")}

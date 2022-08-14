@@ -6,9 +6,11 @@ import {
   GetUsersTasksResponse,
   PatchTaskPayload,
   PatchTaskResponse,
+  PostTaskPayload,
+  PostTaskResponse,
 } from "../types/task.types";
 import { createRoute } from "../utils/routes";
-import { DELETE, GET, PATCH } from "./api";
+import { DELETE, GET, PATCH, POST } from "./api";
 
 export const getAllTasks = () => {
   const url = API_ROUTES.GET_TASKS;
@@ -18,6 +20,13 @@ export const getAllTasks = () => {
 export const getMyTasks = () => {
   const url = API_ROUTES.GET_MY_TASKS;
   return GET<undefined, GetUsersTasksResponse>(url).then((res) => res.data);
+};
+
+export const postTask = (payload: PostTaskPayload) => {
+  const url = API_ROUTES.POST_TASK;
+  return POST<PostTaskPayload, PostTaskResponse>(url, payload).then(
+    (res) => res.data
+  );
 };
 
 export const patchTask = (payload: PatchTaskPayload) => {

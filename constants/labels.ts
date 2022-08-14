@@ -66,6 +66,8 @@ export const en = {
     tasksFetchedFailed: "Failed to fetch all tasks.",
     myTasksFetchedSuccess: "Fetched user tasks successfully.",
     myTasksFetchedFailed: "Failed to fetch user tasks.",
+    taskCreatedSuccess: "Created task successfully.",
+    taskCreatedFailed: "Failed to create task.",
     taskUpdatedSuccess: "Updated task successfully.",
     taskUpdatedFailed: "Failed to update task.",
     taskDeletedSuccess: "Deleted task successfully.",

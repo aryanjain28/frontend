@@ -1,28 +1,40 @@
 import { TaskStatusType } from "./common.types";
-import { User } from "./user.types";
+
+export interface User {
+  fName: string;
+  lName: string;
+  email: string;
+  id: string;
+}
 
 export interface Task {
   isNew: boolean;
   id: string;
   name: string;
-  type: { taskTypeName: string };
+  type: { id: string; name: string };
   status: TaskStatusType;
-  client: { clientName: string; entity: string };
-  assignee: User;
-  startDate: string;
-  endDate?: string;
+  client: {
+    client: { id: string; name: string; entities: string[] };
+    entity: string;
+  };
+  startDate: Date;
+  endDate?: Date;
   createdBy: User | string;
-  createdAt: string;
-  updatedAt: string;
+  createdAt: Date;
+  updatedAt: Date;
   totalAmount?: string;
   paidAmount?: string;
   balanceAmount?: string;
-  isApproved?: string;
+  isApproved?: boolean;
   updatedBy?: string;
-  approvedBy?: string;
+  approvedBy?: User | string;
   approvedAt?: string;
-  assignedBy?: { fName: string; lName: string; email: string };
-  assignedAt?: string;
+  assignedBy?: User | string;
+  assignedAt?: Date;
+}
+
+export interface AllTasks extends Task {
+  assignee: User;
 }
 
 export interface ModifiedTask extends Task {
@@ -38,13 +50,23 @@ export interface ModifiedTask extends Task {
 export interface GetAllTaskReponse {
   status: number;
   message: string;
-  data: Task[];
+  data: AllTasks[];
 }
 
 export interface GetUsersTasksResponse {
   status: number;
   message: string;
   data: Task[];
+}
+
+export interface PostTaskPayload {
+  data: { [key: string]: string | number | Date | [] };
+}
+
+export interface PostTaskResponse {
+  status: number;
+  message: string;
+  data: { [key: string]: string | number | [] };
 }
 
 export interface PatchTaskPayload {
@@ -65,5 +87,5 @@ export interface DeleteTaskResponse {
 export interface GetTaskTypesResponse {
   status: number;
   message: string;
-  data: { _id: string; name: string }[];
+  data: { id: string; name: string }[];
 }

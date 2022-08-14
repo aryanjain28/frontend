@@ -12,12 +12,16 @@ import {
 import { Row } from "../types/datagrid.types";
 import { taskStatus } from "../utils/tasks.utils";
 import { Button } from "../components/Button";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { isAdmin, isStaff } from "../utils/common.utils";
 import RupeeIcon from "@mui/icons-material/CurrencyRupeeOutlined";
 import ThreeDotsIcon from "@mui/icons-material/MoreVert";
 import { en } from "../constants/labels";
-import { useDeleteTask, usePatchTask } from "../hooks/tasks.hooks";
+import {
+  useDeleteTask,
+  useGetTaskTypes,
+  usePatchTask,
+} from "../hooks/tasks.hooks";
 import ConfimationModal from "../components/Modal";
 import moment from "moment";
 import {
@@ -25,6 +29,8 @@ import {
   CommFormInput,
   CommSelectInput,
 } from "./CommTaskInputs";
+import { useGetClients } from "../hooks/clients.hooks";
+import { useGetAllUsersInfo } from "../hooks/user.hooks";
 
 export const ExpandedDataGridCell = ({
   row = {},
@@ -40,10 +46,25 @@ export const ExpandedDataGridCell = ({
     setFormValues({ ...row });
   }, [row.id]);
 
+  console.log(formValues);
+
+  const { data: taskTypes, isLoading: taskTypesIsLoading } = useGetTaskTypes();
+  const { data: clients, isLoading: clientsInfoIsLoading } = useGetClients();
+  const { data: users, isLoading: usersInfoIsLoading } = useGetAllUsersInfo();
+
+  const getEntityOptions = useCallback(
+    (clientId: string) => {
+      return (clients || []).find(({ id }) => id === clientId)?.entities;
+    },
+    [clients, formValues.client]
+  );
+
   const [anchorEl, setAnchorEl] = useState<MenuProps["anchorEl"] | null>(null);
   const [openConfirmModal, setOpenConfirmModal] = useState(false);
   const { mutate: updateTask, isLoading: isUpdating } = usePatchTask();
   const { mutate: deleteTask, isLoading: isDeleting } = useDeleteTask();
+
+  console.log("formValues: ", formValues);
 
   return (
     <>
@@ -125,11 +146,14 @@ export const ExpandedDataGridCell = ({
                   />
                   <CommSelectInput
                     label="Task Type"
-                    value={formValues.taskTypeName}
+                    value={formValues.taskTypeId}
                     handleChange={(p) =>
-                      setFormValues({ ...formValues, taskTypeName: p })
+                      setFormValues({ ...formValues, taskTypeId: p })
                     }
-                    options={["GST-32", "A", "B", "C", "D", "E"]}
+                    options={(taskTypes || [])?.map(({ id, name }) => ({
+                      label: name,
+                      value: id,
+                    }))}
                   />
                   <CommSelectInput
                     label="Status"
@@ -149,42 +173,39 @@ export const ExpandedDataGridCell = ({
                 >
                   <CommSelectInput
                     label="Client Name"
-                    value={formValues.clientName}
+                    value={formValues.clientId}
                     handleChange={(p) =>
-                      setFormValues({ ...formValues, clientName: p })
+                      setFormValues({ ...formValues, clientId: p })
                     }
-                    options={[
-                      "Sonia Gandhi",
-                      "Narendra Modi",
-                      "Indira",
-                      "Congress",
-                      "Gandhi",
-                    ]}
+                    options={(clients || []).map(({ id, name }) => ({
+                      value: id,
+                      label: name,
+                    }))}
                     sx={{ width: 270, background: "white" }}
                   />
-                  <CommFormInput
-                    key="clientEntity"
+                  <CommSelectInput
                     label={"Entity Name"}
                     value={formValues.clientEntity}
                     handleChange={(p) =>
                       setFormValues({ ...formValues, clientEntity: p })
                     }
-                    readOnly
-                    sx={{ width: 250 }}
+                    options={getEntityOptions(formValues.clientId) || []}
+                    readOnly={!Boolean(formValues.clientName)}
                   />
                   <CommSelectInput
                     label="Assignee"
-                    value={formValues.assigneeFullname}
-                    handleChange={(p) =>
-                      setFormValues({ ...formValues, assigneeFullname: p })
+                    value={
+                      isStaff()
+                        ? formValues.assigneeFullname
+                        : formValues.assigneeId
                     }
-                    options={[
-                      "Aryan Jain",
-                      "Rahul",
-                      "Indira",
-                      "Congress",
-                      "Gandhi",
-                    ]}
+                    handleChange={(p) =>
+                      setFormValues({ ...formValues, assigneeId: p })
+                    }
+                    options={(users || []).map(({ fName, role, id }) => ({
+                      value: id,
+                      label: `${fName} - ${role}`,
+                    }))}
                     readOnly={isStaff()}
                   />
                 </Box>

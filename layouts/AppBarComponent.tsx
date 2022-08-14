@@ -269,7 +269,7 @@ const AppBarComponent = ({
                   >
                     <Typography variant="caption">
                       {`${notif.assignedByFullname}, (${formatTime(
-                        notif.assignedAt as string
+                        notif.assignedAt as Date
                       )})`}
                     </Typography>
                     <Typography

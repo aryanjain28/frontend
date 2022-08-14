@@ -14,6 +14,5 @@ export const useGetClients = () => {
       placeholderData: [],
     }
   );
-  const modifiedData = data?.map((p) => ({ ...p, id: p._id }));
-  return { data: modifiedData, isLoading };
+  return { data, isLoading };
 };
