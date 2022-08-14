@@ -49,7 +49,7 @@ export const CommSelectInput = ({
   label: string;
   value: string;
   options: string[] | Select;
-  handleChange: (item: string) => void;
+  handleChange: (value: string, label?: string) => void;
   readOnly?: boolean;
   required?: boolean;
   isLoading?: boolean;
@@ -67,7 +67,7 @@ export const CommSelectInput = ({
     <SelectComponent
       label={`${label}${required ? "*" : ""}`}
       selectedOption={value}
-      handleSelectOption={(item) => handleChange(item)}
+      handleSelectOption={handleChange}
       options={options}
       sx={{ ...{ width: 250, background: "white" }, ...sx }}
       isLoading={isLoading}

@@ -31,6 +31,9 @@ import {
 } from "./CommTaskInputs";
 import { useGetClients } from "../hooks/clients.hooks";
 import { useGetAllUsersInfo } from "../hooks/user.hooks";
+import { useRouter } from "next/router";
+import { ROUTES } from "../constants/routes";
+import { useGetLocalStorage } from "../hooks/auth.hooks";
 
 export const ExpandedDataGridCell = ({
   row = {},
@@ -41,12 +44,14 @@ export const ExpandedDataGridCell = ({
   open: boolean;
   colSpan: number;
 }) => {
+  const router = useRouter();
+  const isMyTask = router.pathname.includes(ROUTES.myTasks);
+  const { fullName } = useGetLocalStorage();
+
   const [formValues, setFormValues] = useState<any>(row);
   useEffect(() => {
     setFormValues({ ...row });
   }, [row.id]);
-
-  console.log(formValues);
 
   const { data: taskTypes, isLoading: taskTypesIsLoading } = useGetTaskTypes();
   const { data: clients, isLoading: clientsInfoIsLoading } = useGetClients();
@@ -63,8 +68,6 @@ export const ExpandedDataGridCell = ({
   const [openConfirmModal, setOpenConfirmModal] = useState(false);
   const { mutate: updateTask, isLoading: isUpdating } = usePatchTask();
   const { mutate: deleteTask, isLoading: isDeleting } = useDeleteTask();
-
-  console.log("formValues: ", formValues);
 
   return (
     <>
@@ -143,10 +146,15 @@ export const ExpandedDataGridCell = ({
                       setFormValues({ ...formValues, name: v })
                     }
                     sx={{ width: 270 }}
+                    readOnly={isStaff()}
                   />
                   <CommSelectInput
                     label="Task Type"
-                    value={formValues.taskTypeId}
+                    value={
+                      isStaff()
+                        ? formValues.taskTypeName
+                        : formValues.taskTypeId
+                    }
                     handleChange={(p) =>
                       setFormValues({ ...formValues, taskTypeId: p })
                     }
@@ -154,6 +162,7 @@ export const ExpandedDataGridCell = ({
                       label: name,
                       value: id,
                     }))}
+                    readOnly={isStaff()}
                   />
                   <CommSelectInput
                     label="Status"
@@ -174,8 +183,13 @@ export const ExpandedDataGridCell = ({
                   <CommSelectInput
                     label="Client Name"
                     value={formValues.clientId}
-                    handleChange={(p) =>
-                      setFormValues({ ...formValues, clientId: p })
+                    handleChange={(v, l) =>
+                      setFormValues({
+                        ...formValues,
+                        clientId: v,
+                        clientName: l,
+                        clientEntity: "",
+                      })
                     }
                     options={(clients || []).map(({ id, name }) => ({
                       value: id,
@@ -195,16 +209,22 @@ export const ExpandedDataGridCell = ({
                   <CommSelectInput
                     label="Assignee"
                     value={
-                      isStaff()
+                      isMyTask
+                        ? fullName
+                        : isStaff()
                         ? formValues.assigneeFullname
                         : formValues.assigneeId
                     }
-                    handleChange={(p) =>
-                      setFormValues({ ...formValues, assigneeId: p })
+                    handleChange={(value, label) =>
+                      setFormValues({
+                        ...formValues,
+                        assigneeId: value,
+                        assigneeFName: label,
+                      })
                     }
                     options={(users || []).map(({ fName, role, id }) => ({
                       value: id,
-                      label: `${fName} - ${role}`,
+                      label: fName, //`${fName} - ${role}`,
                     }))}
                     readOnly={isStaff()}
                   />
@@ -295,9 +315,9 @@ export const ExpandedDataGridCell = ({
                     <Button
                       label="Update"
                       variant="contained"
-                      onClick={() =>
-                        updateTask({ payload: { data: formValues } })
-                      }
+                      onClick={() => {
+                        updateTask({ payload: { data: formValues } });
+                      }}
                       sx={{ width: "80%" }}
                       isLoading={isUpdating}
                     />

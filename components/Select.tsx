@@ -25,7 +25,7 @@ interface SelectProps {
 
 interface SelecComponentProps {
   selectedOption: string | number;
-  handleSelectOption: (value: string) => void;
+  handleSelectOption: (value: string, label: string) => void;
   label?: string;
   options: string[] | SelectType;
   sx?: any;
@@ -93,7 +93,6 @@ export const SelectComponent = ({
         size="small"
         value={selectedOption}
         disabled={disabled}
-        onChange={(e) => handleSelectOption(e.target.value as string)}
         sx={sx ? sx : {}}
       >
         {options.length > 0 ? (
@@ -103,7 +102,13 @@ export const SelectComponent = ({
                 ? { label: option, value: option }
                 : option;
             return (
-              <MenuItem key={`${option}_${index}`} value={value}>
+              <MenuItem
+                key={`${option}_${index}`}
+                value={value}
+                onClick={() =>
+                  handleSelectOption(value as string, label as string)
+                }
+              >
                 {label}
               </MenuItem>
             );

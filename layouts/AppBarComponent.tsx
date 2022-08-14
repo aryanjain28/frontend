@@ -28,11 +28,10 @@ import { toast } from "react-toastify";
 import { ROUTES } from "../constants/routes";
 import { useRouter } from "next/router";
 import { SvgIcon } from "./PageLayout";
-import { useGetUserDetails } from "../hooks/user.hooks";
 import { useGetLocalStorage } from "../hooks/auth.hooks";
 import { formatTime } from "../utils/common.utils";
 import { taskStatus } from "../utils/tasks.utils";
-import { useGetMyTasks } from "../hooks/tasks.hooks";
+import { useGetModifiedTasks, useGetMyTasks } from "../hooks/tasks.hooks";
 import { ModifiedTask, Task } from "../types/task.types";
 
 const drawerWidth = 240;
@@ -63,8 +62,9 @@ const AppBarComponent = ({
   setOpen: () => void;
 }) => {
   const router = useRouter();
-  const { fullName } = useGetLocalStorage();
-  const { data: myTasks } = useGetMyTasks();
+  const { fullName, userId } = useGetLocalStorage();
+  const { data } = useGetMyTasks(userId as string);
+  const { data: myTasks } = useGetModifiedTasks();
 
   const [anchorEl, setAnchorEl] = useState<MenuProps["anchorEl"] | null>(null);
   const [anchorNot, setAnchorNot] = useState<MenuProps["anchorEl"] | null>(
@@ -82,7 +82,7 @@ const AppBarComponent = ({
   }, []);
 
   const newNotifications = useMemo(
-    () => (myTasks || []).filter((t) => t.isNew),
+    () => ((myTasks as ModifiedTask[]) || []).filter((t) => t.isNew),
     [myTasks]
   );
 
@@ -268,9 +268,9 @@ const AppBarComponent = ({
                     justifyContent="space-evenly"
                   >
                     <Typography variant="caption">
-                      {`${notif.assignedByFullname}, (${formatTime(
-                        notif.assignedAt as Date
-                      )})`}
+                      {`${notif.assignedByFName} ${
+                        notif.assignedByLName
+                      }, (${formatTime(notif.assignedAt as Date)})`}
                     </Typography>
                     <Typography
                       mt={0.5}

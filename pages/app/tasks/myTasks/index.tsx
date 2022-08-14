@@ -5,19 +5,25 @@ import DataGrid from "../../../../components/DataGrid/DataGridMain.component";
 import { en } from "../../../../constants/labels";
 import { ROUTES } from "../../../../constants/routes";
 import { BreadCrumbsComp } from "../../../../features/BreadCrumbs";
+import { useGetLocalStorage } from "../../../../hooks/auth.hooks";
 import { useDataGrid } from "../../../../hooks/datagrid.hooks";
-import { useGetMyTasks } from "../../../../hooks/tasks.hooks";
+import {
+  useGetModifiedTasks,
+  useGetMyTasks,
+} from "../../../../hooks/tasks.hooks";
 import PageLayout from "../../../../layouts/PageLayout";
 import { FilterMap } from "../../../../types/common.types";
 import { Task } from "../../../../types/task.types";
 import { getMyTasksColumns } from "../../../../utils/tasks.utils";
 
 const MyTasks = () => {
+  const { userId } = useGetLocalStorage();
   const router = useRouter();
   const status = router.query?.status;
   const taskId = router.query?.taskId;
 
-  const { data, isLoading } = useGetMyTasks();
+  const { isLoading } = useGetMyTasks(userId as string);
+  const { data } = useGetModifiedTasks();
   const [expandedRowId, setExpandedRowId] = useState<string | null>(
     (taskId as string) || null
   );

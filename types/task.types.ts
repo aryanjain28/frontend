@@ -38,13 +38,16 @@ export interface AllTasks extends Task {
 }
 
 export interface ModifiedTask extends Task {
-  assigneeFullname: string;
-  assignedByFullname?: string;
+  assigneeFName: string;
+  assigneeLName: string;
+  assignedByFName: string;
+  assignedByLName: string;
   clientName: string;
   clientEntity: string;
   createdByName: string;
   createdByEmail: string;
   taskTypeName: string;
+  assignee: User;
 }
 
 export interface GetAllTaskReponse {

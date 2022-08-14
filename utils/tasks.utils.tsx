@@ -88,7 +88,7 @@ export const taskStatus = {
 export const getTasksCol = (
   expandedRowId: string | null,
   setExpandedRowId: (id: string | null) => void
-): ColumnG<AllTasks>[] => [
+): ColumnG<ModifiedTask>[] => [
   {
     headerName: "Create Date",
     key: "createdAt",
@@ -98,16 +98,16 @@ export const getTasksCol = (
   },
   {
     headerName: "Client",
-    key: "client.clientName",
+    key: "clientName",
     Component: ({ row }) => {
-      return <Typography>{row.client.client.name}</Typography>;
+      return <Typography>{row.clientName}</Typography>;
     },
   },
   {
     headerName: "Entity",
-    key: "client.entity",
+    key: "clientEntity",
     Component: ({ row }) => {
-      return <Typography>{row.client.entity}</Typography>;
+      return <Typography>{row.clientEntity}</Typography>;
     },
   },
   {
@@ -125,11 +125,11 @@ export const getTasksCol = (
   },
   {
     headerName: "Assignee",
-    key: "assignee",
-    Component: ({ row: { assignee } }) => {
+    key: "assigneeFName",
+    Component: ({ row }) => {
       return (
         <Typography maxWidth="200px" noWrap>
-          {`${assignee.fName}`}
+          {`${row.assigneeFName}`}
         </Typography>
       );
     },

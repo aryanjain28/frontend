@@ -1,4 +1,7 @@
-import { useGetAllTasks } from "../../../hooks/tasks.hooks";
+import {
+  useGetAllTasks,
+  useGetModifiedTasks,
+} from "../../../hooks/tasks.hooks";
 import { Divider, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import { useState } from "react";
@@ -16,9 +19,11 @@ import DataGridTableComponent from "../../../components/DataGrid/DataGridTable.c
 import { Button } from "../../../components/Button";
 import { Add } from "@mui/icons-material";
 import { isAdmin } from "../../../utils/common.utils";
+import { useGetLocalStorage } from "../../../hooks/auth.hooks";
 
 const Tasks = () => {
   const router = useRouter();
+  const { userId } = useGetLocalStorage();
   const status = router.query?.status;
   const taskId = router.query?.taskId;
 
@@ -26,7 +31,8 @@ const Tasks = () => {
     (taskId as string) || null
   );
   const columns = getTasksCol(expandedRowId, setExpandedRowId);
-  const { data, isLoading } = useGetAllTasks();
+  const { isLoading } = useGetAllTasks(userId as string);
+  const { data } = useGetModifiedTasks();
 
   const [query, setQuery] = useState("");
   const [filterMap, setFilterMap] = useState<FilterMap>(
