@@ -6,6 +6,7 @@ import { queryClient } from "../pages/_app";
 import {
   deleteTask,
   getAllTasks,
+  getAllTaskTypes,
   getMyTasks,
   patchTask,
 } from "../services/task.services";
@@ -132,4 +133,19 @@ export const useDeleteTask = () => {
       },
     }
   );
+};
+
+// Task Types
+export const useGetTaskTypes = () => {
+  const { data, isLoading } = useQuery(
+    [QUERY_KEYS.GET_ALL_TASK_TYPES],
+    () => getAllTaskTypes(),
+    {
+      placeholderData: [],
+      // onSuccess: () => toast.success(en.toast.myTasksFetchedSuccess),
+      onError: () => toast.error(en.toast.taskTypeFetchFailed),
+    }
+  );
+  const modifiedData = data?.map((p) => ({ ...p, id: p._id }));
+  return { data: modifiedData, isLoading };
 };

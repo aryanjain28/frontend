@@ -1,4 +1,5 @@
 import {
+  CircularProgress,
   IconButton,
   InputAdornment,
   TextField,
@@ -10,6 +11,7 @@ import React, { ChangeEvent } from "react";
 export const FormInput = (props: FormInputProps) => {
   const {
     sx = {},
+    isLoading = false,
     type = "text",
     variant = "outlined",
     placeholder,
@@ -64,10 +66,16 @@ export const FormInput = (props: FormInputProps) => {
               </IconButton>
             </InputAdornment>
           ),
-          endAdornment: endIcon && (
-            <InputAdornment position="end">
-              <IconButton onClick={handleEndIconClick}>{endIcon}</IconButton>
-            </InputAdornment>
+          endAdornment: isLoading ? (
+            <CircularProgress size={13} />
+          ) : (
+            endIcon && (
+              <InputAdornment position="end">
+                <IconButton onClick={(e) => handleEndIconClick!(e)}>
+                  {endIcon}
+                </IconButton>
+              </InputAdornment>
+            )
           ),
         }}
         sx={{ ...sx }}
@@ -86,6 +94,7 @@ interface FormInputProps {
   type?: string;
   rows?: number;
   sx?: any;
+  isLoading?: boolean;
   placeholder?: string;
   error?: boolean;
   helperText?: string;
@@ -93,6 +102,6 @@ interface FormInputProps {
   startIcon?: any; //SvgIconTypeMap | string;
   endIcon?: any; //SvgIconTypeMap | string;
   handleStartIconClick?: () => void;
-  handleEndIconClick?: () => void;
+  handleEndIconClick?: (e: any) => void;
   topLabel?: string;
 }

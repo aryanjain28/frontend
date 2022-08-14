@@ -1,3 +1,5 @@
+export type Select = { label: string; value: string }[];
+
 export interface APIError {
   response: {
     data: {

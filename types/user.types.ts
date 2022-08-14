@@ -48,3 +48,15 @@ export interface GetUserDetailsResponse {
     updatedAt: string;
   };
 }
+
+export interface GetUsersInfoResponse {
+  status: number;
+  message: string;
+  data: {
+    id: string;
+    fName: string;
+    lName: string;
+    email: string;
+    role: "ADMIN" | "STAFF";
+  }[];
+}

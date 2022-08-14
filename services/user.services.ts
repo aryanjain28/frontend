@@ -1,6 +1,7 @@
 import { API_ROUTES } from "../constants/routes";
 import {
   GetUserDetailsResponse,
+  GetUsersInfoResponse,
   PostLoginUserPayload,
   PostUserPayload,
 } from "../types/user.types";
@@ -20,4 +21,9 @@ export const loginUser = (payload: PostLoginUserPayload) => {
 export const getUserDetails = (userId: string) => {
   const url = createRoute(API_ROUTES.GET_USER_DETAILS, { userId });
   return GET<undefined, GetUserDetailsResponse>(url).then((res) => res.data);
+};
+
+export const getUsersInfo = () => {
+  const url = API_ROUTES.GET_USERS_INFO;
+  return GET<undefined, GetUsersInfoResponse>(url).then((res) => res.data);
 };

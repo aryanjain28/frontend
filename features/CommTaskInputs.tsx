@@ -1,5 +1,6 @@
 import { Box, Typography } from "@mui/material";
 import { SelectComponent } from "../components/Select";
+import { Select } from "../types/common.types";
 import DateSelectPopover from "./DateSelectPopover";
 import { FormInput } from "./FormInput";
 
@@ -8,6 +9,7 @@ export const CommFormInput = ({
   label,
   readOnly = false,
   required = false,
+  isLoading = false,
   value,
   handleChange,
   icon,
@@ -19,6 +21,7 @@ export const CommFormInput = ({
   value: string;
   handleChange: (value: string) => void;
   icon?: any;
+  isLoading?: boolean;
 }) => (
   <FormInput
     label={""}
@@ -28,6 +31,7 @@ export const CommFormInput = ({
     topLabel={`${label}${required ? "*" : ""} ${readOnly ? "(ReadOnly)" : ""}`}
     sx={{ ...{ background: "white" }, ...sx }}
     startIcon={icon}
+    isLoading={isLoading}
   />
 );
 
@@ -39,14 +43,16 @@ export const CommSelectInput = ({
   handleChange,
   readOnly = false,
   required = false,
+  isLoading = false,
 }: {
   sx?: any;
   label: string;
   value: string;
-  options: string[];
+  options: string[] | Select;
   handleChange: (item: string) => void;
   readOnly?: boolean;
   required?: boolean;
+  isLoading?: boolean;
 }) => {
   return readOnly ? (
     <CommFormInput
@@ -64,6 +70,7 @@ export const CommSelectInput = ({
       handleSelectOption={(item) => handleChange(item)}
       options={options}
       sx={{ ...{ width: 250, background: "white" }, ...sx }}
+      isLoading={isLoading}
     />
   );
 };
@@ -76,6 +83,8 @@ export const CommDateSelect = ({
   readOnly = false,
   required = false,
   sx = {},
+  minDate,
+  maxDate,
 }: {
   handleChange: (item: Date) => void;
   label: string;
@@ -84,6 +93,8 @@ export const CommDateSelect = ({
   readOnly?: boolean;
   required?: boolean;
   sx?: any;
+  minDate?: Date;
+  maxDate?: Date;
 }) => (
   <Box>
     <Typography
@@ -94,14 +105,14 @@ export const CommDateSelect = ({
     >
       {`${label}${required ? "*" : ""} ${readOnly ? "(ReadOnly)" : ""}`}
     </Typography>
-    {
-      <DateSelectPopover
-        date={value}
-        sx={{ ...{ width: 150, background: "white" }, ...sx }}
-        setDate={(item) => handleChange(item as Date)}
-        showCancleIcon={showCancleIcon}
-        readOnly={readOnly}
-      />
-    }
+    <DateSelectPopover
+      date={value}
+      sx={{ ...{ width: 150, background: "white" }, ...sx }}
+      setDate={(item) => handleChange(item as Date)}
+      showCancleIcon={showCancleIcon}
+      readOnly={readOnly}
+      minDate={minDate}
+      maxDate={maxDate}
+    />
   </Box>
 );

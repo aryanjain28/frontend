@@ -12,12 +12,17 @@ import {
 import { Button } from "../../../../components/Button";
 import { useGetLocalStorage } from "../../../../hooks/auth.hooks";
 import { useState } from "react";
+import { useGetTaskTypes } from "../../../../hooks/tasks.hooks";
+import { useGetClients } from "../../../../hooks/clients.hooks";
+import { id } from "date-fns/locale";
+import { useGetAllUsersInfo } from "../../../../hooks/user.hooks";
+import { DriveFileRenameOutlineSharp } from "@mui/icons-material";
 
 const CreateNewTask = () => {
   const { fullName, email } = useGetLocalStorage();
   const [formValues, setFormValues] = useState<{
-    startDate: Date;
-    endDate: Date;
+    startDate: Date | null;
+    endDate: Date | null;
     name: string;
     type: string;
     client: string;
@@ -29,7 +34,7 @@ const CreateNewTask = () => {
     balanceAmount: string;
   }>({
     startDate: new Date(),
-    endDate: new Date(),
+    endDate: new Date(new Date().setDate(new Date().getDate() + 2)),
     name: "",
     type: "",
     client: "",
@@ -40,6 +45,11 @@ const CreateNewTask = () => {
     paidAmount: "",
     balanceAmount: "",
   });
+  const { data: taskTypes, isLoading: taskTypesIsLoading } = useGetTaskTypes();
+  const { data: clients, isLoading: clientsInfoIsLoading } = useGetClients();
+  const { data: users, isLoading: usersInfoIsLoading } = useGetAllUsersInfo();
+  const getEntityOptions = (clientId: string) =>
+    (clients || []).find(({ id }) => id === clientId)?.entity;
   return (
     <PageLayout>
       <Box
@@ -82,28 +92,30 @@ const CreateNewTask = () => {
                 >
                   <CommFormInput
                     value={fullName}
-                    label="Creator"
+                    label={en.creator} //"Creator"
                     handleChange={() => {}}
                     readOnly
                     required
                     sx={{ width: 250 }}
                   />
                   <CommDateSelect
-                    label="Start Date"
+                    label={en.startDate} //"Start Date"
                     handleChange={(startDate) =>
                       setFormValues({
                         ...formValues,
                         startDate,
                       })
                     }
-                    value={new Date(formValues.startDate)}
+                    value={
+                      formValues.startDate ? new Date(formValues.startDate) : ""
+                    }
                     sx={{ width: 250 }}
                     showCancleIcon
                     required
                   />
                   <CommFormInput
                     value={formValues.name}
-                    label="Task Name"
+                    label={en.taskName} //"Task Name"
                     handleChange={(name) =>
                       setFormValues({ ...formValues, name })
                     }
@@ -112,20 +124,28 @@ const CreateNewTask = () => {
                   />
                   <CommSelectInput
                     value={formValues.client}
-                    label="Client"
+                    label={en.client} //"Client"
                     handleChange={(client) =>
                       setFormValues({ ...formValues, client })
                     }
-                    options={[]}
+                    options={(clients || []).map(({ id, name }) => ({
+                      value: id,
+                      label: name,
+                    }))}
+                    isLoading={clientsInfoIsLoading}
                   />
                   <CommSelectInput
                     value={formValues.assignee}
-                    label="Assignee"
+                    label={en.assignee} //"Assignee"
                     handleChange={(assignee) =>
                       setFormValues({ ...formValues, assignee })
                     }
-                    options={[]}
+                    options={(users || []).map(({ fName, role, id }) => ({
+                      value: id,
+                      label: `${fName} - ${role}`,
+                    }))}
                     required
+                    isLoading={usersInfoIsLoading}
                   />
                 </Grid>
               </Box>
@@ -139,26 +159,30 @@ const CreateNewTask = () => {
                 >
                   <CommFormInput
                     value={email}
-                    label="Creator Email"
+                    label={en.creatorEmail} // Creator Email
                     handleChange={() => {}}
                     sx={{ width: 250 }}
                     readOnly
                     required
                   />
                   <CommDateSelect
-                    label="End Date"
+                    label={en.endDate} // End Date
                     handleChange={(endDate) =>
                       setFormValues({
                         ...formValues,
                         endDate,
                       })
                     }
-                    value={new Date(formValues.endDate)}
+                    value={
+                      formValues.endDate ? new Date(formValues.endDate) : ""
+                    }
                     showCancleIcon
                     sx={{ width: 250 }}
+                    minDate={formValues.startDate as Date}
+                    readOnly={!Boolean(formValues.startDate)}
                   />
                   <CommSelectInput
-                    label="Task Type"
+                    label={en.taskType} // Task Type
                     value={formValues.type}
                     handleChange={(type) =>
                       setFormValues({
@@ -166,11 +190,15 @@ const CreateNewTask = () => {
                         type,
                       })
                     }
-                    options={[]}
+                    options={(taskTypes || [])?.map(({ id, name }) => ({
+                      label: name,
+                      value: id,
+                    }))}
+                    isLoading={taskTypesIsLoading}
                     required
                   />
                   <CommSelectInput
-                    label="Entity"
+                    label={en.entity} // Entity
                     value={formValues.entity}
                     handleChange={(entity) =>
                       setFormValues({
@@ -178,10 +206,12 @@ const CreateNewTask = () => {
                         entity,
                       })
                     }
-                    options={[]}
+                    readOnly={!Boolean(formValues.client)}
+                    options={getEntityOptions(formValues.client) || []}
+                    isLoading={clientsInfoIsLoading}
                   />
                   <CommFormInput
-                    label="Comments"
+                    label={en.comments} // Comments
                     value={formValues.comments}
                     handleChange={(comments) =>
                       setFormValues({
@@ -240,6 +270,9 @@ const CreateNewTask = () => {
                     color="success"
                     label="Create Task"
                   />
+                  <Typography>
+                    {JSON.stringify(formValues, null, "\t")}
+                  </Typography>
                 </Grid>
               </Box>
             </Grid>

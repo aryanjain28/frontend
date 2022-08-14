@@ -2,6 +2,7 @@ import { API_ROUTES } from "../constants/routes";
 import {
   DeleteTaskResponse,
   GetAllTaskReponse,
+  GetTaskTypesResponse,
   GetUsersTasksResponse,
   PatchTaskPayload,
   PatchTaskResponse,
@@ -31,4 +32,10 @@ export const patchTask = (payload: PatchTaskPayload) => {
 export const deleteTask = (taskId: string) => {
   const url = createRoute(API_ROUTES.UPDATE_TASK, { taskId });
   return DELETE<undefined, DeleteTaskResponse>(url).then((res) => res);
+};
+
+// Task types
+export const getAllTaskTypes = () => {
+  const url = API_ROUTES.GET_TASKS_TYPES;
+  return GET<undefined, GetTaskTypesResponse>(url).then((res) => res.data);
 };

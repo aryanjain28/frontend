@@ -1,7 +1,12 @@
 import { useMutation, useQuery } from "react-query";
 import { toast } from "react-toastify";
 import { QUERY_KEYS } from "../constants/queryKeys";
-import { getUserDetails, loginUser, postUser } from "../services/user.services";
+import {
+  getUserDetails,
+  getUsersInfo,
+  loginUser,
+  postUser,
+} from "../services/user.services";
 import { APIError } from "../types/common.types";
 import { PostLoginUserPayload, PostUserPayload } from "../types/user.types";
 import { useGetLocalStorage } from "./auth.hooks";
@@ -63,5 +68,18 @@ export const useGetUserDetails = () => {
     () => (userId ? getUserDetails(userId) : null),
     { placeholderData: null }
   );
+  return { data, isLoading: isLoading || isFetching };
+};
+
+export const useGetAllUsersInfo = () => {
+  const { data, isLoading, isFetching, refetch } = useQuery(
+    [QUERY_KEYS.GET_USERS_INFO],
+    () => getUsersInfo(),
+    { placeholderData: [] }
+  );
+  const modifiedData = data?.map((d) => ({
+    ...d,
+    fullName: `${d.fName} ${d.lName}`,
+  }));
   return { data, isLoading: isLoading || isFetching };
 };

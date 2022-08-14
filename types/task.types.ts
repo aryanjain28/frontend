@@ -61,3 +61,9 @@ export interface DeleteTaskResponse {
   status: number;
   message: string;
 }
+
+export interface GetTaskTypesResponse {
+  status: number;
+  message: string;
+  data: { _id: string; name: string }[];
+}

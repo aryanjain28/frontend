@@ -7,6 +7,7 @@ export const en = {
     mobile: "+91 02226 14670",
   },
 
+  noAvailableOptions: "No Available options",
   noData: "Nothing to show!",
   searchTable: "Search Table",
   searchTaskName: "Search By Task Name",
@@ -33,6 +34,16 @@ export const en = {
   completed: "Completed",
   overdue: "Overdue",
   approved: "Approved",
+  creator: "Creator",
+  startDate: "Start Date",
+  taskName: "Task Name",
+  client: "Client",
+  assignee: "Assignee",
+  creatorEmail: "Creator Email",
+  endDate: "End Date",
+  taskType: "Task Type",
+  entity: "Entity",
+  comments: "Comments",
 
   // login and signUp
   login: "Login",
@@ -59,5 +70,9 @@ export const en = {
     taskUpdatedFailed: "Failed to update task.",
     taskDeletedSuccess: "Deleted task successfully.",
     taskDeletedFailed: "Failed to delete task.",
+    taskTypeFetchSuccess: "Fetched task types successfully.",
+    taskTypeFetchFailed: "Failed to fetch task types.",
+    clientsFetchSuccess: "Fetched clients info successfully.",
+    clientsFetchFailed: "Failed to fetch clients info.",
   },
 };

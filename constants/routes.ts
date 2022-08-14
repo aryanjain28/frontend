@@ -5,7 +5,7 @@ export const API_ROUTES = {
   PATCH_CUSTOMER: "/customers/:customerId",
   DELETE_CUSTOMER: "/customers/:customerId",
 
-  GET_USERS: "/users",
+  GET_USERS_INFO: "/users",
   GET_USER_DETAILS: "/users/user/:userId",
   POST_USER: "/users/user/signUp",
   POST_LOGIN_USER: "/users/user/login",
@@ -15,6 +15,12 @@ export const API_ROUTES = {
   GET_MY_TASKS: "/tasks/myTasks",
   UPDATE_TASK: "/tasks/task/:taskId",
   DELETE_TASK: "/tasks/task/:taskId",
+
+  // Task Types
+  GET_TASKS_TYPES: "/taskTypes",
+
+  // Clients
+  GET_ALL_CLIENTS: "/clients",
 };
 
 export const ROUTES = {

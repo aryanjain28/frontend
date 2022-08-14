@@ -6,11 +6,13 @@ import { FormInput } from "./FormInput";
 import CancelIcon from "@mui/icons-material/CancelOutlined";
 
 interface DateSelectPopover {
-  date: Date | string;
-  setDate: (item: Date | string) => void;
+  date: Date | string | null;
+  setDate: (item: Date | string | null) => void;
   sx?: any;
   showCancleIcon?: boolean;
   readOnly?: boolean;
+  minDate?: Date;
+  maxDate?: Date;
 }
 
 const DateSelectPopover = ({
@@ -19,6 +21,8 @@ const DateSelectPopover = ({
   sx,
   showCancleIcon = false,
   readOnly = false,
+  minDate,
+  maxDate,
 }: DateSelectPopover) => {
   const [datePopoverOpen, setDatePopoverOpen] = useState(null);
   return (
@@ -27,13 +31,19 @@ const DateSelectPopover = ({
         label=""
         sx={sx ? sx : { width: 300 }}
         value={date ? formatTime2(date) || "" : ""}
-        handleOnClick={(e: any) => setDatePopoverOpen(e.currentTarget)}
+        handleOnClick={(e: any) => {
+          console.log("FILED CLIKED");
+          setDatePopoverOpen(e.currentTarget);
+        }}
         handleOnChange={() => null}
         placeholder="Select Date"
         endIcon={
           !readOnly && showCancleIcon && date && <CancelIcon fontSize="small" />
         }
-        handleEndIconClick={() => setDate("")}
+        handleEndIconClick={(e) => {
+          setDate(null);
+          e.stopPropagation();
+        }}
       />
       <Popover
         open={Boolean(datePopoverOpen) && !readOnly}
@@ -48,7 +58,12 @@ const DateSelectPopover = ({
         onClose={() => setDatePopoverOpen(null)}
         anchorEl={datePopoverOpen}
       >
-        <Calendar onChange={(item) => setDate(item)} date={date as Date} />
+        <Calendar
+          onChange={(item) => setDate(item)}
+          date={date as Date}
+          minDate={minDate}
+          maxDate={maxDate}
+        />
       </Popover>
     </>
   );
