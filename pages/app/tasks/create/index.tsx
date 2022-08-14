@@ -14,10 +14,22 @@ import { useGetLocalStorage } from "../../../../hooks/auth.hooks";
 import { useState } from "react";
 
 const CreateNewTask = () => {
-  const { fullName } = useGetLocalStorage();
-  const [formValues, setFormValues] = useState({
-    startDate: "",
-    endDate: "",
+  const { fullName, email } = useGetLocalStorage();
+  const [formValues, setFormValues] = useState<{
+    startDate: Date;
+    endDate: Date;
+    name: string;
+    type: string;
+    client: string;
+    entity: string;
+    assignee: string;
+    comments: string;
+    totalAmount: string;
+    paidAmount: string;
+    balanceAmount: string;
+  }>({
+    startDate: new Date(),
+    endDate: new Date(),
     name: "",
     type: "",
     client: "",
@@ -78,10 +90,10 @@ const CreateNewTask = () => {
                   />
                   <CommDateSelect
                     label="Start Date"
-                    handleChange={(date) =>
+                    handleChange={(startDate) =>
                       setFormValues({
                         ...formValues,
-                        startDate: date.toString(),
+                        startDate,
                       })
                     }
                     value={new Date(formValues.startDate)}
@@ -126,7 +138,7 @@ const CreateNewTask = () => {
                   gap={2}
                 >
                   <CommFormInput
-                    value={""}
+                    value={email}
                     label="Creator Email"
                     handleChange={() => {}}
                     sx={{ width: 250 }}
@@ -135,10 +147,10 @@ const CreateNewTask = () => {
                   />
                   <CommDateSelect
                     label="End Date"
-                    handleChange={(p) =>
+                    handleChange={(endDate) =>
                       setFormValues({
                         ...formValues,
-                        endDate: p.toString(),
+                        endDate,
                       })
                     }
                     value={new Date(formValues.endDate)}

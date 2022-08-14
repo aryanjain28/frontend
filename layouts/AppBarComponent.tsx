@@ -75,6 +75,7 @@ const AppBarComponent = ({
     localStorage.setItem("access_token", "");
     localStorage.setItem("user_id", "");
     localStorage.setItem("role", "");
+    localStorage.setItem("email", "");
     localStorage.setItem("fullname", "");
     toast.success(en.toast.successLogout);
     router.push(ROUTES.login);

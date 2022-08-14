@@ -46,6 +46,7 @@ const AuthWrapper: React.FC = ({ children }) => {
         localStorage.setItem("access_token", "");
         localStorage.setItem("user_id", "");
         localStorage.setItem("role", "");
+        localStorage.setItem("email", "");
         localStorage.setItem("fullname", "");
       }
     } else {

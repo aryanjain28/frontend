@@ -21,7 +21,8 @@ import MyTaskIcon from "@mui/icons-material/ContactPageOutlined";
 import { ROUTES } from "../constants/routes";
 import { Box } from "@mui/system";
 import { useRouter } from "next/router";
-import { ExpandLess, ExpandMore, StarBorder } from "@mui/icons-material";
+import { ExpandLess, ExpandMore } from "@mui/icons-material";
+import AddTaskIcon from "@mui/icons-material/PlaylistAddOutlined";
 import { useState } from "react";
 import { Collapse } from "@mui/material";
 import { useGetLocalStorage } from "../hooks/auth.hooks";
@@ -106,6 +107,12 @@ const DrawerComponent = ({
       icon: <AllTasksIcon />,
       route: ROUTES.tasks,
       children: [
+        {
+          label: "Create Task",
+          icon: <AddTaskIcon />,
+          route: ROUTES.createTask,
+          hidden: role === "STAFF",
+        },
         {
           label: "All Tasks",
           icon: <AllTasksIcon />,

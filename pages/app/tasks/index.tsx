@@ -79,7 +79,7 @@ const Tasks = () => {
               filterMap={filterMap}
               setFilterMap={setFilterMap}
             />
-            {!isAdmin() && (
+            {isAdmin() && (
               <Button
                 label={en.createNewTask}
                 onClick={() => router.push(ROUTES.createTask)}

@@ -23,6 +23,7 @@ export const useLoginUser = () => {
         localStorage.setItem("access_token", data.data.token);
         localStorage.setItem("user_id", data.data.userId);
         localStorage.setItem("role", data.data.role);
+        localStorage.setItem("email", data.data.email);
         localStorage.setItem(
           "fullname",
           `${data.data.fName} ${data.data.lName}`

@@ -2,9 +2,7 @@ import { API_ROUTES } from "../constants/routes";
 import {
   GetUserDetailsResponse,
   PostLoginUserPayload,
-  PostLoginUserResponse,
   PostUserPayload,
-  PostUserResponse,
 } from "../types/user.types";
 import { createRoute } from "../utils/routes";
 import { axiosInstance, GET, POST } from "./api";
