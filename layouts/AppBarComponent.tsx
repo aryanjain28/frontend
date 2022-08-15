@@ -7,7 +7,7 @@ import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import ListItemIcon from "@mui/material/ListItemIcon";
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { en } from "../constants/labels";
 import {
   AccountCircle,
@@ -63,13 +63,21 @@ const AppBarComponent = ({
 }) => {
   const router = useRouter();
   const { fullName, userId } = useGetLocalStorage();
-  const { data } = useGetMyTasks(userId as string);
-  const { data: myTasks } = useGetModifiedTasks();
+  const { data, refetch: getMyTasks } = useGetMyTasks(userId as string);
+  const { data: myTasks, refetch } = useGetModifiedTasks();
 
   const [anchorEl, setAnchorEl] = useState<MenuProps["anchorEl"] | null>(null);
   const [anchorNot, setAnchorNot] = useState<MenuProps["anchorEl"] | null>(
     null
   );
+
+  useEffect(() => {
+    getMyTasks();
+  }, []);
+
+  useEffect(() => {
+    refetch();
+  }, [data?.length]);
 
   const handleLogout = useCallback(() => {
     localStorage.setItem("access_token", "");

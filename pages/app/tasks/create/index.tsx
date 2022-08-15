@@ -297,10 +297,14 @@ const CreateNewTask = () => {
                     color="success"
                     label="Create Task"
                     isLoading={taskIsCreating}
+                    sx={{
+                      fontSize: "16px",
+                      textTransform: "none",
+                    }}
                   />
-                  <Typography>
+                  {/* <Typography>
                     {JSON.stringify(formValues, null, "\t")}
-                  </Typography>
+                  </Typography> */}
                 </Grid>
               </Box>
             </Grid>
