@@ -8,7 +8,7 @@ import { BreadCrumbsComp } from "../../../../features/BreadCrumbs";
 import { useGetLocalStorage } from "../../../../hooks/auth.hooks";
 import { useDataGrid } from "../../../../hooks/datagrid.hooks";
 import {
-  useGetModifiedTasks,
+  useGetMyModifiedTasks,
   useGetMyTasks,
 } from "../../../../hooks/tasks.hooks";
 import PageLayout from "../../../../layouts/PageLayout";
@@ -23,7 +23,7 @@ const MyTasks = () => {
   const taskId = router.query?.taskId;
 
   const { isLoading } = useGetMyTasks(userId as string);
-  const { data } = useGetModifiedTasks();
+  const { data } = useGetMyModifiedTasks();
   const [expandedRowId, setExpandedRowId] = useState<string | null>(
     (taskId as string) || null
   );

@@ -1,6 +1,6 @@
 import {
+  useGetAllModifiedTasks,
   useGetAllTasks,
-  useGetModifiedTasks,
 } from "../../../hooks/tasks.hooks";
 import { Divider, Typography } from "@mui/material";
 import { Box } from "@mui/system";
@@ -32,7 +32,7 @@ const Tasks = () => {
   );
   const columns = getTasksCol(expandedRowId, setExpandedRowId);
   const { isLoading } = useGetAllTasks(userId as string);
-  const { data } = useGetModifiedTasks();
+  const { data } = useGetAllModifiedTasks();
 
   const [query, setQuery] = useState("");
   const [filterMap, setFilterMap] = useState<FilterMap>(
@@ -91,7 +91,7 @@ const Tasks = () => {
                 onClick={() => router.push(ROUTES.createTask)}
                 variant="contained"
                 icon={<Add fontSize="small" />}
-                sx={{ width: "20%" }}
+                sx={{ width: "20%", textTransform: "none" }}
               />
             )}
           </Box>

@@ -46,7 +46,7 @@ export const ExpandedDataGridCell = ({
 }) => {
   const router = useRouter();
   const isMyTask = router.pathname.includes(ROUTES.myTasks);
-  const { fullName } = useGetLocalStorage();
+  const { fullName, userId } = useGetLocalStorage();
 
   const [formValues, setFormValues] = useState<any>(row);
   useEffect(() => {
@@ -66,8 +66,10 @@ export const ExpandedDataGridCell = ({
 
   const [anchorEl, setAnchorEl] = useState<MenuProps["anchorEl"] | null>(null);
   const [openConfirmModal, setOpenConfirmModal] = useState(false);
-  const { mutate: updateTask, isLoading: isUpdating } = usePatchTask();
-  const { mutate: deleteTask, isLoading: isDeleting } = useDeleteTask();
+  const { mutate: updateTask, isLoading: isUpdating } = usePatchTask(isMyTask);
+  const { mutate: deleteTask, isLoading: isDeleting } = useDeleteTask(
+    userId as string
+  );
 
   return (
     <>

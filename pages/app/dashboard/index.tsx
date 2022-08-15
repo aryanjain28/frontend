@@ -5,6 +5,8 @@ import PageLayout, { SvgIcon } from "../../../layouts/PageLayout";
 import Tasks from "../../../features/Tasks";
 import Clients from "../../../features/Clients";
 import Transactions from "../../../features/Transactions";
+import { useGetLocalStorage } from "../../../hooks/auth.hooks";
+import { useGetMyTasks } from "../../../hooks/tasks.hooks";
 
 const Header = () => (
   <>
@@ -39,6 +41,8 @@ const Header = () => (
 );
 
 const dashboard = () => {
+  const { userId } = useGetLocalStorage();
+  const { refetch } = useGetMyTasks(userId as string);
   return (
     <PageLayout>
       <Header />

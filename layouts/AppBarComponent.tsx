@@ -31,7 +31,7 @@ import { SvgIcon } from "./PageLayout";
 import { useGetLocalStorage } from "../hooks/auth.hooks";
 import { formatTime } from "../utils/common.utils";
 import { taskStatus } from "../utils/tasks.utils";
-import { useGetModifiedTasks, useGetMyTasks } from "../hooks/tasks.hooks";
+import { useGetMyModifiedTasks } from "../hooks/tasks.hooks";
 import { ModifiedTask, Task } from "../types/task.types";
 
 const drawerWidth = 240;
@@ -62,22 +62,13 @@ const AppBarComponent = ({
   setOpen: () => void;
 }) => {
   const router = useRouter();
-  const { fullName, userId } = useGetLocalStorage();
-  const { data, refetch: getMyTasks } = useGetMyTasks(userId as string);
-  const { data: myTasks, refetch } = useGetModifiedTasks();
+  const { fullName } = useGetLocalStorage();
+  const { data: myTasks } = useGetMyModifiedTasks();
 
   const [anchorEl, setAnchorEl] = useState<MenuProps["anchorEl"] | null>(null);
   const [anchorNot, setAnchorNot] = useState<MenuProps["anchorEl"] | null>(
     null
   );
-
-  useEffect(() => {
-    getMyTasks();
-  }, []);
-
-  useEffect(() => {
-    refetch();
-  }, [data?.length]);
 
   const handleLogout = useCallback(() => {
     localStorage.setItem("access_token", "");
@@ -243,56 +234,51 @@ const AppBarComponent = ({
           const status =
             taskStatus[notif.status as "PENDING" | "APPROVED" | "COMPLETED"];
           return (
-            <React.Fragment key={`$_${index}`}>
-              <MenuItem
-                onClick={() =>
-                  router.push(
-                    `${ROUTES.myTasks}/?status=${status.label}&taskId=${notif.id}`
-                  )
-                }
+            <MenuItem
+              key={index}
+              onClick={() =>
+                router.push(
+                  `${ROUTES.myTasks}/?status=${status.label}&taskId=${notif.id}`
+                )
+              }
+            >
+              <Grid
+                container
+                direction="row"
+                alignItems="center"
+                justifyContent="center"
+                xs={12}
+                width="400px"
+                pb={1}
+                borderBottom="1px #dadada solid"
               >
                 <Grid
                   container
-                  direction="row"
+                  direction="column"
+                  justifyContent="space-evenly"
                   alignItems="center"
-                  justifyContent="center"
-                  xs={12}
-                  width="400px"
+                  xs={2}
                 >
-                  <Grid
-                    container
-                    direction="column"
-                    justifyContent="space-evenly"
-                    alignItems="center"
-                    xs={2}
-                  >
-                    {status.icon}
-                  </Grid>
-                  <Grid
-                    xs={10}
-                    container
-                    direction="column"
-                    alignItems="flex-start"
-                    justifyContent="space-evenly"
-                  >
-                    <Typography variant="caption">
-                      {`${notif.assignedByFName} ${
-                        notif.assignedByLName
-                      }, (${formatTime(notif.assignedAt as Date)})`}
-                    </Typography>
-                    <Typography
-                      mt={0.5}
-                      variant="body2"
-                      maxWidth={"100%"}
-                      noWrap
-                    >
-                      {notif.name}
-                    </Typography>
-                  </Grid>
+                  {status.icon}
                 </Grid>
-              </MenuItem>
-              <Divider sx={{ p: 0, m: 0 }} />
-            </React.Fragment>
+                <Grid
+                  xs={10}
+                  container
+                  direction="column"
+                  alignItems="flex-start"
+                  justifyContent="space-evenly"
+                >
+                  <Typography variant="caption">
+                    {`${notif.assignedByFName || ""} ${
+                      notif.assignedByLName || ""
+                    } (${formatTime(notif.assignedAt as Date)})`}
+                  </Typography>
+                  <Typography mt={0.5} variant="body2" maxWidth={"100%"} noWrap>
+                    {notif.name}
+                  </Typography>
+                </Grid>
+              </Grid>
+            </MenuItem>
           );
         })}
         <MenuItem>
