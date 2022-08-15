@@ -42,6 +42,8 @@ const MyTasks = () => {
     expandedRowId,
   });
 
+  console.log("DATA:", data);
+
   return (
     <PageLayout>
       <Box

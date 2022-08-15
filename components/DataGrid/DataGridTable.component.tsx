@@ -59,14 +59,17 @@ const DataGridTableComponent = ({
                   return (
                     <React.Fragment key={`${row.id}_${index}`}>
                       <TableRow sx={{ background: open ? "#E7EBF0" : null }}>
-                        {columns.map((col) => (
-                          <DataGridCell
-                            key={col.key}
-                            row={row}
-                            col={col}
-                            index={index}
-                          />
-                        ))}
+                        {columns.map(
+                          (col) =>
+                            !col.hidden && (
+                              <DataGridCell
+                                key={col.key}
+                                row={row}
+                                col={col}
+                                index={index}
+                              />
+                            )
+                        )}
                       </TableRow>
                       <TableRow>
                         <ExpandedDataGridCell

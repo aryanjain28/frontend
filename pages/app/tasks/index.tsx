@@ -31,13 +31,15 @@ const Tasks = () => {
     (taskId as string) || null
   );
   const columns = getTasksCol(expandedRowId, setExpandedRowId);
-  const { isLoading } = useGetAllTasks(userId as string);
+  const { isFetching: isLoading } = useGetAllTasks(userId as string);
   const { data } = useGetAllModifiedTasks();
 
   const [query, setQuery] = useState("");
   const [filterMap, setFilterMap] = useState<FilterMap>(
     status ? { status: [`${status}`] } : {}
   );
+  console.log(data);
+
   const { paginationProps, dataGridProps } = useDataGrid({
     columns,
     data: data as Task[],
@@ -70,7 +72,6 @@ const Tasks = () => {
           </Box>
         </Box>
         <Divider sx={{ my: 0 }} />
-
         <Box mx={3}>
           <Box
             display="flex"
@@ -78,12 +79,11 @@ const Tasks = () => {
             justifyContent="space-between"
           >
             <DataGridFeatures
-              showSearch
-              showFilters
               query={query}
               setQuery={setQuery}
+              placeholder={en.searchTaskName}
               filterMap={filterMap}
-              setFilterMap={setFilterMap}
+              setFilterMap={(value) => setFilterMap(value)}
             />
             {isAdmin() && (
               <Button
@@ -96,9 +96,8 @@ const Tasks = () => {
             )}
           </Box>
           <DataGridTableComponent
+            {...dataGridProps}
             isLoading={isLoading}
-            columns={columns}
-            data={data || []}
             expandedRowId={expandedRowId}
           />
         </Box>

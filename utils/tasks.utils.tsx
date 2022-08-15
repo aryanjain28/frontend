@@ -11,7 +11,7 @@ import { ROUTES } from "../constants/routes";
 import { AllTasks, ModifiedTask, Task } from "../types/task.types";
 import { ColumnG } from "../types/datagrid.types";
 import { Link, Tooltip, Typography } from "@mui/material";
-import { formatTime2, isAdmin } from "./common.utils";
+import { formatTime2, isAdmin, isStaff } from "./common.utils";
 import { KeyboardArrowDown, KeyboardArrowUp } from "@mui/icons-material";
 import { CustomTooltip } from "../features/CustomTooltip";
 import { en } from "../constants/labels";
@@ -170,6 +170,7 @@ export const getTasksCol = (
   {
     headerName: "",
     key: "",
+    hidden: isStaff(),
     Component: ({ row }) => {
       return expandedRowId === row.id ? (
         <KeyboardArrowUp
