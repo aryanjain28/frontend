@@ -1,7 +1,7 @@
 import {
+  CircularProgress,
   IconButton,
   InputAdornment,
-  SvgIconTypeMap,
   TextField,
   Typography,
 } from "@mui/material";
@@ -10,7 +10,8 @@ import React, { ChangeEvent } from "react";
 
 export const FormInput = (props: FormInputProps) => {
   const {
-    sx,
+    sx = {},
+    isLoading = false,
     type = "text",
     variant = "outlined",
     placeholder,
@@ -19,15 +20,29 @@ export const FormInput = (props: FormInputProps) => {
     value,
     error,
     helperText,
+    disabled = false,
     handleOnChange,
     handleOnBlur,
     startIcon,
     endIcon,
     handleStartIconClick,
     handleEndIconClick,
+    handleOnClick,
+    topLabel = "",
   } = props;
+
   return (
-    <Box sx={{ my: 2 }}>
+    <Box>
+      {Boolean(topLabel) && (
+        <Typography
+          fontSize="13px"
+          variant="subtitle2"
+          fontWeight={700}
+          color="GrayText"
+        >
+          {topLabel}
+        </Typography>
+      )}
       <TextField
         label={label}
         type={type}
@@ -35,12 +50,14 @@ export const FormInput = (props: FormInputProps) => {
         size="small"
         placeholder={placeholder}
         value={value}
+        onClick={(e) => (handleOnClick ? handleOnClick(e) : null)}
         onChange={(e) => handleOnChange(e.target.value)}
         onBlur={handleOnBlur}
         multiline={Boolean(rows)}
         rows={rows ? rows : 1}
         error={error}
         helperText={helperText}
+        disabled={disabled}
         InputProps={{
           startAdornment: startIcon && (
             <InputAdornment position="start">
@@ -49,13 +66,19 @@ export const FormInput = (props: FormInputProps) => {
               </IconButton>
             </InputAdornment>
           ),
-          endAdornment: endIcon && (
-            <InputAdornment position="end">
-              <IconButton onClick={handleEndIconClick}>{endIcon}</IconButton>
-            </InputAdornment>
+          endAdornment: isLoading ? (
+            <CircularProgress size={13} />
+          ) : (
+            endIcon && (
+              <InputAdornment position="end">
+                <IconButton onClick={(e) => handleEndIconClick!(e)}>
+                  {endIcon}
+                </IconButton>
+              </InputAdornment>
+            )
           ),
         }}
-        {...sx}
+        sx={{ ...sx }}
       />
     </Box>
   );
@@ -65,16 +88,20 @@ interface FormInputProps {
   label: string;
   value: string | number;
   variant?: "filled" | "outlined" | "standard";
+  handleOnClick?: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
   handleOnChange: (value: string | number) => void;
   handleOnBlur?: () => void;
   type?: string;
   rows?: number;
   sx?: any;
+  isLoading?: boolean;
   placeholder?: string;
   error?: boolean;
   helperText?: string;
+  disabled?: boolean;
   startIcon?: any; //SvgIconTypeMap | string;
   endIcon?: any; //SvgIconTypeMap | string;
   handleStartIconClick?: () => void;
-  handleEndIconClick?: () => void;
+  handleEndIconClick?: (e: any) => void;
+  topLabel?: string;
 }

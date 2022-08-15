@@ -1,22 +1,29 @@
 import { API_ROUTES } from "../constants/routes";
 import {
+  GetUserDetailsResponse,
+  GetUsersInfoResponse,
   PostLoginUserPayload,
-  PostLoginUserResponse,
   PostUserPayload,
-  PostUserResponse,
 } from "../types/user.types";
-import { POST } from "./api";
+import { createRoute } from "../utils/routes";
+import { axiosInstance, GET, POST } from "./api";
 
 export const postUser = (payload: PostUserPayload) => {
   const url = API_ROUTES.POST_USER;
-  return POST<PostUserPayload, PostUserResponse>(url, payload).then(
-    (res) => res
-  );
+  return axiosInstance.post(url, payload).then((res) => res.data);
 };
 
 export const loginUser = (payload: PostLoginUserPayload) => {
   const url = API_ROUTES.POST_LOGIN_USER;
-  return POST<PostLoginUserPayload, PostLoginUserResponse>(url, payload).then(
-    (res) => res
-  );
+  return axiosInstance.post(url, payload).then((res) => res.data);
+};
+
+export const getUserDetails = (userId: string) => {
+  const url = createRoute(API_ROUTES.GET_USER_DETAILS, { userId });
+  return GET<undefined, GetUserDetailsResponse>(url).then((res) => res.data);
+};
+
+export const getUsersInfo = () => {
+  const url = API_ROUTES.GET_USERS_INFO;
+  return GET<undefined, GetUsersInfoResponse>(url).then((res) => res.data);
 };

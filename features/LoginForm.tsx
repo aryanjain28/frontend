@@ -4,7 +4,9 @@ import {
   Icon,
   IconButton,
   InputAdornment,
+  Link,
   TextField,
+  Typography,
 } from "@mui/material";
 import { useState } from "react";
 import { Button } from "../components/Button";
@@ -15,8 +17,6 @@ import { Box } from "@mui/system";
 import { useRouter } from "next/router";
 import { ROUTES } from "../constants/routes";
 import AccountIcon from "@mui/icons-material/AccountCircleOutlined";
-import KeyIcon from "@mui/icons-material/KeyOutlined";
-import PersonAddIcon from "@mui/icons-material/PersonAddOutlined";
 
 export const LoginForm = () => {
   const [authDetails, setAuthDetails] = useState<{
@@ -58,18 +58,18 @@ export const LoginForm = () => {
     });
   };
 
-  console.log("Inside Login form");
-
   return (
     <Grid
       container
-      sx={{ boxShadow: 3 }}
-      borderRadius="15px"
       direction="column"
       alignItems="center"
-      justifyContent="end"
+      justifyContent="center"
       py={4}
+      width="100%"
     >
+      <Typography variant="h6" py={2}>
+        Login To Your Account
+      </Typography>
       <FormInput
         label={authDetails.email.label}
         value={authDetails.email.value}
@@ -87,6 +87,7 @@ export const LoginForm = () => {
         helperText={authDetails.email.error}
         variant="outlined"
         endIcon={<AccountIcon />}
+        sx={{ width: 270, my: 2 }}
       />
       <FormInput
         type={showPassword ? "text" : "password"}
@@ -107,22 +108,18 @@ export const LoginForm = () => {
         variant="outlined"
         handleEndIconClick={() => setShowPassword(!showPassword)}
         endIcon={showPassword ? <VisibilityOff /> : <Visibility />}
+        sx={{ width: 270 }}
       />
-      <Box display="flex" alignItems="center" justifyContent="center" gap={3}>
-        <Button
-          label={en.login}
-          icon={<Key />}
-          onClick={handleLoginClick}
-          isLoading={isLoading}
-          sx={{ my: 3 }}
-        />
-        <Button
-          label={en.signUp}
-          icon={<PersonAddIcon />}
-          onClick={() => router.push(ROUTES.signUp)}
-          sx={{ my: 3 }}
-        />
-      </Box>
+      <Button
+        label={en.login}
+        icon={<Key />}
+        onClick={handleLoginClick}
+        isLoading={isLoading}
+        sx={{ my: 3, width: 270 }}
+      />
+      <Link href={ROUTES.forgotPassword} sx={{ cursor: "pointer" }}>
+        {en.forgotPwd}
+      </Link>
     </Grid>
   );
 };

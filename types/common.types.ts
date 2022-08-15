@@ -1,3 +1,9 @@
+export type Select = { label: string; value: string }[];
+
+export interface APIData {
+  response: { data: { status: number; message: string } };
+}
+
 export interface APIError {
   response: {
     data: {
@@ -6,3 +12,9 @@ export interface APIError {
     };
   };
 }
+
+export interface FilterMap {
+  [key: string]: (string | number)[];
+}
+
+export type TaskStatusType = "APPROVED" | "COMPLETED" | "PENDING";

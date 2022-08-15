@@ -14,8 +14,7 @@ export const Button = ({
   return (
     <MUIButton
       sx={{
-        textTransform: "none",
-        fontWeight: 700,
+        textTransform: "uppercase",
         fontSize: "14px",
         height: "40px",
         ...sx,
@@ -36,7 +35,7 @@ export const Button = ({
 };
 
 interface ButtonProps {
-  onClick: () => void;
+  onClick: (e?: any) => void;
   isLoading?: boolean;
   sx?: any;
   disabled?: boolean;

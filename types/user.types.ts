@@ -3,6 +3,7 @@ export interface User {
   lName: string;
   email: string;
   password: string;
+  role?: "ADMIN" | "STAFF";
 }
 
 export interface PostUserPayload {
@@ -26,9 +27,36 @@ export interface PostLoginUserResponse {
   status: number;
   message: string;
   data: {
+    userId: string;
     fName: string;
     lName: string;
     token: string;
     email: string;
   };
+}
+
+export interface GetUserDetailsResponse {
+  status: number;
+  message: string;
+  data: {
+    id: string;
+    fName: string;
+    lName: string;
+    email: string;
+    role: "ADMIN" | "STAFF";
+    createdAt: string;
+    updatedAt: string;
+  };
+}
+
+export interface GetUsersInfoResponse {
+  status: number;
+  message: string;
+  data: {
+    id: string;
+    fName: string;
+    lName: string;
+    email: string;
+    role: "ADMIN" | "STAFF";
+  }[];
 }

@@ -5,15 +5,29 @@ export const API_ROUTES = {
   PATCH_CUSTOMER: "/customers/:customerId",
   DELETE_CUSTOMER: "/customers/:customerId",
 
-  GET_USERS: "/users",
+  GET_USERS_INFO: "/users",
   GET_USER_DETAILS: "/users/user/:userId",
   POST_USER: "/users/user/signUp",
   POST_LOGIN_USER: "/users/user/login",
+
+  //Tasks
+  GET_TASKS: "/tasks",
+  GET_MY_TASKS: "/tasks/myTasks",
+  POST_TASK: "/tasks/task/create",
+  UPDATE_TASK: "/tasks/task/:taskId",
+  DELETE_TASK: "/tasks/task/:taskId",
+
+  // Task Types
+  GET_TASKS_TYPES: "/taskTypes",
+
+  // Clients
+  GET_ALL_CLIENTS: "/clients",
 };
 
 export const ROUTES = {
   login: "/app/login",
   signUp: "/app/registerUser",
+  forgotPassword: "/app/forgotPassword",
   dashboard: "/app/dashboard",
   myFirm: "/app/myFirm",
   dayBook: "/app/daybook",
@@ -23,4 +37,8 @@ export const ROUTES = {
   links: "/app/links",
   settings: "/app/settings",
   reports: "/app/reports",
+
+  tasks: "/app/tasks",
+  myTasks: "/app/tasks/myTasks",
+  createTask: "/app/tasks/create",
 };

@@ -1,10 +1,10 @@
 import { Add } from "@mui/icons-material";
-import { Divider, Paper, Typography } from "@mui/material";
-import { borderRadius, Box, height } from "@mui/system";
-import { Router, useRouter } from "next/router";
+import { Divider, Typography } from "@mui/material";
+import { Box } from "@mui/system";
+import { useRouter } from "next/router";
 import { useState } from "react";
 import { Button } from "../../../components/Button";
-import { DataGridComponent } from "../../../components/DataGrid/DataGrid.component";
+import DataGrid from "../../../components/DataGrid/DataGridMain.component";
 import { BreadCrumbsComp } from "../../../features/BreadCrumbs";
 import { useGetCustomers } from "../../../hooks/customers.hooks";
 import { useDataGrid } from "../../../hooks/datagrid.hooks";
@@ -50,12 +50,14 @@ const Customer = () => {
           />
         </Box>
         <Divider sx={{ my: 0 }} />
-        <DataGridComponent
+        <DataGrid
           {...dataGridProps}
           isLoading={isLoading}
           showSearch
           query={query}
           setQuery={setQuery}
+          filterMap={{}}
+          setFilterMap={() => {}}
         />
       </Box>
     </PageLayout>

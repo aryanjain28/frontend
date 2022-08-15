@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { Column, Row } from "../types/datagrid.types";
+import { getNestedObjValue } from "../utils/common.utils";
 
 export const useDataGrid = (props: useDataGridProps) => {
   const {
@@ -8,26 +9,44 @@ export const useDataGrid = (props: useDataGridProps) => {
     pageSize,
     pageNumber: parentPageNumber,
     query,
+    filterMap,
+    expandedRowId,
   } = props;
   const [pageNumber, setPageNumber] = useState(parentPageNumber || 1);
 
-  const filteredTableData = useMemo(
+  const checkFilter = (row: Row) => {
+    let check = true;
+    if (filterMap) {
+      for (const [key, filterValue] of Object.entries(filterMap)) {
+        const rowValue = row[key];
+        check = filterValue.includes(rowValue) || filterValue.length < 1;
+        if (check) return check;
+      }
+    }
+    return check;
+  };
+
+  const filteredTableData: any = (data || []).filter((row: Row) =>
+    checkFilter(row)
+  );
+
+  const queryFilteredTableData = useMemo(
     () =>
       query
-        ? data.filter((row: Row) =>
+        ? filteredTableData.filter((row: Row) =>
             row.name.toLowerCase().includes(query.toLowerCase())
           )
-        : data,
-    [data, query]
+        : filteredTableData,
+    [filteredTableData, query]
   );
 
   const paginatedData: Row[] = useMemo(
     () =>
-      filteredTableData.slice(
+      queryFilteredTableData.slice(
         pageSize * (pageNumber - 1),
         pageSize * pageNumber
       ),
-    [data, filteredTableData, pageSize, pageNumber, query]
+    [data, queryFilteredTableData, pageSize, pageNumber, query]
   );
 
   return useMemo(
@@ -43,7 +62,7 @@ export const useDataGrid = (props: useDataGridProps) => {
         pageNumber,
       },
     }),
-    [data, filteredTableData, pageSize, pageNumber, query]
+    [data, queryFilteredTableData, pageSize, pageNumber, query, expandedRowId]
   );
 };
 
@@ -55,4 +74,7 @@ interface useDataGridProps {
   queryKeys?: string[];
   pageNumber?: number;
   setPageNumber?: (page: number) => void;
+  searchParam?: string;
+  filterMap?: { [key: string]: (string | number)[] };
+  expandedRowId?: string | null;
 }
