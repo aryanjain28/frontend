@@ -1,14 +1,24 @@
 import { Box, Divider, Typography } from "@mui/material";
-import { useRouter } from "next/router";
+import { useState } from "react";
 import { en } from "../../../../constants/labels";
 import { ROUTES } from "../../../../constants/routes";
 import { BreadCrumbsComp } from "../../../../features/BreadCrumbs";
 import NewClientForm from "../../../../features/NewClientForm";
-import { useGetLocalStorage } from "../../../../hooks/auth.hooks";
 import PageLayout from "../../../../layouts/PageLayout";
 import { palette } from "../../../../styles/theme";
+import { ModifiedClientFields } from "../../../../types/clients.types";
 
 const CreateClient = () => {
+  const [formValues, setFormValues] = useState<ModifiedClientFields>({
+    gstIn: "",
+    registrationDate: "",
+    taxpayerType: "",
+    legalName: "",
+    businessName: "",
+    businessConstitution: "",
+    businessActivity: "",
+    panNumber: "",
+  });
   return (
     <PageLayout>
       <Box
@@ -23,8 +33,8 @@ const CreateClient = () => {
           <Box>
             <BreadCrumbsComp
               breadCrumbs={[
-                { label: en.dashboard, url: ROUTES.dashboard },
-                { label: en.newClient, url: ROUTES.createClient },
+                { label: en.dashboard as string, url: ROUTES.dashboard },
+                { label: en.newClient as string, url: ROUTES.createClient },
               ]}
             />
             <Typography mx={3} color={palette.primary.main} variant="h6">
@@ -33,7 +43,11 @@ const CreateClient = () => {
           </Box>
         </Box>
         <Divider sx={{ my: 0 }} />
-        <NewClientForm />
+        <NewClientForm
+          formValues={formValues}
+          setFormValues={setFormValues}
+          onSave={() => console.log(formValues)}
+        />
       </Box>
     </PageLayout>
   );

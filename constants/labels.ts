@@ -1,4 +1,4 @@
-export const en = {
+export const en: { [key: string]: string | number | object } = {
   //firm info
   firm: {
     name: "CA Sandeep Sao & Associates",
@@ -62,7 +62,7 @@ export const en = {
 
   // Client Create Page
   gstIn: "GSTIN",
-  regisDate: "Date of Registration",
+  registrationDate: "Date of Registration",
   taxpayerType: "Taxpayer Type",
   legalName: "Legal Name",
   businessName: "Name of Business",

@@ -1,6 +1,6 @@
 import { Typography } from "@mui/material";
 import { CustomTooltip } from "../features/CustomTooltip";
-import { ModClient } from "../types/clients.types";
+import { ClientFormFields, ModClient } from "../types/clients.types";
 import { ColumnG } from "../types/datagrid.types";
 import { formatTime3, isStaff } from "./common.utils";
 import AvailableIcon1 from "@mui/icons-material/TaskAltOutlined";
@@ -8,6 +8,13 @@ import AvailableIcon from "@mui/icons-material/CheckCircle";
 import UnavailableIcon1 from "@mui/icons-material/CancelOutlined";
 import UnavailableIcon from "@mui/icons-material/MoreHoriz";
 import { palette } from "../styles/theme";
+
+export const getArrInGroups = (arr: any, nGroups: number) => {
+  const perGroup = Math.ceil(arr.length / nGroups);
+  return new Array(nGroups)
+    .fill("")
+    .map((_, i) => arr.slice(i * perGroup, (i + 1) * perGroup));
+};
 
 const checkAvailibility = (valueToCheck: boolean) =>
   Boolean(valueToCheck) ? (
@@ -64,3 +71,30 @@ export const getClientsColumns = (): ColumnG<ModClient>[] => [
     Component: ({ row }) => checkAvailibility(row.isOther),
   },
 ];
+
+export const clientFormFields: ClientFormFields = {
+  businessInfo: [
+    { name: "gstIn" },
+    { name: "registrationDate", fieldType: "date" },
+    { name: "taxpayerType", fieldType: "select" },
+    { name: "legalName" },
+    { name: "businessName" },
+    { name: "businessConstitution", fieldType: "select" },
+    { name: "businessActivity" },
+    { name: "panNumber" },
+  ],
+  contactDetails: [
+    { name: "address" },
+    { name: "city" },
+    { name: "district" },
+    { name: "state", fieldType: "select" },
+    { name: "pinCode" },
+    { name: "primaryMob" },
+    { name: "secondaryMob" },
+    { name: "primaryEmail" },
+  ],
+  gstFields: [
+    { name: "username" },
+    { name: "password", fieldType: "password" },
+  ],
+};
