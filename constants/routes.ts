@@ -33,6 +33,7 @@ export const ROUTES = {
   dayBook: "/app/daybook",
   gstInvoice: "/app/gstInvoice",
   clients: "/app/clients",
+  createClient: "/app/clients/create",
   hr: "/app/hr",
   links: "/app/links",
   settings: "/app/settings",

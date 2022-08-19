@@ -17,7 +17,7 @@ const DataGrid = (props: DataGridProps) => {
     placeholder,
     filterMap,
     setFilterMap,
-    expandedRowId,
+    expandedRowId = null,
     setExpandedRowId,
   } = props;
   return (
@@ -28,7 +28,7 @@ const DataGrid = (props: DataGridProps) => {
         query={query}
         setQuery={setQuery}
         filterMap={filterMap}
-        setFilterMap={setFilterMap}
+        setFilterMap={setFilterMap!}
         placeholder={placeholder}
       />
       <DataGridTable
@@ -51,8 +51,8 @@ interface DataGridProps {
   sx?: any;
   isLoading: boolean;
   placeholder?: string;
-  filterMap: FilterMap;
-  setFilterMap: (value: FilterMap) => void;
+  filterMap?: FilterMap;
+  setFilterMap?: (value: FilterMap) => void;
   expandedRowId?: string | null;
   setExpandedRowId?: (val: string | null) => void;
 }

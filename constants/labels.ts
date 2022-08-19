@@ -39,6 +39,8 @@ export const en = {
   startDate: "Start Date",
   taskName: "Task Name",
   client: "Client",
+  newClient: "New Client",
+  createNewClient: "Create New Client",
   assignee: "Assignee",
   creatorEmail: "Creator Email",
   endDate: "End Date",
@@ -57,6 +59,26 @@ export const en = {
   cnfPassword: "Confirm Password",
   heading: "CA",
   forgotPwd: "Forgot Password?",
+
+  // Client Create Page
+  gstIn: "GSTIN",
+  regisDate: "Date of Registration",
+  taxpayerType: "Taxpayer Type",
+  legalName: "Legal Name",
+  businessName: "Name of Business",
+  businessConstitution: "Constitution of Business",
+  businessActivity: "Business Activity",
+  panNumber: "PAN Number",
+  address: "Address",
+  city: "City",
+  district: "District",
+  state: "State",
+  pinCode: "PIN Code",
+  primaryMob: "Primary Mobile",
+  secondaryMob: "Secondary Mobile",
+  primaryEmail: "Primary Email",
+  username: "Username",
+  passwword: "Password",
 
   // toast messages
   toast: {

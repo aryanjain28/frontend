@@ -21,7 +21,7 @@ import MyTaskIcon from "@mui/icons-material/ContactPageOutlined";
 import { ROUTES } from "../constants/routes";
 import { Box } from "@mui/system";
 import { useRouter } from "next/router";
-import { ExpandLess, ExpandMore } from "@mui/icons-material";
+import { ExpandLess, ExpandMore, PeopleAltOutlined } from "@mui/icons-material";
 import AddTaskIcon from "@mui/icons-material/PlaylistAddOutlined";
 import { useState } from "react";
 import { Collapse, Tooltip } from "@mui/material";
@@ -85,11 +85,12 @@ const DrawerComponent = ({
   setOpen: () => void;
 }) => {
   const router = useRouter();
-  const [openNestedChild, setOpenNestedChild] = useState(false);
+  const [openParentId, setOpenParentId] = useState<number | null>(-1);
   const { role } = useGetLocalStorage();
 
   const drawerElements = [
     {
+      id: 1,
       label: "Dashboard",
       icon: <DashboardIcon />,
       route: ROUTES.dashboard,
@@ -97,6 +98,7 @@ const DrawerComponent = ({
       hidden: false,
     },
     {
+      id: 2,
       label: "My Firm",
       icon: <MyFirmIcon />,
       route: ROUTES.myFirm,
@@ -104,6 +106,7 @@ const DrawerComponent = ({
       hidden: false,
     },
     {
+      id: 3,
       label: "Tasks",
       icon: <AllTasksIcon />,
       route: ROUTES.tasks,
@@ -129,6 +132,7 @@ const DrawerComponent = ({
       ],
     },
     {
+      id: 4,
       label: "GST Invoice",
       icon: <GstInvoiceIcon />,
       route: ROUTES.gstInvoice,
@@ -136,13 +140,28 @@ const DrawerComponent = ({
       hidden: false,
     },
     {
-      label: "Client Master",
+      id: 5,
+      label: "Clients",
       icon: <ClientsIcon />,
       route: ROUTES.clients,
-      children: [],
+      children: [
+        {
+          label: "Add New Client",
+          icon: <AddTaskIcon />,
+          route: ROUTES.createClient,
+          hidden: false,
+        },
+        {
+          label: "View Clients",
+          icon: <PeopleAltOutlined />,
+          route: ROUTES.clients,
+          hidden: false,
+        },
+      ],
       hidden: false,
     },
     {
+      id: 6,
       label: "HR",
       icon: <HrIcon />,
       route: ROUTES.hr,
@@ -150,6 +169,7 @@ const DrawerComponent = ({
       hidden: false,
     },
     {
+      id: 7,
       label: "Links",
       icon: <LinksIcon />,
       route: ROUTES.links,
@@ -157,6 +177,7 @@ const DrawerComponent = ({
       hidden: false,
     },
     {
+      id: 8,
       label: "Settings",
       icon: <SettingsIcon />,
       route: ROUTES.settings,
@@ -164,6 +185,7 @@ const DrawerComponent = ({
       hidden: false,
     },
     {
+      id: 9,
       label: "Reports",
       icon: <ReportsIcon />,
       route: ROUTES.reports,
@@ -185,7 +207,7 @@ const DrawerComponent = ({
       <Divider />
       <List>
         {drawerElements.map(
-          ({ label, icon, route, children, hidden }, index) => {
+          ({ id: parentId, label, icon, route, children, hidden }, index) => {
             const isSelected = router.pathname.includes(route);
             return (
               <Box
@@ -204,7 +226,9 @@ const DrawerComponent = ({
                   onClick={() =>
                     children.length < 1
                       ? router.push(route)
-                      : setOpenNestedChild(!openNestedChild)
+                      : setOpenParentId(
+                          openParentId === parentId ? null : parentId
+                        )
                   }
                 >
                   <ListItemButton
@@ -230,10 +254,18 @@ const DrawerComponent = ({
                     />
                     {open &&
                       children.length > 0 &&
-                      (openNestedChild ? <ExpandLess /> : <ExpandMore />)}
+                      (parentId === openParentId ? (
+                        <ExpandLess />
+                      ) : (
+                        <ExpandMore />
+                      ))}
                   </ListItemButton>
                   {
-                    <Collapse in={openNestedChild} timeout="auto" unmountOnExit>
+                    <Collapse
+                      in={parentId === openParentId}
+                      timeout="auto"
+                      unmountOnExit
+                    >
                       {children.map(
                         ({ label, icon, route, hidden }, index) =>
                           !hidden && (

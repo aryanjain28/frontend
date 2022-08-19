@@ -82,7 +82,7 @@ export const SelectComponent = ({
   disabled = false,
 }: SelecComponentProps) => {
   return (
-    <FormControl>
+    <>
       <Box display="flex" alignItems="center" gap={1}>
         <Typography fontSize="13px" color={"GrayText"} fontWeight={700}>
           {label}
@@ -121,6 +121,6 @@ export const SelectComponent = ({
           </MenuItem>
         )}
       </Select>
-    </FormControl>
+    </>
   );
 };
