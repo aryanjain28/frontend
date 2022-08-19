@@ -172,7 +172,7 @@ const NewClientForm = (props: NewClientFormProps) => {
   const router = useRouter();
 
   return (
-    <Box m={3} borderRadius={2} border="1px green solid">
+    <Box m={3} borderRadius={2} border={`1px ${palette.secondary.light} solid`}>
       <ClientBusinessInfo
         formValues={formValues}
         formFields={businessInfo}
