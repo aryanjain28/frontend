@@ -3,12 +3,9 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import { Grid } from "@mui/material";
-import {
-  Delete,
-  DeleteForeverOutlined,
-  DeleteOutlined,
-} from "@mui/icons-material";
+import { DeleteOutlined } from "@mui/icons-material";
 import { Button } from "./Button";
+import { palette } from "../styles/theme";
 
 interface ConfimationModalProps {
   open: boolean;
@@ -50,7 +47,7 @@ export default function ConfimationModal({
           <Typography variant="h6" mb={3}>
             Delete Task
           </Typography>
-          <Box p={2} bgcolor="#f8f8f8" borderRadius="12px">
+          <Box p={2} bgcolor={palette.secondary.tint} borderRadius="12px">
             <Typography px={5} mb={3}>
               Deleting a task will permanently remove it. Are you sure about
               deleting this?

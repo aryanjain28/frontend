@@ -7,6 +7,7 @@ export const en = {
     mobile: "+91 02226 14670",
   },
 
+  alreadyAnAccount: "Already have an account?",
   noAvailableOptions: "No Available options",
   noData: "Nothing to show!",
   searchTable: "Search Table",

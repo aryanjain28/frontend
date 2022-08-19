@@ -21,7 +21,7 @@ function RegisterUser() {
             xs={12}
           >
             <Grid item xs={5}>
-              <Typography variant="h4">Already have an account?</Typography>
+              <Typography variant="h4">{en.alreadyAnAccount}</Typography>
               <Button
                 label={en.login}
                 icon={<Key />}

@@ -20,6 +20,7 @@ import { Button } from "../../../components/Button";
 import { Add } from "@mui/icons-material";
 import { isAdmin } from "../../../utils/common.utils";
 import { useGetLocalStorage } from "../../../hooks/auth.hooks";
+import { palette } from "../../../styles/theme";
 
 const Tasks = () => {
   const router = useRouter();
@@ -38,8 +39,6 @@ const Tasks = () => {
   const [filterMap, setFilterMap] = useState<FilterMap>(
     status ? { status: [`${status}`] } : {}
   );
-  console.log(data);
-
   const { paginationProps, dataGridProps } = useDataGrid({
     columns,
     data: data as Task[],
@@ -54,7 +53,7 @@ const Tasks = () => {
         sx={{
           mx: 4,
           my: 2,
-          border: "#dadada 1.5px solid",
+          border: `${palette.secondary.light} 1.5px solid`,
           borderRadius: "5px",
         }}
       >
@@ -66,7 +65,7 @@ const Tasks = () => {
                 { label: en.allTasks, url: ROUTES.tasks },
               ]}
             />
-            <Typography mx={3} color="#0B1246" variant="h6">
+            <Typography mx={3} color={palette.primary.main} variant="h6">
               {en.allTasks}
             </Typography>
           </Box>

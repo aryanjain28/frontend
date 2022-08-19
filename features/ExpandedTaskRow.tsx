@@ -34,6 +34,7 @@ import { useGetAllUsersInfo } from "../hooks/user.hooks";
 import { useRouter } from "next/router";
 import { ROUTES } from "../constants/routes";
 import { useGetLocalStorage } from "../hooks/auth.hooks";
+import { palette } from "../styles/theme";
 
 export const ExpandedDataGridCell = ({
   row = {},
@@ -75,11 +76,11 @@ export const ExpandedDataGridCell = ({
     <>
       <TableCell sx={{ p: 0 }} colSpan={colSpan}>
         <Collapse in={open} unmountOnExit>
-          <Box p={1} bgcolor="#E7EBF0" borderRadius="5px">
+          <Box p={0} bgcolor={palette.neutral.tint} borderRadius="5px">
             <Grid
               container
               direction="row"
-              alignItems="end"
+              alignItems="start"
               justifyContent="end"
               xs={12}
             >
@@ -87,7 +88,7 @@ export const ExpandedDataGridCell = ({
                 <Box
                   display="flex"
                   alignItems="center"
-                  justifyContent="space-around"
+                  justifyContent="space-between"
                   p={1}
                   gap={1}
                 >
@@ -136,7 +137,7 @@ export const ExpandedDataGridCell = ({
                 <Box
                   display="flex"
                   alignItems="start"
-                  justifyContent="space-around"
+                  justifyContent="space-between"
                   p={1}
                   gap={1}
                 >
@@ -178,7 +179,7 @@ export const ExpandedDataGridCell = ({
                 <Box
                   display="flex"
                   alignItems="start"
-                  justifyContent="space-around"
+                  justifyContent="space-between"
                   p={1}
                   gap={1}
                 >
@@ -238,13 +239,12 @@ export const ExpandedDataGridCell = ({
                 direction="column"
                 alignItems="center"
                 justifyContent="space-between"
-                borderLeft="#dadedf 1px solid"
-                borderRight="#dadedf 1px solid"
-                height="232px"
+                borderLeft={`${palette.secondary.light} 1px solid`}
+                borderRight={`${palette.secondary.light} 1px solid`}
                 xs={2}
                 py={1}
                 px={2}
-                gap={1}
+                gap={2}
               >
                 {[
                   {
@@ -278,28 +278,22 @@ export const ExpandedDataGridCell = ({
               <Grid
                 container
                 xs={2}
+                gap={2}
                 direction="column"
                 alignItems="center"
                 justifyContent={"space-between"}
-                height="232px"
               >
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      color="success"
-                      checked={formValues.status === "APPROVED"}
-                    />
-                  }
-                  label="Approve"
-                  sx={{
-                    color: "#2e7d32",
-                    bgcolor: "white",
-                    px: 3,
-                    my: 2,
-                    borderRadius: "15px",
-                  }}
-                />
-
+                <Box sx={{ p: 1 }}>
+                  <CommFormInput
+                    label="Comments"
+                    value={formValues.comments}
+                    handleChange={(v) =>
+                      setFormValues({ ...formValues, comments: v })
+                    }
+                    rows={4}
+                    readOnly={isStaff()}
+                  />
+                </Box>
                 <Box
                   width="100%"
                   display="flex"

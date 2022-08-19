@@ -4,6 +4,7 @@ import { en } from "../constants/labels";
 import TotalFeesIcon from "@mui/icons-material/ArticleOutlined";
 import TotalPaidIcon from "@mui/icons-material/GradingOutlined";
 import BalanceIcon from "@mui/icons-material/NoteAddOutlined";
+import { palette } from "../styles/theme";
 
 function Transactions() {
   const transactions = [
@@ -25,7 +26,12 @@ function Transactions() {
   ];
   return (
     <Box my={2}>
-      <Typography my={1} fontSize={"15px"} fontWeight={600} color="#777777">
+      <Typography
+        my={1}
+        fontSize={"15px"}
+        fontWeight={600}
+        color={palette.neutral.main}
+      >
         {en.transactions}
       </Typography>
 

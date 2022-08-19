@@ -41,7 +41,7 @@ export const RegisterForm = () => {
     };
     mutate({
       payload: { data },
-      callback: () => router.push(ROUTES.dashboard),
+      callback: () => router.push(ROUTES.login),
     });
   };
 

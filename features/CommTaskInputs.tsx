@@ -13,6 +13,7 @@ export const CommFormInput = ({
   value,
   handleChange,
   icon,
+  rows,
 }: {
   sx?: any;
   label?: string;
@@ -22,6 +23,7 @@ export const CommFormInput = ({
   handleChange: (value: string) => void;
   icon?: any;
   isLoading?: boolean;
+  rows?: number;
 }) => (
   <FormInput
     label={""}
@@ -32,6 +34,7 @@ export const CommFormInput = ({
     sx={{ ...{ background: "white" }, ...sx }}
     startIcon={icon}
     isLoading={isLoading}
+    rows={rows}
   />
 );
 
