@@ -11,6 +11,10 @@ export const formatTime2 = (timestamp: Date | string) => {
   return timestamp ? moment(timestamp).format("DD/MM/YYYY") : null;
 };
 
+export const formatTime3 = (timestamp: Date | string) => {
+  return timestamp ? moment(timestamp).format("DD MMM") : null;
+};
+
 export const getNestedObjValue = (
   obj: { [key: string]: any },
   key: string

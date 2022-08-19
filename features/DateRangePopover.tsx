@@ -1,6 +1,7 @@
 import { Popover } from "@mui/material";
 import { useState } from "react";
 import { Range } from "react-date-range";
+import { palette } from "../styles/theme";
 import { formatTime2 } from "../utils/common.utils";
 import DateRangeComponent from "./DateRangeComponent";
 import { FormInput } from "./FormInput";
@@ -12,7 +13,7 @@ const DateRangePopover = () => {
       startDate: new Date(),
       endDate: new Date(new Date().setDate(new Date().getDate() + 5)),
       key: "selection",
-      color: "#1E2746",
+      color: palette.primary.main,
     },
   ]);
 

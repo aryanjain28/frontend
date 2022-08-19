@@ -16,6 +16,7 @@ import { useGetTaskTypes, usePostTask } from "../../../../hooks/tasks.hooks";
 import { useGetClients } from "../../../../hooks/clients.hooks";
 import { id } from "date-fns/locale";
 import { useGetAllUsersInfo } from "../../../../hooks/user.hooks";
+import { palette } from "../../../../styles/theme";
 
 const CreateNewTask = () => {
   const { fullName, email } = useGetLocalStorage();
@@ -83,16 +84,11 @@ const CreateNewTask = () => {
         sx={{
           mx: 4,
           my: 2,
-          border: "#dadada 1.5px solid",
+          border: `${palette.secondary.light} 1.5px solid`,
           borderRadius: "5px",
         }}
       >
-        <Box
-          bgcolor="#f0f5fa"
-          display="flex"
-          alignItems="center"
-          justifyContent="space-between"
-        >
+        <Box display="flex" alignItems="center" justifyContent="space-between">
           <Box>
             <BreadCrumbsComp
               breadCrumbs={[
@@ -100,14 +96,20 @@ const CreateNewTask = () => {
                 { label: en.createTask, url: ROUTES.createTask },
               ]}
             />
-            <Typography mx={3} color="#0B1246" variant="h6">
+            <Typography mx={3} variant="h6">
               {en.createNewTask}
             </Typography>
           </Box>
         </Box>
         <Divider sx={{ my: 0 }} />
-        <Box p={5} bgcolor="#194163">
-          <Box p={4} bgcolor="white" borderRadius="15px">
+        <Box p={5}>
+          <Box
+            p={4}
+            bgcolor={palette.primary.white}
+            borderRadius="15px"
+            border={`${palette.secondary.light} 1.5px solid`}
+            boxShadow={3}
+          >
             <Grid container direction="row">
               <Box width="25%">
                 <Grid

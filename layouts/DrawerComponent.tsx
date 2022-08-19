@@ -24,8 +24,9 @@ import { useRouter } from "next/router";
 import { ExpandLess, ExpandMore } from "@mui/icons-material";
 import AddTaskIcon from "@mui/icons-material/PlaylistAddOutlined";
 import { useState } from "react";
-import { Collapse } from "@mui/material";
+import { Collapse, Tooltip } from "@mui/material";
 import { useGetLocalStorage } from "../hooks/auth.hooks";
+import { palette } from "../styles/theme.js";
 
 const drawerWidth = 240;
 
@@ -190,7 +191,10 @@ const DrawerComponent = ({
               <Box
                 key={`${label}_${index}`}
                 sx={{
-                  ...(isSelected && { bgcolor: "#1e2746", color: "#ffffff" }),
+                  ...(isSelected && {
+                    bgcolor: palette.primary.main,
+                    color: palette.primary.white,
+                  }),
                 }}
               >
                 <ListItem
@@ -215,7 +219,7 @@ const DrawerComponent = ({
                         minWidth: 0,
                         mr: open ? 3 : "auto",
                         justifyContent: "center",
-                        ...(isSelected && { color: "#ffffff" }),
+                        ...(isSelected && { color: palette.primary.white }),
                       }}
                     >
                       {icon}
@@ -238,10 +242,13 @@ const DrawerComponent = ({
                                 sx={{
                                   ...(router.pathname === route
                                     ? {
-                                        color: "white",
-                                        bgcolor: "#485d8c",
+                                        color: palette.primary.white,
+                                        bgcolor: palette.secondary.main,
                                       }
-                                    : { color: "black", bgcolor: "white" }),
+                                    : {
+                                        color: palette.primary.black,
+                                        bgcolor: palette.primary.white,
+                                      }),
                                 }}
                               >
                                 <ListItemButton
@@ -252,8 +259,8 @@ const DrawerComponent = ({
                                     sx={{
                                       color:
                                         router.pathname === route
-                                          ? "white"
-                                          : "#757575",
+                                          ? palette.primary.white
+                                          : palette.neutral.main,
                                     }}
                                   >
                                     {icon}

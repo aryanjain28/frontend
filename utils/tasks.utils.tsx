@@ -11,10 +11,11 @@ import { ROUTES } from "../constants/routes";
 import { AllTasks, ModifiedTask, Task } from "../types/task.types";
 import { ColumnG } from "../types/datagrid.types";
 import { Link, Tooltip, Typography } from "@mui/material";
-import { formatTime2, isAdmin, isStaff } from "./common.utils";
+import { formatTime3, isAdmin, isStaff } from "./common.utils";
 import { KeyboardArrowDown, KeyboardArrowUp } from "@mui/icons-material";
 import { CustomTooltip } from "../features/CustomTooltip";
 import { en } from "../constants/labels";
+import { palette } from "../styles/theme";
 
 export const getTasksArr = () => [
   {
@@ -63,7 +64,7 @@ export const taskStatus = {
         <PendingTaskIcon />
       </Tooltip>
     ),
-    color: "#f70000",
+    color: palette.primary.error,
   },
   APPROVED: {
     label: "APPROVED",
@@ -72,7 +73,7 @@ export const taskStatus = {
         <ApprovedTaskIcon />
       </Tooltip>
     ),
-    color: "#188050",
+    color: palette.primary.success,
   },
   COMPLETED: {
     label: "COMPLETED",
@@ -81,7 +82,7 @@ export const taskStatus = {
         <CompletedTaskIcon />
       </Tooltip>
     ),
-    color: "#f4891e",
+    color: palette.primary.warning,
   },
 };
 
@@ -93,31 +94,52 @@ export const getTasksCol = (
     headerName: "Create Date",
     key: "createdAt",
     Component: ({ row }) => {
-      return <Typography>{formatTime2(row.createdAt) || "NA"}</Typography>;
+      return (
+        <Typography maxWidth="100px" noWrap>
+          {formatTime3(row.createdAt) || "NA"}
+        </Typography>
+      );
     },
   },
   {
     headerName: "Client",
     key: "clientName",
     Component: ({ row }) => {
-      return <Typography>{row.clientName}</Typography>;
+      return (
+        <Typography maxWidth="100px" noWrap>
+          {row.clientName}
+        </Typography>
+      );
     },
   },
   {
     headerName: "Entity",
     key: "clientEntity",
     Component: ({ row }) => {
-      return <Typography>{row.clientEntity}</Typography>;
+      return <Typography noWrap>{row.clientEntity}</Typography>;
     },
   },
   {
-    headerName: "Task Name",
+    headerName: "Name",
     key: "name",
     Component: ({ row }) => {
       return (
         <CustomTooltip title={row.name}>
           <Typography maxWidth="250px" noWrap>
             {row.name}
+          </Typography>
+        </CustomTooltip>
+      );
+    },
+  },
+  {
+    headerName: "Type",
+    key: "type",
+    Component: ({ row }) => {
+      return (
+        <CustomTooltip title={row.taskTypeName}>
+          <Typography maxWidth="250px" noWrap>
+            {row.taskTypeName}
           </Typography>
         </CustomTooltip>
       );
@@ -157,14 +179,22 @@ export const getTasksCol = (
     headerName: "Start Date",
     key: "taskStartDate",
     Component: ({ row }) => {
-      return <Typography>{formatTime2(row.startDate) || "NA"}</Typography>;
+      return (
+        <Typography maxWidth="100px" noWrap>
+          {formatTime3(row.startDate) || "NA"}
+        </Typography>
+      );
     },
   },
   {
     headerName: "End Date",
     key: "taskEndDate",
     Component: ({ row }) => {
-      return <Typography>{formatTime2(row.endDate!) || "NA"}</Typography>;
+      return (
+        <Typography maxWidth="100px" noWrap>
+          {formatTime3(row.endDate!) || "NA"}
+        </Typography>
+      );
     },
   },
   {
@@ -195,7 +225,11 @@ export const getMyTasksColumns = (
     headerName: "Create Date",
     key: "createdAt",
     Component: ({ row }) => {
-      return <Typography>{formatTime2(row.createdAt) || "NA"}</Typography>;
+      return (
+        <Typography maxWidth="100px" noWrap>
+          {formatTime3(row.createdAt) || "NA"}
+        </Typography>
+      );
     },
   },
   {
@@ -213,13 +247,26 @@ export const getMyTasksColumns = (
     },
   },
   {
-    headerName: "Task Name",
+    headerName: "Name",
     key: "name",
     Component: ({ row }) => {
       return (
         <CustomTooltip title={row.name}>
           <Typography maxWidth="250px" noWrap>
             {row.name}
+          </Typography>
+        </CustomTooltip>
+      );
+    },
+  },
+  {
+    headerName: "Type",
+    key: "type",
+    Component: ({ row }) => {
+      return (
+        <CustomTooltip title={row.taskTypeName}>
+          <Typography maxWidth="250px" noWrap>
+            {row.taskTypeName}
           </Typography>
         </CustomTooltip>
       );
@@ -248,14 +295,14 @@ export const getMyTasksColumns = (
     headerName: "Start Date",
     key: "taskStartDate",
     Component: ({ row }) => {
-      return <Typography>{formatTime2(row.startDate) || "NA"}</Typography>;
+      return <Typography>{formatTime3(row.startDate) || "NA"}</Typography>;
     },
   },
   {
     headerName: "End Date",
     key: "taskEndDate",
     Component: ({ row }) => {
-      return <Typography>{formatTime2(row.endDate!) || "NA"}</Typography>;
+      return <Typography>{formatTime3(row.endDate!) || "NA"}</Typography>;
     },
   },
   {

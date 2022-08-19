@@ -13,6 +13,7 @@ import {
 import React from "react";
 import { en } from "../../constants/labels";
 import { ExpandedDataGridCell } from "../../features/ExpandedTaskRow";
+import { palette } from "../../styles/theme";
 import { Column, Row } from "../../types/datagrid.types";
 import DataGridCell from "./DataGridCell.component";
 import DataGridHeadCell from "./DataGridHeadCell.component";
@@ -27,7 +28,7 @@ const DataGridTableComponent = ({
     <Box alignItems="center">
       <Box
         sx={{
-          border: "#ACABB3 1px solid",
+          border: `${palette.primary.border} 1px solid`,
           borderRadius: "4px",
         }}
       >
@@ -58,7 +59,9 @@ const DataGridTableComponent = ({
                   const open = expandedRowId === row.id;
                   return (
                     <React.Fragment key={`${row.id}_${index}`}>
-                      <TableRow sx={{ background: open ? "#E7EBF0" : null }}>
+                      <TableRow
+                        sx={{ background: open ? palette.neutral.tint : null }}
+                      >
                         {columns.map(
                           (col) =>
                             !col.hidden && (

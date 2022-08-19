@@ -2,6 +2,7 @@ import { Grid, Link, Typography } from "@mui/material";
 import { Box } from "@mui/material";
 import { useRouter } from "next/router";
 import { en } from "../constants/labels";
+import { palette } from "../styles/theme";
 import { getTasksArr } from "../utils/tasks.utils";
 
 function Tasks() {
@@ -10,7 +11,12 @@ function Tasks() {
 
   return (
     <Box my={2}>
-      <Typography my={1} fontSize={"15px"} fontWeight={600} color="#777777">
+      <Typography
+        my={1}
+        fontSize={"15px"}
+        fontWeight={600}
+        color={palette.neutral.main}
+      >
         {en.tasks}
       </Typography>
       <Grid

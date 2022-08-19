@@ -7,10 +7,16 @@ import Clients from "../../../features/Clients";
 import Transactions from "../../../features/Transactions";
 import { useGetLocalStorage } from "../../../hooks/auth.hooks";
 import { useGetMyTasks } from "../../../hooks/tasks.hooks";
+import { palette } from "../../../styles/theme";
 
 const Header = () => (
   <>
-    <Typography my={1} fontSize={"15px"} fontWeight={600} color="#777777">
+    <Typography
+      my={1}
+      fontSize={"15px"}
+      fontWeight={600}
+      color={palette.neutral.main}
+    >
       {en.myFirm}
     </Typography>
     <Box width={"60%"} p={1} borderRadius={"10px"} sx={{ boxShadow: 3 }}>

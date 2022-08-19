@@ -12,6 +12,7 @@ import {
   useGetMyTasks,
 } from "../../../../hooks/tasks.hooks";
 import PageLayout from "../../../../layouts/PageLayout";
+import { palette } from "../../../../styles/theme";
 import { FilterMap } from "../../../../types/common.types";
 import { Task } from "../../../../types/task.types";
 import { getMyTasksColumns } from "../../../../utils/tasks.utils";
@@ -42,15 +43,13 @@ const MyTasks = () => {
     expandedRowId,
   });
 
-  console.log("DATA:", data);
-
   return (
     <PageLayout>
       <Box
         sx={{
           mx: 4,
           my: 2,
-          border: "#dadada 1.5px solid",
+          border: `${palette.secondary.light} 1.5px solid`,
           borderRadius: "5px",
         }}
       >

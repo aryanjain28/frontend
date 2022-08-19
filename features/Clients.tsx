@@ -7,6 +7,7 @@ import CompanyIcon from "@mui/icons-material/ApartmentOutlined";
 import TallyIcon from "@mui/icons-material/TextSnippetOutlined";
 import AuditIcon from "@mui/icons-material/InventoryOutlined";
 import OtherIcon from "@mui/icons-material/AltRouteOutlined";
+import { palette } from "../styles/theme";
 
 function Clients() {
   const clients = [
@@ -43,7 +44,12 @@ function Clients() {
   ];
   return (
     <Box my={2}>
-      <Typography my={1} fontSize={"15px"} fontWeight={600} color="#777777">
+      <Typography
+        my={1}
+        fontSize={"15px"}
+        fontWeight={600}
+        color={palette.neutral.main}
+      >
         {en.clients}
       </Typography>
 
