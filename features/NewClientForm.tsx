@@ -33,7 +33,7 @@ function FormField({
       <Box py={1} height="100%">
         {(fieldType === "text" || fieldType === "password") && (
           <ClientInfoInput
-            label={en[name] as string}
+            label={en[name as keyof typeof en] as string}
             value={value}
             handleChange={(value) => setFormValues(name, value)}
             required={required}
@@ -42,7 +42,7 @@ function FormField({
         )}
         {fieldType === "select" && (
           <ClientInfoSelect
-            label={en[name] as string}
+            label={en[name as keyof typeof en] as string}
             value={value}
             handleChange={(value, label) => setFormValues(name, value, label)}
             options={["Aryan"]}
@@ -51,7 +51,7 @@ function FormField({
         )}
         {fieldType === "date" && (
           <ClientDateSelect
-            label={en[name] as string}
+            label={en[name as keyof typeof en] as string}
             value={value}
             handleChange={(value) => setFormValues(name, value)}
             required={required}

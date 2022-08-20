@@ -31,7 +31,7 @@ export const CommFormInput = ({
     handleOnChange={(value) => (readOnly ? {} : handleChange(value as string))}
     variant="outlined"
     topLabel={`${label}${required ? "*" : ""} ${readOnly ? "(ReadOnly)" : ""}`}
-    sx={{ ...{ background: "white" }, ...sx }}
+    sx={{ ...{ width: "100%", background: "white" }, ...sx }}
     startIcon={icon}
     isLoading={isLoading}
     rows={rows}
@@ -64,7 +64,7 @@ export const CommSelectInput = ({
       handleChange={handleChange}
       readOnly
       required={required}
-      sx={{ ...{ width: 250, background: "white" }, ...sx }}
+      sx={{ ...{ width: "100%", background: "white" }, ...sx }}
     />
   ) : (
     <SelectComponent
@@ -72,7 +72,7 @@ export const CommSelectInput = ({
       selectedOption={value}
       handleSelectOption={handleChange}
       options={options}
-      sx={{ ...{ width: 250, background: "white" }, ...sx }}
+      sx={{ ...{ width: "100%", background: "white" }, ...sx }}
       isLoading={isLoading}
     />
   );
@@ -110,7 +110,7 @@ export const CommDateSelect = ({
     </Typography>
     <DateSelectPopover
       date={value}
-      sx={{ ...{ width: 150, background: "white" }, ...sx }}
+      sx={{ ...{ width: "100%", background: "white" }, ...sx }}
       setDate={(item) => handleChange(item as Date)}
       showCancleIcon={showCancleIcon}
       readOnly={readOnly}

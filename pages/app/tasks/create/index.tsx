@@ -107,183 +107,201 @@ const CreateNewTask = () => {
             p={4}
             bgcolor={palette.primary.white}
             borderRadius="15px"
-            border={`${palette.secondary.light} 1.5px solid`}
-            boxShadow={3}
+            border={`${palette.primary.main} 1.5px solid`}
           >
             <Grid container direction="row">
-              <Box width="25%">
+              <Box px={2} width="25%">
                 <Grid
                   container
                   direction="column"
-                  justifyContent="flex-start"
                   alignItems="center"
+                  justifyContent="end"
                   gap={2}
                 >
-                  <CommFormInput
-                    value={fullName}
-                    label={en.creator} //"Creator"
-                    handleChange={() => {}}
-                    readOnly
-                    required
-                    sx={{ width: 250 }}
-                  />
-                  <CommDateSelect
-                    label={en.startDate} //"Start Date"
-                    handleChange={(startDate) =>
-                      setFormValues({
-                        ...formValues,
-                        startDate,
-                      })
-                    }
-                    value={
-                      formValues.startDate ? new Date(formValues.startDate) : ""
-                    }
-                    sx={{ width: 250 }}
-                    showCancleIcon
-                    required
-                  />
-                  <CommFormInput
-                    value={formValues.name}
-                    label={en.taskName} //"Task Name"
-                    handleChange={(name) =>
-                      setFormValues({ ...formValues, name })
-                    }
-                    sx={{ width: 250 }}
-                    required
-                  />
-                  <CommSelectInput
-                    value={formValues.client}
-                    label={en.client} //"Client"
-                    handleChange={(client) =>
-                      setFormValues({ ...formValues, client, entity: "" })
-                    }
-                    options={(clients || []).map(({ id, name }) => ({
-                      value: id,
-                      label: name,
-                    }))}
-                    isLoading={clientsInfoIsLoading}
-                  />
-                  <CommSelectInput
-                    value={formValues.assignee}
-                    label={en.assignee} //"Assignee"
-                    handleChange={(assignee) =>
-                      setFormValues({ ...formValues, assignee })
-                    }
-                    options={(users || []).map(({ fName, role, id }) => ({
-                      value: id,
-                      label: `${fName} - ${role}`,
-                    }))}
-                    required
-                    isLoading={usersInfoIsLoading}
-                  />
+                  <Box width="100%">
+                    <CommFormInput
+                      value={fullName}
+                      label={en.creator} //"Creator"
+                      handleChange={() => {}}
+                      readOnly
+                      required
+                    />
+                  </Box>
+                  <Box width="100%">
+                    <CommDateSelect
+                      label={en.startDate} //"Start Date"
+                      handleChange={(startDate) =>
+                        setFormValues({
+                          ...formValues,
+                          startDate,
+                        })
+                      }
+                      value={
+                        formValues.startDate
+                          ? new Date(formValues.startDate)
+                          : ""
+                      }
+                      showCancleIcon
+                      required
+                    />
+                  </Box>
+                  <Box width="100%">
+                    <CommFormInput
+                      value={formValues.name}
+                      label={en.taskName} //"Task Name"
+                      handleChange={(name) =>
+                        setFormValues({ ...formValues, name })
+                      }
+                      required
+                    />
+                  </Box>
+                  <Box width="100%">
+                    <CommSelectInput
+                      value={formValues.client}
+                      label={en.client} //"Client"
+                      handleChange={(client) =>
+                        setFormValues({ ...formValues, client, entity: "" })
+                      }
+                      options={(clients || []).map(({ id, name }) => ({
+                        value: id,
+                        label: name,
+                      }))}
+                      isLoading={clientsInfoIsLoading}
+                    />
+                  </Box>
+                  <Box width="100%">
+                    <CommSelectInput
+                      value={formValues.assignee}
+                      label={en.assignee} //"Assignee"
+                      handleChange={(assignee) =>
+                        setFormValues({ ...formValues, assignee })
+                      }
+                      options={(users || []).map(({ fName, role, id }) => ({
+                        value: id,
+                        label: `${fName} - ${role}`,
+                      }))}
+                      required
+                      isLoading={usersInfoIsLoading}
+                    />
+                  </Box>
                 </Grid>
               </Box>
-              <Box width="25%">
+              <Box px={2} width="25%">
                 <Grid
                   container
                   direction="column"
                   alignItems="center"
-                  justifyContent="flex-start"
+                  justifyContent="end"
                   gap={2}
                 >
-                  <CommFormInput
-                    value={email}
-                    label={en.creatorEmail} // Creator Email
-                    handleChange={() => {}}
-                    sx={{ width: 250 }}
-                    readOnly
-                    required
-                  />
-                  <CommDateSelect
-                    label={en.endDate} // End Date
-                    handleChange={(endDate) =>
-                      setFormValues({
-                        ...formValues,
-                        endDate,
-                      })
-                    }
-                    value={
-                      formValues.endDate ? new Date(formValues.endDate) : ""
-                    }
-                    showCancleIcon
-                    sx={{ width: 250 }}
-                    minDate={formValues.startDate as Date}
-                    readOnly={!Boolean(formValues.startDate)}
-                  />
-                  <CommSelectInput
-                    label={en.taskType} // Task Type
-                    value={formValues.type}
-                    handleChange={(type) =>
-                      setFormValues({
-                        ...formValues,
-                        type,
-                      })
-                    }
-                    options={(taskTypes || [])?.map(({ id, name }) => ({
-                      label: name,
-                      value: id,
-                    }))}
-                    isLoading={taskTypesIsLoading}
-                    required
-                  />
-                  <CommSelectInput
-                    label={en.entity} // Entity
-                    value={formValues.entity}
-                    handleChange={(entity) =>
-                      setFormValues({
-                        ...formValues,
-                        entity,
-                      })
-                    }
-                    readOnly={!Boolean(formValues.client)}
-                    options={getEntityOptions(formValues.client) || []}
-                    isLoading={clientsInfoIsLoading}
-                  />
-                  <CommFormInput
-                    label={en.comments} // Comments
-                    value={formValues.comments}
-                    handleChange={(comments) =>
-                      setFormValues({
-                        ...formValues,
-                        comments,
-                      })
-                    }
-                    sx={{ width: 250 }}
-                  />
+                  <Box width="100%">
+                    <CommFormInput
+                      value={email}
+                      label={en.creatorEmail} // Creator Email
+                      handleChange={() => {}}
+                      readOnly
+                      required
+                    />
+                  </Box>
+                  <Box width="100%">
+                    <CommDateSelect
+                      label={en.endDate} // End Date
+                      handleChange={(endDate) =>
+                        setFormValues({
+                          ...formValues,
+                          endDate,
+                        })
+                      }
+                      value={
+                        formValues.endDate ? new Date(formValues.endDate) : ""
+                      }
+                      showCancleIcon
+                      minDate={formValues.startDate as Date}
+                      readOnly={!Boolean(formValues.startDate)}
+                    />
+                  </Box>
+                  <Box width="100%">
+                    <CommSelectInput
+                      label={en.taskType} // Task Type
+                      value={formValues.type}
+                      handleChange={(type) =>
+                        setFormValues({
+                          ...formValues,
+                          type,
+                        })
+                      }
+                      options={(taskTypes || [])?.map(({ id, name }) => ({
+                        label: name,
+                        value: id,
+                      }))}
+                      isLoading={taskTypesIsLoading}
+                      required
+                    />
+                  </Box>
+                  <Box width="100%">
+                    <CommSelectInput
+                      label={en.entity} // Entity
+                      value={formValues.entity}
+                      handleChange={(entity) =>
+                        setFormValues({
+                          ...formValues,
+                          entity,
+                        })
+                      }
+                      readOnly={!Boolean(formValues.client)}
+                      options={getEntityOptions(formValues.client) || []}
+                      isLoading={clientsInfoIsLoading}
+                    />
+                  </Box>
+                  <Box width="100%">
+                    <CommFormInput
+                      label={en.comments} // Comments
+                      value={formValues.comments}
+                      handleChange={(comments) =>
+                        setFormValues({
+                          ...formValues,
+                          comments,
+                        })
+                      }
+                    />
+                  </Box>
                 </Grid>
               </Box>
-              <Box width="25%">
+              <Box px={2} width="25%">
                 <Grid
                   container
                   direction="column"
                   alignItems="center"
-                  justifyContent="flex-start"
+                  justifyContent="end"
                   gap={2}
                 >
-                  <CommFormInput
-                    label="Total Amount"
-                    value={formValues.totalAmount}
-                    handleChange={(totalAmount) =>
-                      setFormValues({ ...formValues, totalAmount })
-                    }
-                    sx={{ width: 250 }}
-                  />
-                  <CommFormInput
-                    label="Paid Amount"
-                    value={formValues.paidAmount}
-                    handleChange={(paidAmount) =>
-                      setFormValues({ ...formValues, paidAmount })
-                    }
-                    sx={{ width: 250 }}
-                  />
-                  <CommFormInput
-                    label="Balance Amount"
-                    value={formValues.balanceAmount}
-                    handleChange={(balanceAmount) =>
-                      setFormValues({ ...formValues, balanceAmount })
-                    }
-                    sx={{ width: 250 }}
-                  />
+                  <Box width="100%">
+                    <CommFormInput
+                      label="Total Amount"
+                      value={formValues.totalAmount}
+                      handleChange={(totalAmount) =>
+                        setFormValues({ ...formValues, totalAmount })
+                      }
+                    />
+                  </Box>
+                  <Box width="100%">
+                    <CommFormInput
+                      label="Paid Amount"
+                      value={formValues.paidAmount}
+                      handleChange={(paidAmount) =>
+                        setFormValues({ ...formValues, paidAmount })
+                      }
+                    />
+                  </Box>
+                  <Box width="100%">
+                    <CommFormInput
+                      label="Balance Amount"
+                      value={formValues.balanceAmount}
+                      handleChange={(balanceAmount) =>
+                        setFormValues({ ...formValues, balanceAmount })
+                      }
+                    />
+                  </Box>
                 </Grid>
               </Box>
               <Box width="25%">

@@ -1,4 +1,4 @@
-export const en: { [key: string]: string | number | object } = {
+export const en = {
   //firm info
   firm: {
     name: "CA Sandeep Sao & Associates",
