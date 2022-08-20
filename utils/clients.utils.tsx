@@ -1,13 +1,10 @@
-import { Typography } from "@mui/material";
-import { CustomTooltip } from "../features/CustomTooltip";
 import { ClientFormFields, ModClient } from "../types/clients.types";
 import { ColumnG } from "../types/datagrid.types";
-import { formatTime3, isStaff } from "./common.utils";
-import AvailableIcon1 from "@mui/icons-material/TaskAltOutlined";
+import { isStaff } from "./common.utils";
 import AvailableIcon from "@mui/icons-material/CheckCircle";
-import UnavailableIcon1 from "@mui/icons-material/CancelOutlined";
 import UnavailableIcon from "@mui/icons-material/MoreHoriz";
 import { palette } from "../styles/theme";
+import { KeyboardArrowDown, KeyboardArrowUp } from "@mui/icons-material";
 
 export const getArrInGroups = (arr: any, nGroups: number) => {
   const perGroup = Math.ceil(arr.length / nGroups);
@@ -23,7 +20,10 @@ const checkAvailibility = (valueToCheck: boolean) =>
     <UnavailableIcon fontSize="small" />
   );
 
-export const getClientsColumns = (): ColumnG<ModClient>[] => [
+export const getClientsColumns = (
+  expandedRowId: string | number | null,
+  setExpandedRowId: (id: string | number | null) => void
+): ColumnG<ModClient>[] => [
   {
     headerName: "Name",
     key: "name",
@@ -69,6 +69,24 @@ export const getClientsColumns = (): ColumnG<ModClient>[] => [
     headerName: "Other",
     key: "isOther",
     Component: ({ row }) => checkAvailibility(row.isOther),
+  },
+  {
+    headerName: "",
+    key: "",
+    hidden: isStaff(),
+    Component: ({ row }) => {
+      return expandedRowId === row.id ? (
+        <KeyboardArrowUp
+          sx={{ mr: 1, cursor: "pointer" }}
+          onClick={() => setExpandedRowId(null)}
+        />
+      ) : (
+        <KeyboardArrowDown
+          sx={{ mr: 1, cursor: "pointer" }}
+          onClick={() => setExpandedRowId(row.id)}
+        />
+      );
+    },
   },
 ];
 

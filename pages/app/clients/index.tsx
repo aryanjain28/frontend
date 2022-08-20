@@ -15,13 +15,11 @@ import { Client, ModClient } from "../../../types/clients.types";
 import { getClientsColumns } from "../../../utils/clients.utils";
 
 const Clients = () => {
-  const router = useRouter();
-  const { userId } = useGetLocalStorage();
-
-  const columns = getClientsColumns();
+  const [expandedRowId, setExpandedRowId] = useState<string | number | null>(
+    null
+  );
+  const columns = getClientsColumns(expandedRowId, setExpandedRowId);
   const { data, isLoading } = useGetClients();
-
-  console.log("data: ", data);
 
   const [query, setQuery] = useState("");
   const { paginationProps, dataGridProps } = useDataGrid({
@@ -29,6 +27,7 @@ const Clients = () => {
     data: data as ModClient[],
     pageSize: 10,
     query,
+    expandedRowId: expandedRowId as string,
   });
 
   return (
@@ -63,6 +62,7 @@ const Clients = () => {
           query={query}
           setQuery={setQuery}
           showFilters={false}
+          expandedRowId={expandedRowId as string}
         />
       </Box>
     </PageLayout>

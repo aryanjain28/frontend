@@ -11,7 +11,9 @@ const DataGridCell = (props: DataGridCellProps) => {
         {Component ? (
           <Component row={row} col={col} />
         ) : (
-          <Typography variant="body1">{value}</Typography>
+          <Typography variant="body1" noWrap>
+            {value}
+          </Typography>
         )}
       </Box>
     </TableCell>

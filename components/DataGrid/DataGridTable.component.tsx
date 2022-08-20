@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import React from "react";
 import { en } from "../../constants/labels";
-import { ExpandedDataGridCell } from "../../features/ExpandedTaskRow";
+import ExpandedDataGridCell from "../../features/ExpandedDataGridCell";
 import { palette } from "../../styles/theme";
 import { Column, Row } from "../../types/datagrid.types";
 import DataGridCell from "./DataGridCell.component";
@@ -59,9 +59,7 @@ const DataGridTableComponent = ({
                   const open = expandedRowId === row.id;
                   return (
                     <React.Fragment key={`${row.id}_${index}`}>
-                      <TableRow
-                        sx={{ background: open ? palette.neutral.tint : null }}
-                      >
+                      <TableRow>
                         {columns.map(
                           (col) =>
                             !col.hidden && (

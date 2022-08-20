@@ -1,6 +1,7 @@
 export type Client = { id: string; entities: string[]; name: string };
 
 export interface ModClient {
+  id: number;
   name: string;
   entity: string;
   pan: string;

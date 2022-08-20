@@ -1,4 +1,4 @@
-export type Select = { label: string; value: string }[];
+export type Select = { label: string; value: string | number }[];
 
 export interface APIData {
   response: { data: { status: number; message: string } };
