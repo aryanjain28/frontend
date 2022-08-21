@@ -177,7 +177,7 @@ export const getTasksCol = (
   },
   {
     headerName: "Start Date",
-    key: "taskStartDate",
+    key: "startDate",
     Component: ({ row }) => {
       return (
         <Typography maxWidth="100px" noWrap>
@@ -188,7 +188,7 @@ export const getTasksCol = (
   },
   {
     headerName: "End Date",
-    key: "taskEndDate",
+    key: "endDate",
     Component: ({ row }) => {
       return (
         <Typography maxWidth="100px" noWrap>
@@ -293,14 +293,14 @@ export const getMyTasksColumns = (
   },
   {
     headerName: "Start Date",
-    key: "taskStartDate",
+    key: "startDate",
     Component: ({ row }) => {
       return <Typography>{formatTime3(row.startDate) || "NA"}</Typography>;
     },
   },
   {
     headerName: "End Date",
-    key: "taskEndDate",
+    key: "endDate",
     Component: ({ row }) => {
       return <Typography>{formatTime3(row.endDate!) || "NA"}</Typography>;
     },

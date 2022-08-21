@@ -97,7 +97,7 @@ const ExpandedTaskGridCell = ({
                             <Box py={1} height="100%">
                               <CommFormInput
                                 key="createdByName"
-                                label={"Created By"}
+                                label={"Created By"} // Created By
                                 value={formValues.createdByName}
                                 handleChange={(v) =>
                                   setFormValues({
@@ -178,18 +178,15 @@ const ExpandedTaskGridCell = ({
                           <Grid item xs={4}>
                             <Box py={1} height="100%">
                               <CommSelectInput
-                                label="Task Type"
-                                value={
-                                  isStaff()
-                                    ? formValues.taskTypeName
-                                    : formValues.taskTypeId
-                                }
-                                handleChange={(p) =>
+                                label="Task Type" // Task Type
+                                value={formValues.taskTypeName}
+                                handleChange={(value, label) => {
                                   setFormValues({
                                     ...formValues,
-                                    taskTypeId: p,
-                                  })
-                                }
+                                    taskTypeId: value,
+                                    taskTypeName: label,
+                                  });
+                                }}
                                 options={(taskTypes || [])?.map(
                                   ({ id, name }) => ({
                                     label: name,
@@ -222,7 +219,7 @@ const ExpandedTaskGridCell = ({
                             <Box py={1} height="100%">
                               <CommSelectInput
                                 label="Client Name"
-                                value={formValues.clientId}
+                                value={formValues.clientName}
                                 handleChange={(v, l) =>
                                   setFormValues({
                                     ...formValues,
@@ -235,7 +232,7 @@ const ExpandedTaskGridCell = ({
                                   (clients || []).map(({ id, name }) => ({
                                     value: id,
                                     label: name,
-                                  })) as Select
+                                  })) as Select[]
                                 }
                               />
                             </Box>
@@ -267,7 +264,7 @@ const ExpandedTaskGridCell = ({
                                     ? fullName
                                     : isStaff()
                                     ? formValues.assigneeFullname
-                                    : formValues.assigneeId
+                                    : formValues.assigneeFName
                                 }
                                 handleChange={(value, label) =>
                                   setFormValues({
@@ -349,26 +346,37 @@ const ExpandedTaskGridCell = ({
                         alignItems="center"
                         justifyContent="center"
                       >
-                        <Button
-                          label="Update"
-                          variant="contained"
-                          onClick={() => {
-                            updateTask({ payload: { data: formValues } });
-                          }}
-                          fullWidth
-                          isLoading={isUpdating}
-                        />
+                        <Grid
+                          container
+                          width="100%"
+                          direction="column"
+                          alignItems="center"
+                          justifyContent="center"
+                        >
+                          <Button
+                            label="Update"
+                            variant="contained"
+                            onClick={() => {
+                              updateTask({ payload: { data: formValues } });
+                            }}
+                            fullWidth
+                            isLoading={isUpdating}
+                          />
+                          <Typography
+                            fontSize="12px"
+                            sx={{ fontStyle: "oblique" }}
+                          >
+                            Updated{" "}
+                            {moment(formValues.updatedAt, "YYYYMMDD").fromNow()}
+                          </Typography>
+                        </Grid>
                         {isAdmin() && (
                           <ThreeDotsIcon
-                            sx={{ cursor: "pointer" }}
+                            sx={{ mb: 2, ml: 1, cursor: "pointer" }}
                             onClick={(e) => setAnchorEl(e.currentTarget)}
                           />
                         )}
                       </Box>
-                      <Typography fontSize="12px" sx={{ fontStyle: "oblique" }}>
-                        Updated{" "}
-                        {moment(formValues.updatedAt, "YYYYMMDD").fromNow()}
-                      </Typography>
                     </Box>
                   </Box>
                 </Grid>

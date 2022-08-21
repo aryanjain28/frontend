@@ -1,5 +1,8 @@
-import { Box, Typography } from "@mui/material";
-import { SelectComponent } from "../components/Select";
+import { Box, CircularProgress, Typography } from "@mui/material";
+import {
+  SelectComponent,
+  SearchableSelectComponent,
+} from "../components/Select";
 import { Select } from "../types/common.types";
 import DateSelectPopover from "./DateSelectPopover";
 import { FormInput } from "./FormInput";
@@ -20,7 +23,7 @@ export const CommFormInput = ({
   readOnly?: boolean;
   required?: boolean;
   value: string;
-  handleChange: (value: string) => void;
+  handleChange?: (value: string) => void;
   icon?: any;
   isLoading?: boolean;
   rows?: number;
@@ -28,13 +31,14 @@ export const CommFormInput = ({
   <FormInput
     label={""}
     value={value}
-    handleOnChange={(value) => (readOnly ? {} : handleChange(value as string))}
+    handleOnChange={(value) => (readOnly ? {} : handleChange!(value as string))}
     variant="outlined"
-    topLabel={`${label}${required ? "*" : ""} ${readOnly ? "(ReadOnly)" : ""}`}
+    topLabel={`${label} ${readOnly ? "(ReadOnly)" : ""}`}
     sx={{ ...{ width: "100%", background: "white" }, ...sx }}
     startIcon={icon}
     isLoading={isLoading}
     rows={rows}
+    required={required}
   />
 );
 
@@ -47,33 +51,39 @@ export const CommSelectInput = ({
   readOnly = false,
   required = false,
   isLoading = false,
+  isSearchable = false,
 }: {
   sx?: any;
   label: string;
-  value: string;
-  options: string[] | Select;
-  handleChange: (value: string, label?: string) => void;
+  value: string | null;
+  options: string[] | Select[];
+  handleChange: (value: string | null, label?: string | null) => void;
   readOnly?: boolean;
   required?: boolean;
   isLoading?: boolean;
+  isSearchable?: boolean;
 }) => {
-  return readOnly ? (
-    <CommFormInput
-      label={label}
-      value={value}
-      handleChange={handleChange}
-      readOnly
-      required={required}
-      sx={{ ...{ width: "100%", background: "white" }, ...sx }}
-    />
-  ) : (
-    <SelectComponent
-      label={`${label}${required ? "*" : ""}`}
+  return isSearchable ? (
+    <SearchableSelectComponent
+      label={`${label} ${readOnly ? "(ReadOnly)" : ""}`}
       selectedOption={value}
       handleSelectOption={handleChange}
       options={options}
       sx={{ ...{ width: "100%", background: "white" }, ...sx }}
       isLoading={isLoading}
+      readonly={readOnly}
+      required={required}
+    />
+  ) : (
+    <SelectComponent
+      label={`${label}${required ? "*" : ""} ${readOnly ? "(ReadOnly)" : ""}`}
+      selectedOption={value}
+      handleSelectOption={handleChange}
+      options={options}
+      sx={{ ...{ width: "100%", background: "white" }, ...sx }}
+      isLoading={isLoading}
+      readonly={readOnly}
+      required={required}
     />
   );
 };
@@ -85,6 +95,7 @@ export const CommDateSelect = ({
   showCancleIcon = false,
   readOnly = false,
   required = false,
+  isLoading = false,
   sx = {},
   minDate,
   maxDate,
@@ -95,19 +106,31 @@ export const CommDateSelect = ({
   showCancleIcon?: boolean;
   readOnly?: boolean;
   required?: boolean;
+  isLoading?: boolean;
   sx?: any;
   minDate?: Date;
   maxDate?: Date;
 }) => (
   <Box>
-    <Typography
-      fontSize="13px"
-      variant="subtitle2"
-      fontWeight={700}
-      color="GrayText"
-    >
-      {`${label}${required ? "*" : ""} ${readOnly ? "(ReadOnly)" : ""}`}
-    </Typography>
+    <Box display="flex" alignItems="center">
+      {Boolean(label) && (
+        <>
+          <Typography
+            fontSize="13px"
+            variant="subtitle2"
+            fontWeight={700}
+            color="GrayText"
+          >
+            {label}
+          </Typography>
+          <Typography variant="subtitle2" fontWeight={700} color="red">
+            {required ? "*" : ""}
+          </Typography>
+        </>
+      )}
+      {isLoading && <CircularProgress sx={{ mx: 1 }} size={13} />}
+    </Box>
+
     <DateSelectPopover
       date={value}
       sx={{ ...{ width: "100%", background: "white" }, ...sx }}

@@ -1,5 +1,5 @@
 import { Box, Typography } from "@mui/material";
-import { SelectComponent } from "../components/Select";
+import { SearchableSelectComponent } from "../components/Select";
 import { Select } from "../types/common.types";
 import DateSelectPopover from "./DateSelectPopover";
 import { FormInput } from "./FormInput";
@@ -53,30 +53,22 @@ export const SelectInput = ({
 }: {
   sx?: any;
   label: string;
-  value: string;
-  options: string[] | Select;
-  handleChange: (value: string, label?: string) => void;
+  value: string | null;
+  options: string[] | Select[];
+  handleChange: (value: string | null, label?: string | null) => void;
   readOnly?: boolean;
   required?: boolean;
   isLoading?: boolean;
 }) => {
-  return readOnly ? (
-    <Input
-      label={label}
-      value={value}
-      handleChange={handleChange}
-      readOnly
-      required={required}
-      sx={{ ...{ width: "100%", background: "white" }, ...sx }}
-    />
-  ) : (
-    <SelectComponent
-      label={`${label}${required ? "*" : ""}`}
+  return (
+    <SearchableSelectComponent
+      label={`${label}${required ? "*" : ""} ${readOnly ? "(ReadOnly)" : ""}`}
       selectedOption={value}
       handleSelectOption={handleChange}
       options={options}
       sx={{ ...{ width: "100%", background: "white" }, ...sx }}
       isLoading={isLoading}
+      readonly={readOnly}
     />
   );
 };

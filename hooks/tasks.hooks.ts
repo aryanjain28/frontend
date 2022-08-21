@@ -30,7 +30,21 @@ const setData = (allTasks: AllTasks[], isMyTasks = false) => {
     : QUERY_KEYS.ALL_MODIFIED_TASK_VALUES;
   queryClient.setQueryData([queryKey], () =>
     allTasks?.map((row) => ({
-      ...row,
+      id: row.id,
+      name: row.name,
+      startDate: row.startDate,
+      status: row.status,
+      totalAmount: row.totalAmount,
+      paidAmount: row.paidAmount,
+      balanceAmount: row.balanceAmount,
+      updatedAt: row.updatedAt,
+      createdAt: row.createdAt,
+      createdByName: `${(row.createdBy as User).fName} ${
+        (row.createdBy as User).lName
+      }`,
+      createdByEmail: (row.createdBy as User).email,
+      ...(row?.comments && { comments: row.comments }),
+      ...(row?.endDate && { endDate: row.endDate }),
       ...(row?.assignee?.id && { assigneeId: row.assignee.id }),
       ...(row?.assignee?.fName && { assigneeFName: row.assignee.fName }),
       ...(row?.assignee?.lName && { assigneeLName: row.assignee.lName }),
@@ -40,10 +54,6 @@ const setData = (allTasks: AllTasks[], isMyTasks = false) => {
       ...(row?.client?.client?.entities && {
         clientEntities: row.client.client.entities,
       }),
-      createdByName: `${(row.createdBy as User).fName} ${
-        (row.createdBy as User).lName
-      }`,
-      createdByEmail: (row.createdBy as User).email,
       ...(row?.type?.id && { taskTypeId: row.type.id }),
       ...(row?.type?.name && { taskTypeName: row.type.name }),
       ...(typeof row.assignedBy !== "string" && {
@@ -55,7 +65,7 @@ const setData = (allTasks: AllTasks[], isMyTasks = false) => {
 };
 
 export const useGetAllModifiedTasks = () => {
-  return useQuery([QUERY_KEYS.ALL_MODIFIED_TASK_VALUES], {
+  return useQuery<ModifiedTask[]>([QUERY_KEYS.ALL_MODIFIED_TASK_VALUES], {
     placeholderData: [],
   });
 };
@@ -85,7 +95,7 @@ export const useGetMyTasks = (userId: string) => {
     () => (userId ? getMyTasks() : null),
     {
       placeholderData: [],
-      onSuccess: (data: ModifiedTask[]) => {
+      onSuccess: (data: AllTasks[]) => {
         setData(data, true);
         // toast.success(en.toast.myTasksFetchedSuccess);
       },

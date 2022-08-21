@@ -31,23 +31,40 @@ export interface Task {
   approvedAt?: string;
   assignedBy?: User | string;
   assignedAt?: Date;
+  comments?: string;
 }
 
 export interface AllTasks extends Task {
   assignee: User;
 }
 
-export interface ModifiedTask extends Task {
-  assigneeFName: string;
-  assigneeLName: string;
-  assignedByFName: string;
-  assignedByLName: string;
-  clientName: string;
-  clientEntity: string;
+export interface ModifiedTask {
+  id: string;
+  name: string;
+  startDate: string;
+  status: "PENDING" | "APPROVED" | "COMPLETED";
+  totalAmount: string;
+  paidAmount: string;
+  balanceAmount: string;
+  updatedAt: string;
+  createdAt: string;
   createdByName: string;
   createdByEmail: string;
   taskTypeName: string;
-  assignee: User;
+
+  comments?: string;
+  endDate?: string;
+  assigneeId?: string;
+  clientId?: string;
+  clientEntities?: string[];
+  taskTypeId?: string;
+  assigneeFName?: string;
+  assigneeLName?: string;
+  assignedByFName?: string;
+  assignedByLName?: string;
+  clientName?: string;
+  clientEntity?: string;
+  assignee?: User;
 }
 
 export interface GetAllTaskReponse {

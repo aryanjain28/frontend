@@ -24,10 +24,10 @@ const CreateNewTask = () => {
     startDate: Date | null;
     endDate: Date | null;
     name: string;
-    type: string;
-    client: string;
-    entity: string;
-    assignee: string;
+    type: string | null;
+    client: string | null;
+    entity: string | null;
+    assignee: string | null;
     comments: string;
     totalAmount: string;
     paidAmount: string;
@@ -51,8 +51,8 @@ const CreateNewTask = () => {
   const { mutate: createTask, isLoading: taskIsCreating } = usePostTask();
 
   const getEntityOptions = useCallback(
-    (clientId: string) => {
-      return (clients || []).find(({ id }) => id === clientId)?.entities;
+    (clientId: string | null) => {
+      return (clients || []).find(({ id }) => `${id}` === clientId)?.entities;
     },
     [clients, formValues.client]
   );
@@ -121,8 +121,7 @@ const CreateNewTask = () => {
                   <Box width="100%">
                     <CommFormInput
                       value={fullName}
-                      label={en.creator} //"Creator"
-                      handleChange={() => {}}
+                      label={en.creator} //"Creator Name"
                       readOnly
                       required
                     />
@@ -167,6 +166,7 @@ const CreateNewTask = () => {
                         label: name,
                       }))}
                       isLoading={clientsInfoIsLoading}
+                      isSearchable
                     />
                   </Box>
                   <Box width="100%">
@@ -181,6 +181,7 @@ const CreateNewTask = () => {
                         label: `${fName} - ${role}`,
                       }))}
                       required
+                      isSearchable
                       isLoading={usersInfoIsLoading}
                     />
                   </Box>
@@ -224,23 +225,24 @@ const CreateNewTask = () => {
                     <CommSelectInput
                       label={en.taskType} // Task Type
                       value={formValues.type}
-                      handleChange={(type) =>
+                      handleChange={(type, label) => {
                         setFormValues({
                           ...formValues,
                           type,
-                        })
-                      }
+                        });
+                      }}
                       options={(taskTypes || [])?.map(({ id, name }) => ({
                         label: name,
                         value: id,
                       }))}
                       isLoading={taskTypesIsLoading}
                       required
+                      isSearchable
                     />
                   </Box>
                   <Box width="100%">
-                    <CommSelectInput
-                      label={en.entity} // Entity
+                    <CommSelectInput // Entity
+                      label={en.entity}
                       value={formValues.entity}
                       handleChange={(entity) =>
                         setFormValues({
@@ -277,7 +279,7 @@ const CreateNewTask = () => {
                 >
                   <Box width="100%">
                     <CommFormInput
-                      label="Total Amount"
+                      label={en.totalAmount}
                       value={formValues.totalAmount}
                       handleChange={(totalAmount) =>
                         setFormValues({ ...formValues, totalAmount })
@@ -286,7 +288,7 @@ const CreateNewTask = () => {
                   </Box>
                   <Box width="100%">
                     <CommFormInput
-                      label="Paid Amount"
+                      label={en.paidAmount}
                       value={formValues.paidAmount}
                       handleChange={(paidAmount) =>
                         setFormValues({ ...formValues, paidAmount })
@@ -295,7 +297,7 @@ const CreateNewTask = () => {
                   </Box>
                   <Box width="100%">
                     <CommFormInput
-                      label="Balance Amount"
+                      label={en.balanceAmount}
                       value={formValues.balanceAmount}
                       handleChange={(balanceAmount) =>
                         setFormValues({ ...formValues, balanceAmount })
@@ -308,23 +310,25 @@ const CreateNewTask = () => {
                 <Grid
                   container
                   direction="column"
-                  justifyContent="flex-end"
+                  justifyContent="end"
                   alignItems="center"
+                  height="100%"
                 >
+                  {/* <Typography>
+                    {JSON.stringify(formValues, null, "\t")}
+                  </Typography> */}
                   <Button
-                    onClick={handleCreateTask}
+                    // onClick={handleCreateTask}
+                    onClick={() => console.log(formValues)}
                     variant="contained"
                     color="success"
-                    label="Create Task"
+                    label={en.createTask}
                     isLoading={taskIsCreating}
                     sx={{
                       fontSize: "16px",
                       textTransform: "none",
                     }}
                   />
-                  {/* <Typography>
-                    {JSON.stringify(formValues, null, "\t")}
-                  </Typography> */}
                 </Grid>
               </Box>
             </Grid>

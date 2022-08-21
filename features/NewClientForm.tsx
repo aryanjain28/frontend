@@ -45,7 +45,9 @@ function FormField({
             label={en[name as keyof typeof en] as string}
             value={value}
             handleChange={(value, label) => setFormValues(name, value, label)}
-            options={["Aryan"]}
+            options={"WERT YUIO PSD FGH JKLX CVBNMR YU QWERE W ERTYRT TYFGH BCVSDFW QE".split(
+              " "
+            )}
             required={required}
           />
         )}

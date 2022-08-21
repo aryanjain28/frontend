@@ -8,7 +8,7 @@ import { useState } from "react";
 import { BreadCrumbsComp } from "../../../features/BreadCrumbs";
 import { useDataGrid } from "../../../hooks/datagrid.hooks";
 import PageLayout from "../../../layouts/PageLayout";
-import { Task } from "../../../types/task.types";
+import { ModifiedTask, Task } from "../../../types/task.types";
 import { getTasksCol } from "../../../utils/tasks.utils";
 import { en } from "../../../constants/labels";
 import { ROUTES } from "../../../constants/routes";
@@ -41,7 +41,7 @@ const Tasks = () => {
   );
   const { paginationProps, dataGridProps } = useDataGrid({
     columns,
-    data: data as Task[],
+    data: data as ModifiedTask[],
     pageSize: 10,
     query,
     filterMap,

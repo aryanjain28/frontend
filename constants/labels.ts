@@ -47,6 +47,9 @@ export const en = {
   taskType: "Task Type",
   entity: "Entity",
   comments: "Comments",
+  totalAmount: "Total Amount",
+  paidAmount: "Paid Amount",
+  balanceAmount: "Balance Amount",
 
   // login and signUp
   login: "Login",
