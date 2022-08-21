@@ -72,6 +72,7 @@ export const en = {
   businessName: "Name of Business",
   businessConstitution: "Constitution of Business",
   businessActivity: "Business Activity",
+  entities: "Entities",
   panNumber: "PAN Number",
   address: "Address",
   city: "City",

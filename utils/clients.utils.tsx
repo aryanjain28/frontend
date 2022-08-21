@@ -106,6 +106,7 @@ export const getClientsColumns = (
 export const clientFormFields: ClientFormFields = {
   businessInfo: [
     { name: "name" },
+    { name: "panNumber" },
     { name: "gstIn" },
     { name: "registrationDate", fieldType: "date" },
     { name: "taxpayerType", fieldType: "select" },
@@ -113,8 +114,7 @@ export const clientFormFields: ClientFormFields = {
     { name: "businessName" },
     { name: "businessConstitution", fieldType: "select" },
     { name: "businessActivity" },
-    { name: "panNumber" },
-    // { name: "x" },
+    { name: "entities", fieldType: "select" },
   ],
   contactDetails: [
     { name: "address" },

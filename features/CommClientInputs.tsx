@@ -32,7 +32,7 @@ export const Input = ({
     value={value}
     handleOnChange={(value) => (readOnly ? {} : handleChange(value as string))}
     variant="outlined"
-    topLabel={`${label}${required ? "*" : ""} ${readOnly ? "(ReadOnly)" : ""}`}
+    topLabel={`${label} ${readOnly ? "(ReadOnly)" : ""}`}
     sx={{ ...{ background: "white", width: "100%" }, ...sx }}
     startIcon={icon}
     isLoading={isLoading}
@@ -62,7 +62,7 @@ export const SelectInput = ({
 }) => {
   return (
     <SearchableSelectComponent
-      label={`${label}${required ? "*" : ""} ${readOnly ? "(ReadOnly)" : ""}`}
+      label={`${label} ${readOnly ? "(ReadOnly)" : ""}`}
       selectedOption={value}
       handleSelectOption={handleChange}
       options={options}
