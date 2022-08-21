@@ -15,6 +15,7 @@ export interface ModClient {
 }
 
 export interface ModifiedClientFields {
+  name?: string;
   gstIn?: string;
   registrationDate?: string;
   taxpayerType?: string;
@@ -28,11 +29,11 @@ export interface ModifiedClientFields {
   district?: string;
   state?: string;
   pinCode?: string;
-  primaryMob?: string;
-  secondaryMob?: string;
+  primaryMobile?: string;
+  secondaryMobile?: string;
   primaryEmail?: string;
-  username?: string;
-  password?: string;
+  gstUsername?: string;
+  gstPassword?: string;
 }
 
 export interface ClientFormFieldType {

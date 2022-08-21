@@ -318,8 +318,7 @@ const CreateNewTask = () => {
                     {JSON.stringify(formValues, null, "\t")}
                   </Typography> */}
                   <Button
-                    // onClick={handleCreateTask}
-                    onClick={() => console.log(formValues)}
+                    onClick={handleCreateTask}
                     variant="contained"
                     color="success"
                     label={en.createTask}

@@ -64,6 +64,7 @@ export const en = {
   forgotPwd: "Forgot Password?",
 
   // Client Create Page
+  name: "Name",
   gstIn: "GSTIN",
   registrationDate: "Date of Registration",
   taxpayerType: "Taxpayer Type",
@@ -77,11 +78,11 @@ export const en = {
   district: "District",
   state: "State",
   pinCode: "PIN Code",
-  primaryMob: "Primary Mobile",
-  secondaryMob: "Secondary Mobile",
+  primaryMobile: "Primary Mobile",
+  secondaryMobile: "Secondary Mobile",
   primaryEmail: "Primary Email",
-  username: "Username",
-  passwword: "Password",
+  gstUsername: "Username",
+  gstPassword: "Password",
 
   // toast messages
   toast: {

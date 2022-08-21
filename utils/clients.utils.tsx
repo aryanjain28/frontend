@@ -6,11 +6,24 @@ import UnavailableIcon from "@mui/icons-material/MoreHoriz";
 import { palette } from "../styles/theme";
 import { KeyboardArrowDown, KeyboardArrowUp } from "@mui/icons-material";
 
-export const getArrInGroups = (arr: any, nGroups: number) => {
-  const perGroup = Math.ceil(arr.length / nGroups);
-  return new Array(nGroups)
+export const getArrInGroups = (arr: any, perGroup: number = 4) => {
+  const nGroups = arr.length % perGroup;
+  const finalArr = new Array(nGroups)
     .fill("")
-    .map((_, i) => arr.slice(i * perGroup, (i + 1) * perGroup));
+    .map((_, i) =>
+      arr.slice(i * perGroup, Math.min((i + 1) * perGroup, arr.length))
+    );
+
+  if (perGroup * nGroups < arr.length) {
+    const temp = [];
+    for (let index = perGroup * nGroups; index < arr.length; index++) {
+      const p = arr[index];
+      temp.push(p);
+    }
+    finalArr.push(temp);
+  }
+
+  return finalArr;
 };
 
 const checkAvailibility = (valueToCheck: boolean) =>
@@ -92,6 +105,7 @@ export const getClientsColumns = (
 
 export const clientFormFields: ClientFormFields = {
   businessInfo: [
+    { name: "name" },
     { name: "gstIn" },
     { name: "registrationDate", fieldType: "date" },
     { name: "taxpayerType", fieldType: "select" },
@@ -100,6 +114,7 @@ export const clientFormFields: ClientFormFields = {
     { name: "businessConstitution", fieldType: "select" },
     { name: "businessActivity" },
     { name: "panNumber" },
+    // { name: "x" },
   ],
   contactDetails: [
     { name: "address" },
@@ -107,12 +122,12 @@ export const clientFormFields: ClientFormFields = {
     { name: "district" },
     { name: "state", fieldType: "select" },
     { name: "pinCode" },
-    { name: "primaryMob" },
-    { name: "secondaryMob" },
+    { name: "primaryMobile" },
+    { name: "secondaryMobile" },
     { name: "primaryEmail" },
   ],
   gstFields: [
-    { name: "username" },
-    { name: "password", fieldType: "password" },
+    { name: "gstUsername" },
+    { name: "gstPassword", fieldType: "password" },
   ],
 };

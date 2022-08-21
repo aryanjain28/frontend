@@ -44,7 +44,9 @@ function FormField({
           <ClientInfoSelect
             label={en[name as keyof typeof en] as string}
             value={value}
-            handleChange={(value, label) => setFormValues(name, value, label)}
+            handleChange={(value, label) =>
+              setFormValues(name, value as string, label as string)
+            }
             options={"WERT YUIO PSD FGH JKLX CVBNMR YU QWERE W ERTYRT TYFGH BCVSDFW QE".split(
               " "
             )}
@@ -57,6 +59,7 @@ function FormField({
             value={value}
             handleChange={(value) => setFormValues(name, value)}
             required={required}
+            showCancleIcon
           />
         )}
       </Box>
@@ -73,10 +76,10 @@ const FormRow = ({
   formValues: ModifiedClientFields;
   setFormValues: (formValues: ModifiedClientFields) => void;
 }) => (
-  <Grid container spacing={1}>
+  <Grid container spacing={2}>
     {allFormFields.map((formFields: ClientFormFieldType[]) => {
       return (
-        <Grid container item spacing={3}>
+        <Grid container item spacing={2}>
           {formFields.map(({ name, fieldType, required }) => (
             <FormField
               name={name}
@@ -103,7 +106,7 @@ const ClientBusinessInfo = ({
   formFields: ClientFormFieldType[];
   setFormValues: (formValues: ModifiedClientFields) => void;
 }) => {
-  const dividedFormFields = getArrInGroups(formFields, 2);
+  const dividedFormFields = getArrInGroups(formFields);
   return (
     <Box sx={{ flexGrow: 1 }} py={1} px={2} m={1}>
       <Typography variant="h6" color={palette.primary.main} letterSpacing={1}>
@@ -128,7 +131,7 @@ const ContactDetails = ({
   formFields: ClientFormFieldType[];
   setFormValues: (formValues: ModifiedClientFields) => void;
 }) => {
-  const dividedFormFields = getArrInGroups(formFields, 2);
+  const dividedFormFields = getArrInGroups(formFields);
   return (
     <Box sx={{ flexGrow: 1 }} py={1} px={2} m={1}>
       <Typography variant="h6" color={palette.primary.main} letterSpacing={1}>
@@ -153,7 +156,7 @@ const GstDetails = ({
   formFields: ClientFormFieldType[];
   setFormValues: (formValues: ModifiedClientFields) => void;
 }) => {
-  const dividedFormFields = getArrInGroups(formFields, 1);
+  const dividedFormFields = getArrInGroups(formFields);
   return (
     <Box sx={{ flexGrow: 1 }} py={1} px={2} m={1}>
       <Typography variant="h6" color={palette.primary.main} letterSpacing={1}>
