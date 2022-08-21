@@ -17,7 +17,7 @@ const Clients = () => {
     null
   );
   const columns = getClientsColumns(expandedRowId, setExpandedRowId);
-  const { data, isLoading } = useGetClients();
+  const { data, isFetching: isLoading } = useGetClients();
 
   const [query, setQuery] = useState("");
   const { paginationProps, dataGridProps } = useDataGrid({
@@ -54,8 +54,6 @@ const Clients = () => {
         <Divider sx={{ my: 0 }} />
         <DataGrid
           {...dataGridProps}
-          data={data as Client[]}
-          columns={columns}
           isLoading={isLoading}
           query={query}
           setQuery={setQuery}

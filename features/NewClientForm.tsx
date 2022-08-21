@@ -191,9 +191,9 @@ const GstDetails = ({
 
 const NewClientForm = (props: NewClientFormProps) => {
   const { formValues, setFormValues, onSave, isSaving } = props;
-  const { data: taxpayerTypes, isLoading: taxpayerTypesIsLoading } =
+  const { data: taxpayerTypes, isFetching: taxpayerTypesIsLoading } =
     useGetTaxpayerTypes();
-  const { data: pincodes, isLoading: pincodesIsLoading } = useGetPincodes();
+  const { data: pincodes, isFetching: pincodesIsLoading } = useGetPincodes();
 
   useEffect(() => {
     if (!formValues.pincode) {
