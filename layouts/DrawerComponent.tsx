@@ -23,6 +23,7 @@ import { Box } from "@mui/system";
 import { useRouter } from "next/router";
 import { ExpandLess, ExpandMore, PeopleAltOutlined } from "@mui/icons-material";
 import AddTaskIcon from "@mui/icons-material/PlaylistAddOutlined";
+import AddTaskTypeIcon from "@mui/icons-material/LibraryAddOutlined";
 import { useState } from "react";
 import { Collapse, Tooltip } from "@mui/material";
 import { useGetLocalStorage } from "../hooks/auth.hooks";
@@ -116,6 +117,12 @@ const DrawerComponent = ({
           icon: <AddTaskIcon />,
           route: ROUTES.createTask,
           hidden: role === "STAFF",
+        },
+        {
+          label: "Create Task Type",
+          icon: <AddTaskTypeIcon />,
+          route: ROUTES.taskTypes,
+          hidden: false,
         },
         {
           label: "All Tasks",
