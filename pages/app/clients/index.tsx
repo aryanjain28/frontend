@@ -1,12 +1,10 @@
 import { Divider, Typography } from "@mui/material";
 import { Box } from "@mui/system";
-import { useRouter } from "next/router";
 import { useState } from "react";
 import DataGrid from "../../../components/DataGrid/DataGridMain.component";
 import { en } from "../../../constants/labels";
 import { ROUTES } from "../../../constants/routes";
 import { BreadCrumbsComp } from "../../../features/BreadCrumbs";
-import { useGetLocalStorage } from "../../../hooks/auth.hooks";
 import { useGetClients } from "../../../hooks/clients.hooks";
 import { useDataGrid } from "../../../hooks/datagrid.hooks";
 import PageLayout from "../../../layouts/PageLayout";
@@ -24,7 +22,7 @@ const Clients = () => {
   const [query, setQuery] = useState("");
   const { paginationProps, dataGridProps } = useDataGrid({
     columns,
-    data: data as ModClient[],
+    data: data as Client[],
     pageSize: 10,
     query,
     expandedRowId: expandedRowId as string,
@@ -56,7 +54,7 @@ const Clients = () => {
         <Divider sx={{ my: 0 }} />
         <DataGrid
           {...dataGridProps}
-          data={data as ModClient[]}
+          data={data as Client[]}
           columns={columns}
           isLoading={isLoading}
           query={query}

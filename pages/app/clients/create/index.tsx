@@ -4,6 +4,7 @@ import { en } from "../../../../constants/labels";
 import { ROUTES } from "../../../../constants/routes";
 import { BreadCrumbsComp } from "../../../../features/BreadCrumbs";
 import NewClientForm from "../../../../features/NewClientForm";
+import { usePostClient } from "../../../../hooks/clients.hooks";
 import PageLayout from "../../../../layouts/PageLayout";
 import { palette } from "../../../../styles/theme";
 import { ModifiedClientFields } from "../../../../types/clients.types";
@@ -19,6 +20,9 @@ const CreateClient = () => {
     businessActivity: "",
     panNumber: "",
   });
+
+  const { mutate, isLoading: isSaving } = usePostClient();
+
   return (
     <PageLayout>
       <Box
@@ -46,7 +50,8 @@ const CreateClient = () => {
         <NewClientForm
           formValues={formValues}
           setFormValues={setFormValues}
-          onSave={() => console.log(formValues)}
+          isSaving={isSaving}
+          onSave={() => mutate({ payload: { data: formValues } })}
         />
       </Box>
     </PageLayout>

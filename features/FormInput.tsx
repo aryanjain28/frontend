@@ -34,21 +34,25 @@ export const FormInput = (props: FormInputProps) => {
 
   return (
     <Box>
-      {Boolean(topLabel) && (
-        <Box display="flex" alignItems="start">
-          <Typography
-            fontSize="13px"
-            variant="subtitle2"
-            fontWeight={700}
-            color="GrayText"
-          >
-            {topLabel}
-          </Typography>
-          <Typography variant="subtitle2" fontWeight={700} color="red">
-            {required ? "*" : ""}
-          </Typography>
-        </Box>
-      )}
+      <Box display="flex" alignItems="center">
+        {Boolean(topLabel) && (
+          <>
+            <Typography
+              fontSize="13px"
+              variant="subtitle2"
+              fontWeight={700}
+              color="GrayText"
+            >
+              {topLabel}
+            </Typography>
+            <Typography variant="subtitle2" fontWeight={700} color="red">
+              {required ? "*" : ""}
+            </Typography>
+          </>
+        )}
+        {isLoading && <CircularProgress sx={{ mx: 1 }} size={13} />}
+      </Box>
+
       <TextField
         label={label}
         type={type}
@@ -72,17 +76,18 @@ export const FormInput = (props: FormInputProps) => {
               </IconButton>
             </InputAdornment>
           ),
-          endAdornment: isLoading ? (
-            <CircularProgress size={13} />
-          ) : (
-            endIcon && (
-              <InputAdornment position="end">
-                <IconButton onClick={(e) => handleEndIconClick!(e)}>
-                  {endIcon}
-                </IconButton>
-              </InputAdornment>
-            )
-          ),
+          endAdornment:
+            !Boolean(topLabel) && isLoading ? (
+              <CircularProgress size={13} />
+            ) : (
+              endIcon && (
+                <InputAdornment position="end">
+                  <IconButton onClick={(e) => handleEndIconClick!(e)}>
+                    {endIcon}
+                  </IconButton>
+                </InputAdornment>
+              )
+            ),
         }}
         sx={{ ...sx }}
       />

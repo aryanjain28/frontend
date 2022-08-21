@@ -1,4 +1,4 @@
-import { Box, Typography } from "@mui/material";
+import { Box, CircularProgress, Typography } from "@mui/material";
 import { SearchableSelectComponent } from "../components/Select";
 import { Select } from "../types/common.types";
 import DateSelectPopover from "./DateSelectPopover";
@@ -30,7 +30,7 @@ export const Input = ({
   <FormInput
     label={""}
     value={value}
-    handleOnChange={(value) => (readOnly ? {} : handleChange(value as string))}
+    handleOnChange={(value) => handleChange(readOnly ? "" : (value as string))}
     variant="outlined"
     topLabel={`${label} ${readOnly ? "(ReadOnly)" : ""}`}
     sx={{ ...{ background: "white", width: "100%" }, ...sx }}
@@ -38,6 +38,7 @@ export const Input = ({
     isLoading={isLoading}
     rows={rows}
     type={type}
+    required={required}
   />
 );
 
@@ -69,6 +70,7 @@ export const SelectInput = ({
       sx={{ ...{ width: "100%", background: "white" }, ...sx }}
       isLoading={isLoading}
       readonly={readOnly}
+      required={required}
     />
   );
 };
@@ -80,6 +82,7 @@ export const DateSelect = ({
   showCancleIcon = false,
   readOnly = false,
   required = false,
+  isLoading = false,
   sx = {},
   minDate,
   maxDate,
@@ -90,19 +93,31 @@ export const DateSelect = ({
   showCancleIcon?: boolean;
   readOnly?: boolean;
   required?: boolean;
+  isLoading?: boolean;
   sx?: any;
   minDate?: Date;
   maxDate?: Date;
 }) => (
   <Box>
-    <Typography
-      fontSize="13px"
-      variant="subtitle2"
-      fontWeight={700}
-      color="GrayText"
-    >
-      {`${label}${required ? "*" : ""} ${readOnly ? "(ReadOnly)" : ""}`}
-    </Typography>
+    <Box display="flex" alignItems="center">
+      {Boolean(label) && (
+        <>
+          <Typography
+            fontSize="13px"
+            variant="subtitle2"
+            fontWeight={700}
+            color="GrayText"
+          >
+            {label}
+          </Typography>
+          <Typography variant="subtitle2" fontWeight={700} color="red">
+            {required ? "*" : ""}
+          </Typography>
+        </>
+      )}
+      {isLoading && <CircularProgress sx={{ mx: 1 }} size={13} />}
+    </Box>
+
     <DateSelectPopover
       date={value}
       sx={{ ...{ width: "100%", background: "white" }, ...sx }}

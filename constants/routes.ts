@@ -22,6 +22,9 @@ export const API_ROUTES = {
 
   // Clients
   GET_ALL_CLIENTS: "/clients",
+  GET_ALL_TAXPAYER_TYPES: "/clients/taxpayerTypes",
+  GET_ALL_PINCODES: "/clients/pincodes",
+  POST_CLIENT: "/clients/client",
 };
 
 export const ROUTES = {

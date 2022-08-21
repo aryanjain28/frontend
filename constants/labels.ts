@@ -78,12 +78,14 @@ export const en = {
   city: "City",
   district: "District",
   state: "State",
-  pinCode: "PIN Code",
+  pincode: "PIN Code",
   primaryMobile: "Primary Mobile",
   secondaryMobile: "Secondary Mobile",
   primaryEmail: "Primary Email",
   gstUsername: "Username",
   gstPassword: "Password",
+  contactDetails: "Contact Details",
+  gstCreds: "GST Website Credentials",
 
   // toast messages
   toast: {
@@ -104,5 +106,9 @@ export const en = {
     taskTypeFetchFailed: "Failed to fetch task types.",
     clientsFetchSuccess: "Fetched clients info successfully.",
     clientsFetchFailed: "Failed to fetch clients info.",
+    taxpayerTypesFetchFailed: "Failed to fetch taxpayer types.",
+    pincodesFetchFailed: "Failed to fetch pincodes.",
+    clientCreatedSuccessfully: "Client information saved successfully.",
+    clientCreatedFailed: "Failed to save client information.",
   },
 };

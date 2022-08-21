@@ -5,6 +5,7 @@ import AvailableIcon from "@mui/icons-material/CheckCircle";
 import UnavailableIcon from "@mui/icons-material/MoreHoriz";
 import { palette } from "../styles/theme";
 import { KeyboardArrowDown, KeyboardArrowUp } from "@mui/icons-material";
+import { Select } from "../types/common.types";
 
 export const getArrInGroups = (arr: any, perGroup: number = 4) => {
   const nGroups = arr.length % perGroup;
@@ -42,16 +43,24 @@ export const getClientsColumns = (
     key: "name",
   },
   {
-    headerName: "Entity",
-    key: "entity",
+    headerName: "GST IN",
+    key: "gstIn",
   },
   {
     headerName: "PAN",
-    key: "pan",
+    key: "panNumber",
   },
   {
     headerName: "Mobile",
-    key: "mobile",
+    key: "primaryMobile",
+  },
+  {
+    headerName: "Business",
+    key: "businessName",
+  },
+  {
+    headerName: "Taxpayer",
+    key: "taxpayerTypeName",
   },
   {
     headerName: "GST",
@@ -69,7 +78,7 @@ export const getClientsColumns = (
     Component: ({ row }) => checkAvailibility(row.isCompany),
   },
   {
-    headerName: "Income Tax",
+    headerName: "IT",
     key: "isIT",
     Component: ({ row }) => checkAvailibility(row.isIT),
   },
@@ -103,26 +112,47 @@ export const getClientsColumns = (
   },
 ];
 
-export const clientFormFields: ClientFormFields = {
+export const getClientFormFields = (
+  options: {
+    taxpayerTypesOptions: Select[];
+    pincodesOptions: Select[];
+  },
+  isLoadingState: {
+    taxpayerTypesIsLoading: boolean;
+    pincodesIsLoading: boolean;
+  }
+): ClientFormFields => ({
   businessInfo: [
-    { name: "name" },
+    { name: "name", required: true },
     { name: "panNumber" },
     { name: "gstIn" },
     { name: "registrationDate", fieldType: "date" },
-    { name: "taxpayerType", fieldType: "select" },
-    { name: "legalName" },
-    { name: "businessName" },
+    {
+      name: "taxpayerType",
+      fieldType: "select",
+      options: options.taxpayerTypesOptions,
+      required: true,
+      isLoading: isLoadingState.taxpayerTypesIsLoading,
+    },
+    { name: "legalName", required: true },
+    { name: "businessName", required: true },
     { name: "businessConstitution", fieldType: "select" },
     { name: "businessActivity" },
     { name: "entities", fieldType: "select" },
   ],
   contactDetails: [
-    { name: "address" },
-    { name: "city" },
-    { name: "district" },
-    { name: "state", fieldType: "select" },
-    { name: "pinCode" },
-    { name: "primaryMobile" },
+    {
+      name: "pincode",
+      fieldType: "select",
+      required: true,
+      options: options.pincodesOptions,
+      isLoading: isLoadingState.pincodesIsLoading,
+    },
+    { name: "city", required: true, readOnly: true },
+    { name: "district", required: true, readOnly: true },
+    { name: "state", required: true, readOnly: true },
+    { name: "address", required: true },
+    { name: "primaryMobile", required: true },
     { name: "secondaryMobile" },
     { name: "primaryEmail" },
   ],
@@ -130,4 +160,4 @@ export const clientFormFields: ClientFormFields = {
     { name: "gstUsername" },
     { name: "gstPassword", fieldType: "password" },
   ],
-};
+});

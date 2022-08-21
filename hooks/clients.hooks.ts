@@ -1,8 +1,14 @@
-import { useQuery } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import { toast } from "react-toastify";
 import { en } from "../constants/labels";
 import { QUERY_KEYS } from "../constants/queryKeys";
-import { getAllClients } from "../services/clients.services";
+import {
+  getAllClients,
+  getAllPincodes,
+  getAllTaxpayertypes,
+  postClient,
+} from "../services/clients.services";
+import { PostClientPayload } from "../types/clients.types";
 
 const mockData = [
   {
@@ -148,15 +154,45 @@ const mockData = [
 ];
 
 export const useGetClients = () => {
-  const { data, isLoading } = useQuery(
-    [QUERY_KEYS.GET_ALL_CLIENTS],
-    () => getAllClients(),
+  return useQuery([QUERY_KEYS.GET_ALL_CLIENTS], () => getAllClients(), {
+    // onSuccess: () => toast.success(en.toast.clientsFetchSuccess),
+    onError: () => toast.error(en.toast.clientsFetchFailed),
+    placeholderData: [],
+  });
+};
+
+export const usePostClient = () => {
+  return useMutation(
+    ({ payload }: { payload: PostClientPayload }) => {
+      return postClient(payload);
+    },
+    {
+      onSuccess: (data, variables) => {
+        toast.success(en.toast.clientCreatedSuccessfully);
+      },
+      onError: (data, variables) => {
+        toast.error(en.toast.clientCreatedFailed);
+      },
+    }
+  );
+};
+
+export const useGetTaxpayerTypes = () => {
+  return useQuery(
+    [QUERY_KEYS.GET_ALL_TAXPAYER_TYPES],
+    () => getAllTaxpayertypes(),
     {
       // onSuccess: () => toast.success(en.toast.clientsFetchSuccess),
-      onError: () => toast.error(en.toast.clientsFetchFailed),
+      onError: () => toast.error(en.toast.taxpayerTypesFetchFailed),
       placeholderData: [],
     }
   );
+};
 
-  return { data: mockData, isLoading };
+export const useGetPincodes = () => {
+  return useQuery([QUERY_KEYS.GET_ALL_PINCODES], () => getAllPincodes(), {
+    // onSuccess: () => toast.success(en.toast.clientsFetchSuccess),
+    onError: () => toast.error(en.toast.pincodesFetchFailed),
+    placeholderData: null,
+  });
 };
