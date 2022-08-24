@@ -2,7 +2,7 @@ import { Box, Collapse, TableCell } from "@mui/material";
 import { Row } from "../types/datagrid.types";
 import { palette } from "../styles/theme";
 import { useGetClientTasks } from "../hooks/clients.hooks";
-import { formatTime2 } from "../utils/common.utils";
+import { formatTime2, formatTime4 } from "../utils/common.utils";
 import { ViewTable } from "./ViewTable";
 
 const ExpandedClientGridCell = ({
@@ -27,7 +27,7 @@ const ExpandedClientGridCell = ({
           justifyContent="center"
           sx={{ background: palette.primary.light }}
         >
-          <Box my={2} width="50%" sx={{ boxShadow: 3 }}>
+          <Box my={2} width="50%" sx={{ boxShadow: 3, borderRadius: 3 }}>
             <ViewTable
               data={
                 tableData?.map(
@@ -37,7 +37,7 @@ const ExpandedClientGridCell = ({
                     totalAmount,
                     paidAmount,
                   }) => ({
-                    startDate: formatTime2(startDate),
+                    startDate: formatTime4(startDate),
                     taskTypeChildName,
                     totalAmount,
                     paidAmount: paidAmount || 0,
