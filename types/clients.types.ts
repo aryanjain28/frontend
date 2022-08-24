@@ -75,6 +75,20 @@ export interface GetAllClientsResponse {
   message: string;
 }
 
+export interface GetClientTasksResponse {
+  status: number;
+  data: {
+    id: string;
+    startDate: Date;
+    paidAmount: number;
+    totalAmount: number;
+    approvedAt: Date | null;
+    taskTypeChildName: string;
+    taskTypeChildId: number;
+  }[];
+  message: string;
+}
+
 export interface GetAllTaxpayerTypesResponse {
   status: number;
   data: TaxpayerType[];

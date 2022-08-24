@@ -116,6 +116,8 @@ export const en = {
     taskTypeAddFailed: "Failed to add task types.",
     clientsFetchSuccess: "Fetched clients info successfully.",
     clientsFetchFailed: "Failed to fetch clients info.",
+    clientTasksFetchSuccess: "Fetched clients' tasks successfully.",
+    clientTasksFetchFailed: "Failed to fetch clients' tasks.",
     taxpayerTypesFetchFailed: "Failed to fetch taxpayer types.",
     pincodesFetchFailed: "Failed to fetch pincodes.",
     clientCreatedSuccessfully: "Client information saved successfully.",

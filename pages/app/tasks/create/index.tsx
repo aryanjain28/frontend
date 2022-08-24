@@ -352,9 +352,9 @@ const CreateNewTask = () => {
                   alignItems="center"
                   height="100%"
                 >
-                  <Typography>
-                    {JSON.stringify(formValues, null, "\t")}
-                  </Typography>
+                  {/* <Typography>
+                    {JSON.stringify(formValues, null, "  ")}
+                  </Typography> */}
                   <Button
                     onClick={handleCreateTask}
                     variant="contained"

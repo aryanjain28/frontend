@@ -106,15 +106,12 @@ export const useGetMyTasks = (userId: string) => {
 };
 
 export const usePostTask = () => {
-  const { userId } = useGetLocalStorage();
-  const { refetch: refetchMyTasks } = useGetMyTasks(userId as string);
   return useMutation(
     ({ payload }: { payload: PostTaskPayload }) => {
       return postTask(payload);
     },
     {
       onSuccess: () => {
-        refetchMyTasks();
         toast.success(en.toast.taskCreatedSuccess);
       },
       onError: (data: APIData, variables) => {
@@ -169,7 +166,6 @@ export const usePatchTask = (isMyTasks = false) => {
 };
 
 export const useDeleteTask = (userId: string) => {
-  const { refetch } = useGetMyTasks(userId);
   return useMutation(
     ({ taskId }: { taskId: string }) => {
       return deleteTask(taskId);
@@ -191,7 +187,6 @@ export const useDeleteTask = (userId: string) => {
             }
           );
         }
-        refetch();
         toast.success(en.toast.taskDeletedSuccess);
       },
       onError: (data, variables) => {

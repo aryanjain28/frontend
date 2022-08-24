@@ -3,14 +3,21 @@ import {
   GetAllClientsResponse,
   GetAllPincodesResponse,
   GetAllTaxpayerTypesResponse,
+  GetClientTasksResponse,
   PostClientPayload,
   PostClientResponse,
 } from "../types/clients.types";
+import { createRoute } from "../utils/routes";
 import { GET, POST } from "./api";
 
 export const getAllClients = () => {
   const url = API_ROUTES.GET_ALL_CLIENTS;
   return GET<undefined, GetAllClientsResponse>(url).then((res) => res.data);
+};
+
+export const getClientTasks = (clientId: string) => {
+  const url = createRoute(API_ROUTES.GET_CLIENT_TASKS, { clientId });
+  return GET<undefined, GetClientTasksResponse>(url).then((res) => res.data);
 };
 
 export const postClient = (payload: PostClientPayload) => {

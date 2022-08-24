@@ -48,7 +48,6 @@ const Header = () => (
 
 const dashboard = () => {
   const { userId } = useGetLocalStorage();
-  const { refetch } = useGetMyTasks(userId as string);
   return (
     <PageLayout>
       <Header />
