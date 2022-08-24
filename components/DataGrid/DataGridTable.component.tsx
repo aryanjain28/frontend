@@ -15,6 +15,7 @@ import { en } from "../../constants/labels";
 import ExpandedDataGridCell from "../../features/ExpandedDataGridCell";
 import { palette } from "../../styles/theme";
 import { Column, Row } from "../../types/datagrid.types";
+import { Loader } from "../Loader";
 import DataGridCell from "./DataGridCell.component";
 import DataGridHeadCell from "./DataGridHeadCell.component";
 
@@ -54,10 +55,7 @@ const DataGridTableComponent = ({
                       justifyContent: "center",
                     }}
                   >
-                    <CircularProgress
-                      size={25}
-                      sx={{ color: palette.primary.light, my: 10 }}
-                    />
+                    <Loader />
                   </Box>
                 </TableCell>
               </TableRow>

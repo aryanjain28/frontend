@@ -6,6 +6,7 @@ import {
   Autocomplete,
   Box,
   CircularProgress,
+  Grid,
   TextField,
   Typography,
 } from "@mui/material";
@@ -40,6 +41,7 @@ export const SearchableSelectComponent = ({
   readonly = false,
   isLoading = false,
   required = false,
+  groupBy,
 }: {
   selectedOption: string | number | null;
   handleSelectOption: (value: string | null, label: string | null) => void;
@@ -50,6 +52,7 @@ export const SearchableSelectComponent = ({
   disabled?: boolean;
   readonly?: boolean;
   required?: boolean;
+  groupBy?: (option: SelectType) => string;
 }) => {
   const [selectedOptVal, setSelectedOptVal] = useState<SelectType | null>(
     selectedOption
@@ -102,6 +105,7 @@ export const SearchableSelectComponent = ({
         renderInput={(params) => (
           <TextField {...params} label="" placeholder="Search Options" />
         )}
+        groupBy={groupBy}
         sx={{ ...sx }}
       />
     </>
@@ -168,7 +172,7 @@ export const SelectComponent = ({
   required?: boolean;
 }) => {
   return (
-    <>
+    <Grid container direction="column">
       <Box display="flex" alignItems="center">
         {Boolean(label) && (
           <>
@@ -219,6 +223,6 @@ export const SelectComponent = ({
           </MenuItem>
         )}
       </Select>
-    </>
+    </Grid>
   );
 };

@@ -17,19 +17,22 @@ export const CommFormInput = ({
   handleChange,
   icon,
   rows,
+  type,
 }: {
   sx?: any;
   label?: string;
   readOnly?: boolean;
   required?: boolean;
-  value: string;
-  handleChange?: (value: string) => void;
+  value: string | number;
+  handleChange?: (value: string | number) => void;
   icon?: any;
   isLoading?: boolean;
   rows?: number;
+  type?: string;
 }) => (
   <FormInput
     label={""}
+    type={type}
     value={value}
     handleOnChange={(value) => (readOnly ? {} : handleChange!(value as string))}
     variant="outlined"
@@ -52,16 +55,18 @@ export const CommSelectInput = ({
   required = false,
   isLoading = false,
   isSearchable = false,
+  groupBy,
 }: {
   sx?: any;
   label: string;
-  value: string | null;
+  value: string | number | null;
   options: string[] | Select[];
-  handleChange: (value: string | null, label?: string | null) => void;
+  handleChange: (value: string | number | null, label?: string | null) => void;
   readOnly?: boolean;
   required?: boolean;
   isLoading?: boolean;
   isSearchable?: boolean;
+  groupBy?: (option: Select) => string;
 }) => {
   return isSearchable ? (
     <SearchableSelectComponent
@@ -73,6 +78,7 @@ export const CommSelectInput = ({
       isLoading={isLoading}
       readonly={readOnly}
       required={required}
+      groupBy={groupBy}
     />
   ) : (
     <SelectComponent

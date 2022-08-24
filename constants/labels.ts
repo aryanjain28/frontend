@@ -7,6 +7,8 @@ export const en = {
     mobile: "+91 02226 14670",
   },
 
+  wowSoEmpty: "Wow! So Empty.",
+
   alreadyAnAccount: "Already have an account?",
   noAvailableOptions: "No Available options",
   noData: "Nothing to show!",
@@ -50,6 +52,7 @@ export const en = {
   creatorEmail: "Creator Email",
   endDate: "End Date",
   taskType: "Task Type",
+  taskSubtype: "Task Subtype",
   entity: "Entity",
   comments: "Comments",
   totalAmount: "Total Amount",
@@ -109,6 +112,8 @@ export const en = {
     taskDeletedFailed: "Failed to delete task.",
     taskTypeFetchSuccess: "Fetched task types successfully.",
     taskTypeFetchFailed: "Failed to fetch task types.",
+    taskTypeAddSuccess: "Added task types successfully.",
+    taskTypeAddFailed: "Failed to add task types.",
     clientsFetchSuccess: "Fetched clients info successfully.",
     clientsFetchFailed: "Failed to fetch clients info.",
     taxpayerTypesFetchFailed: "Failed to fetch taxpayer types.",

@@ -19,12 +19,16 @@ export const API_ROUTES = {
 
   // Task Types
   GET_TASKS_TYPES: "/taskTypes",
+  POST_TASKS_TYPE: "/taskTypes/taskType/create",
 
   // Clients
   GET_ALL_CLIENTS: "/clients",
   GET_ALL_TAXPAYER_TYPES: "/clients/taxpayerTypes",
   GET_ALL_PINCODES: "/clients/pincodes",
   POST_CLIENT: "/clients/client",
+
+  // Utilities
+  GET_OPTIONS: "/utilities/options",
 };
 
 export const ROUTES = {

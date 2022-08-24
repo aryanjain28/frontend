@@ -1,4 +1,8 @@
-export type Select = { label: string; value: string | number };
+export type Select = {
+  label: string;
+  value: string | number;
+  groupByValue?: string;
+};
 
 export interface APIData {
   response: { data: { status: number; message: string } };

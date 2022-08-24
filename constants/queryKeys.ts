@@ -13,6 +13,7 @@ export const QUERY_KEYS = {
 
   // TaskTypes
   GET_ALL_TASK_TYPES: "GET_ALL_TASK_TYPES",
+  POST_TASK_TYPES: "POST_TASK_TYPES",
 
   // Clients
   GET_ALL_CLIENTS: "GET_ALL_CLIENTS",
@@ -22,4 +23,7 @@ export const QUERY_KEYS = {
   // Users
   GET_USER_DETAILS: "GET_USER_DETAILS",
   GET_USERS_INFO: "GET_USERS_INFO",
+
+  // Utilities
+  GET_OPTIONS: "GET_OPTIONS",
 };

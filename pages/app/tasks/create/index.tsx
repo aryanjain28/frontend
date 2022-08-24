@@ -17,6 +17,9 @@ import { useGetClients } from "../../../../hooks/clients.hooks";
 import { id } from "date-fns/locale";
 import { useGetAllUsersInfo } from "../../../../hooks/user.hooks";
 import { palette } from "../../../../styles/theme";
+import { Select } from "../../../../types/common.types";
+import { taskParentTypes } from "../../../../constants/clients.constants";
+import { useGetAllOptions } from "../../../../hooks/utilities.hooks";
 
 const CreateNewTask = () => {
   const { fullName, email } = useGetLocalStorage();
@@ -29,9 +32,9 @@ const CreateNewTask = () => {
     entity: string | null;
     assignee: string | null;
     comments: string;
-    totalAmount: string;
-    paidAmount: string;
-    balanceAmount: string;
+    totalAmount: number | null;
+    paidAmount: number | null;
+    balanceAmount: number | null;
   }>({
     startDate: new Date(),
     endDate: new Date(new Date().setDate(new Date().getDate() + 2)),
@@ -41,20 +44,20 @@ const CreateNewTask = () => {
     entity: "",
     assignee: "",
     comments: "",
-    totalAmount: "",
-    paidAmount: "",
-    balanceAmount: "",
+    totalAmount: 0,
+    paidAmount: 0,
+    balanceAmount: 0,
   });
-  const { data: taskTypes, isLoading: taskTypesIsLoading } = useGetTaskTypes();
-  const { data: clients, isLoading: clientsInfoIsLoading } = useGetClients();
-  const { data: users, isLoading: usersInfoIsLoading } = useGetAllUsersInfo();
+
+  const { data: allOptions, isLoading: optionsIsLoading } = useGetAllOptions();
   const { mutate: createTask, isLoading: taskIsCreating } = usePostTask();
 
   const getEntityOptions = useCallback(
     (clientId: string | null) => {
-      return (clients || []).find(({ id }) => `${id}` === clientId)?.entities;
+      return (allOptions?.clients || []).find(({ id }) => `${id}` === clientId)
+        ?.entities;
     },
-    [clients, formValues.client]
+    [allOptions?.clients, formValues.client]
   );
 
   const handleCreateTask = () => {
@@ -68,11 +71,8 @@ const CreateNewTask = () => {
         ...(formValues.entity && { entity: formValues.entity }),
         ...(formValues.assignee && { assignee: formValues.assignee }),
         ...(formValues.comments && { comments: formValues.comments }),
-        ...(formValues.totalAmount && { totalAmount: formValues.totalAmount }),
-        ...(formValues.paidAmount && { paidAmount: formValues.paidAmount }),
-        ...(formValues.balanceAmount && {
-          balanceAmount: formValues.balanceAmount,
-        }),
+        totalAmount: formValues.totalAmount as number,
+        paidAmount: formValues.paidAmount as number,
       },
     };
     createTask({ payload });
@@ -149,7 +149,7 @@ const CreateNewTask = () => {
                       value={formValues.name}
                       label={en.taskName} //"Task Name"
                       handleChange={(name) =>
-                        setFormValues({ ...formValues, name })
+                        setFormValues({ ...formValues, name: name as string })
                       }
                       required
                     />
@@ -159,13 +159,19 @@ const CreateNewTask = () => {
                       value={formValues.client}
                       label={en.client} //"Client"
                       handleChange={(client) =>
-                        setFormValues({ ...formValues, client, entity: "" })
+                        setFormValues({
+                          ...formValues,
+                          client: client as string,
+                          entity: "",
+                        })
                       }
-                      options={(clients || []).map(({ id, name }) => ({
-                        value: id,
-                        label: name,
-                      }))}
-                      isLoading={clientsInfoIsLoading}
+                      options={(allOptions?.clients || []).map(
+                        ({ id, name }) => ({
+                          value: id,
+                          label: name,
+                        })
+                      )}
+                      isLoading={optionsIsLoading}
                       isSearchable
                     />
                   </Box>
@@ -174,15 +180,23 @@ const CreateNewTask = () => {
                       value={formValues.assignee}
                       label={en.assignee} //"Assignee"
                       handleChange={(assignee) =>
-                        setFormValues({ ...formValues, assignee })
+                        setFormValues({
+                          ...formValues,
+                          assignee: assignee as string,
+                        })
                       }
-                      options={(users || []).map(({ fName, role, id }) => ({
-                        value: id,
-                        label: `${fName} - ${role}`,
-                      }))}
+                      options={(allOptions?.users || []).map(
+                        ({ fName, role, id }) => ({
+                          value: id,
+                          label: `${fName} - ${
+                            role[0].toUpperCase() +
+                            role.toLowerCase().slice(1, role.length)
+                          }`,
+                        })
+                      )}
                       required
                       isSearchable
-                      isLoading={usersInfoIsLoading}
+                      isLoading={optionsIsLoading}
                     />
                   </Box>
                 </Grid>
@@ -228,16 +242,25 @@ const CreateNewTask = () => {
                       handleChange={(type, label) => {
                         setFormValues({
                           ...formValues,
-                          type,
+                          type: type as string,
                         });
                       }}
-                      options={(taskTypes || [])?.map(({ id, name }) => ({
-                        label: name,
-                        value: id,
-                      }))}
-                      isLoading={taskTypesIsLoading}
+                      options={
+                        (allOptions?.taskTypes || [])?.map(
+                          ({ id, childName: name, parentId }, index) => ({
+                            label: name,
+                            value: id,
+                            groupByValue:
+                              taskParentTypes[
+                                parentId as keyof typeof taskParentTypes
+                              ].label,
+                          })
+                        ) as Select[]
+                      }
+                      isLoading={optionsIsLoading}
                       required
                       isSearchable
+                      groupBy={(option) => option.groupByValue as string}
                     />
                   </Box>
                   <Box width="100%">
@@ -247,12 +270,12 @@ const CreateNewTask = () => {
                       handleChange={(entity) =>
                         setFormValues({
                           ...formValues,
-                          entity,
+                          entity: entity as string,
                         })
                       }
                       readOnly={!Boolean(formValues.client)}
                       options={getEntityOptions(formValues.client) || []}
-                      isLoading={clientsInfoIsLoading}
+                      isLoading={optionsIsLoading}
                     />
                   </Box>
                   <Box width="100%">
@@ -262,9 +285,10 @@ const CreateNewTask = () => {
                       handleChange={(comments) =>
                         setFormValues({
                           ...formValues,
-                          comments,
+                          comments: comments as string,
                         })
                       }
+                      rows={4}
                     />
                   </Box>
                 </Grid>
@@ -279,29 +303,43 @@ const CreateNewTask = () => {
                 >
                   <Box width="100%">
                     <CommFormInput
+                      type="number"
                       label={en.totalAmount}
-                      value={formValues.totalAmount}
+                      value={formValues.totalAmount as number}
                       handleChange={(totalAmount) =>
-                        setFormValues({ ...formValues, totalAmount })
+                        setFormValues({
+                          ...formValues,
+                          totalAmount: Number(totalAmount),
+                        })
                       }
                     />
                   </Box>
                   <Box width="100%">
                     <CommFormInput
+                      type="number"
                       label={en.paidAmount}
-                      value={formValues.paidAmount}
+                      value={formValues.paidAmount as number}
                       handleChange={(paidAmount) =>
-                        setFormValues({ ...formValues, paidAmount })
+                        setFormValues({
+                          ...formValues,
+                          paidAmount: Number(paidAmount),
+                        })
                       }
                     />
                   </Box>
                   <Box width="100%">
                     <CommFormInput
+                      type="number"
                       label={en.balanceAmount}
-                      value={formValues.balanceAmount}
-                      handleChange={(balanceAmount) =>
-                        setFormValues({ ...formValues, balanceAmount })
+                      value={
+                        !isNaN(formValues.totalAmount as number) &&
+                        !isNaN(formValues.paidAmount as number)
+                          ? (formValues.totalAmount as number) -
+                            (formValues.paidAmount as number)
+                          : 0
                       }
+                      handleChange={() => {}}
+                      readOnly
                     />
                   </Box>
                 </Grid>
@@ -314,9 +352,9 @@ const CreateNewTask = () => {
                   alignItems="center"
                   height="100%"
                 >
-                  {/* <Typography>
+                  <Typography>
                     {JSON.stringify(formValues, null, "\t")}
-                  </Typography> */}
+                  </Typography>
                   <Button
                     onClick={handleCreateTask}
                     variant="contained"

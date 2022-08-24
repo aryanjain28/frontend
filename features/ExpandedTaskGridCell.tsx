@@ -15,11 +15,7 @@ import { isAdmin, isStaff } from "../utils/common.utils";
 import RupeeIcon from "@mui/icons-material/CurrencyRupeeOutlined";
 import ThreeDotsIcon from "@mui/icons-material/MoreVert";
 import { en } from "../constants/labels";
-import {
-  useDeleteTask,
-  useGetTaskTypes,
-  usePatchTask,
-} from "../hooks/tasks.hooks";
+import { useDeleteTask, usePatchTask } from "../hooks/tasks.hooks";
 import ConfimationModal from "../components/Modal";
 import moment from "moment";
 import {
@@ -27,13 +23,12 @@ import {
   CommFormInput,
   CommSelectInput,
 } from "./CommTaskInputs";
-import { useGetClients } from "../hooks/clients.hooks";
-import { useGetAllUsersInfo } from "../hooks/user.hooks";
 import { useRouter } from "next/router";
 import { ROUTES } from "../constants/routes";
 import { useGetLocalStorage } from "../hooks/auth.hooks";
 import { palette } from "../styles/theme";
 import { Select } from "../types/common.types";
+import { useGetAllOptions } from "../hooks/utilities.hooks";
 
 const ExpandedTaskGridCell = ({
   row = {},
@@ -46,22 +41,23 @@ const ExpandedTaskGridCell = ({
 }) => {
   const router = useRouter();
   const isMyTask = router.pathname.includes(ROUTES.myTasks);
-  const { fullName, userId } = useGetLocalStorage();
+  const { userId } = useGetLocalStorage();
+
+  console.log(row);
 
   const [formValues, setFormValues] = useState<any>(row);
   useEffect(() => {
     setFormValues({ ...row });
   }, [row.id]);
 
-  const { data: taskTypes, isLoading: taskTypesIsLoading } = useGetTaskTypes();
-  const { data: clients, isLoading: clientsInfoIsLoading } = useGetClients();
-  const { data: users, isLoading: usersInfoIsLoading } = useGetAllUsersInfo();
+  const { data: allOptions, isLoading: optionsIsLoading } = useGetAllOptions();
 
   const getEntityOptions = useCallback(
     (clientId: string | number) => {
-      return (clients || []).find(({ id }) => id === clientId)?.entities;
+      return (allOptions?.clients || []).find(({ id }) => id === clientId)
+        ?.entities;
     },
-    [clients, formValues.client]
+    [allOptions?.clients, formValues.client]
   );
 
   const [anchorEl, setAnchorEl] = useState<MenuProps["anchorEl"] | null>(null);
@@ -179,7 +175,7 @@ const ExpandedTaskGridCell = ({
                             <Box py={1} height="100%">
                               <CommSelectInput
                                 label="Task Type" // Task Type
-                                value={formValues.taskTypeName}
+                                value={formValues.taskTypeId}
                                 handleChange={(value, label) => {
                                   setFormValues({
                                     ...formValues,
@@ -187,13 +183,14 @@ const ExpandedTaskGridCell = ({
                                     taskTypeName: label,
                                   });
                                 }}
-                                options={(taskTypes || [])?.map(
-                                  ({ id, name }) => ({
-                                    label: name,
+                                options={(allOptions?.taskTypes || [])?.map(
+                                  ({ id, childName }) => ({
+                                    label: childName,
                                     value: id,
                                   })
                                 )}
                                 readOnly={isStaff()}
+                                isLoading={optionsIsLoading}
                               />
                             </Box>
                           </Grid>
@@ -219,7 +216,7 @@ const ExpandedTaskGridCell = ({
                             <Box py={1} height="100%">
                               <CommSelectInput
                                 label="Client Name"
-                                value={formValues.clientName}
+                                value={formValues.clientId}
                                 handleChange={(v, l) =>
                                   setFormValues({
                                     ...formValues,
@@ -229,18 +226,21 @@ const ExpandedTaskGridCell = ({
                                   })
                                 }
                                 options={
-                                  (clients || []).map(({ id, name }) => ({
-                                    value: id,
-                                    label: name,
-                                  })) as Select[]
+                                  (allOptions?.clients || []).map(
+                                    ({ id, name }) => ({
+                                      value: id,
+                                      label: name,
+                                    })
+                                  ) as Select[]
                                 }
+                                isLoading={optionsIsLoading}
                               />
                             </Box>
                           </Grid>
                           <Grid item xs={4}>
                             <Box py={1} height="100%">
                               <CommSelectInput
-                                label={"Entity Name"}
+                                label={"Client Entity"}
                                 value={formValues.clientEntity}
                                 handleChange={(p) =>
                                   setFormValues({
@@ -259,13 +259,7 @@ const ExpandedTaskGridCell = ({
                             <Box py={1} height="100%">
                               <CommSelectInput
                                 label="Assignee"
-                                value={
-                                  isMyTask
-                                    ? fullName
-                                    : isStaff()
-                                    ? formValues.assigneeFullname
-                                    : formValues.assigneeFName
-                                }
+                                value={formValues.assigneeId}
                                 handleChange={(value, label) =>
                                   setFormValues({
                                     ...formValues,
@@ -273,13 +267,14 @@ const ExpandedTaskGridCell = ({
                                     assigneeFName: label,
                                   })
                                 }
-                                options={(users || []).map(
+                                options={(allOptions?.users || []).map(
                                   ({ fName, role, id }) => ({
                                     value: id,
-                                    label: fName, //`${fName} - ${role}`,
+                                    label: `${fName} - ${role}`,
                                   })
                                 )}
                                 readOnly={isStaff()}
+                                isLoading={optionsIsLoading}
                               />
                             </Box>
                           </Grid>
@@ -301,18 +296,21 @@ const ExpandedTaskGridCell = ({
                         key: "totalAmount",
                         label: "Total Amount",
                         value: formValues.totalAmount,
+                        readOnly: false,
                       },
                       {
                         key: "paidAmount",
                         label: "Paid Amount",
                         value: formValues.paidAmount,
+                        readOnly: false,
                       },
                       {
                         key: "balanceAmount",
                         label: "Balance Amount",
-                        value: formValues.balanceAmount,
+                        value: formValues.totalAmount - formValues.paidAmount,
+                        readOnly: true,
                       },
-                    ].map(({ key, label, value }) => (
+                    ].map(({ key, label, value, readOnly }) => (
                       <Box sx={{ flexGrow: 1 }} px={2} py={1}>
                         <CommFormInput
                           key={key}
@@ -322,6 +320,7 @@ const ExpandedTaskGridCell = ({
                             setFormValues({ ...formValues, [key]: v })
                           }
                           icon={<RupeeIcon sx={{ fontSize: "16px", mx: 0 }} />}
+                          readOnly={readOnly}
                         />
                       </Box>
                     ))}

@@ -27,13 +27,12 @@ export const getArrInGroups = (arr: any, perGroup: number = 4) => {
   return finalArr;
 };
 
-const checkAvailibility = (valueToCheck: boolean) =>
-  Boolean(valueToCheck) ? (
+const checkAvailibility = (type: number, arr: number[]) =>
+  arr.includes(type) ? (
     <AvailableIcon sx={{ color: palette.primary.success }} fontSize="small" />
   ) : (
     <UnavailableIcon fontSize="small" />
   );
-
 export const getClientsColumns = (
   expandedRowId: string | number | null,
   setExpandedRowId: (id: string | number | null) => void
@@ -65,32 +64,32 @@ export const getClientsColumns = (
   {
     headerName: "GST",
     key: "isGst",
-    Component: ({ row }) => checkAvailibility(row.isGst),
-  },
-  {
-    headerName: "Tally",
-    key: "isTally",
-    Component: ({ row }) => checkAvailibility(row.isTally),
-  },
-  {
-    headerName: "Company",
-    key: "isCompany",
-    Component: ({ row }) => checkAvailibility(row.isCompany),
+    Component: ({ row }) => checkAvailibility(1, row.taskParentIds),
   },
   {
     headerName: "IT",
     key: "isIT",
-    Component: ({ row }) => checkAvailibility(row.isIT),
+    Component: ({ row }) => checkAvailibility(2, row.taskParentIds),
   },
   {
-    headerName: "Audit",
-    key: "isAudit",
-    Component: ({ row }) => checkAvailibility(row.isAudit),
+    headerName: "Tally",
+    key: "isTally",
+    Component: ({ row }) => checkAvailibility(3, row.taskParentIds),
+  },
+  {
+    headerName: "Reports",
+    key: "isTally",
+    Component: ({ row }) => checkAvailibility(4, row.taskParentIds),
+  },
+  {
+    headerName: "Registrations",
+    key: "isTally",
+    Component: ({ row }) => checkAvailibility(5, row.taskParentIds),
   },
   {
     headerName: "Other",
     key: "isOther",
-    Component: ({ row }) => checkAvailibility(row.isOther),
+    Component: ({ row }) => checkAvailibility(6, row.taskParentIds),
   },
   {
     headerName: "",

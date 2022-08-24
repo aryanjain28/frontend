@@ -9,6 +9,7 @@ export type Client = {
   primaryMobile: string;
   taxpayerTypeId: string;
   taxpayerTypeName: string;
+  taskParentIds: number[];
 };
 
 export interface TaxpayerType {
@@ -28,6 +29,7 @@ export interface ModClient {
   isIT: boolean;
   isAudit: boolean;
   isOther: boolean;
+  taskParentIds: number[];
 }
 
 export interface ModifiedClientFields {

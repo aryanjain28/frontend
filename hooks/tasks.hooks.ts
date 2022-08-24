@@ -11,6 +11,7 @@ import {
   getMyTasks,
   patchTask,
   postTask,
+  postTaskTypes,
 } from "../services/task.services";
 import { APIData } from "../types/common.types";
 import {
@@ -19,12 +20,14 @@ import {
   Task,
   AllTasks,
   ModifiedTask,
+  PostTaskTypePayload,
+  GetTaskTypesResponse,
 } from "../types/task.types";
 import { User } from "../types/task.types";
 import { useGetLocalStorage } from "./auth.hooks";
 
 // Setter for modified tasks
-const setData = (allTasks: AllTasks[], isMyTasks = false) => {
+const setData = (allTasks: any[], isMyTasks = false) => {
   const queryKey = isMyTasks
     ? QUERY_KEYS.MY_MODIFIED_TASK_VALUES
     : QUERY_KEYS.ALL_MODIFIED_TASK_VALUES;
@@ -79,10 +82,7 @@ export const useGetMyModifiedTasks = () => {
 export const useGetAllTasks = (userId: string) => {
   return useQuery([QUERY_KEYS.GET_ALL_TASKS], () => getAllTasks(), {
     placeholderData: [],
-    onSuccess: (data) => {
-      // convert to modified tasks and set to another QUERY KEY
-      setData(data);
-    },
+    onSuccess: (data) => {},
     onError: () => toast.error(en.toast.tasksFetchedFailed),
     refetchOnWindowFocus: false,
     refetchOnMount: true,
@@ -128,7 +128,7 @@ export const usePostTask = () => {
 export const usePatchTask = (isMyTasks = false) => {
   const queryKey = isMyTasks
     ? QUERY_KEYS.MY_MODIFIED_TASK_VALUES
-    : QUERY_KEYS.ALL_MODIFIED_TASK_VALUES;
+    : QUERY_KEYS.GET_ALL_TASKS;
   return useMutation(
     ({ payload }: { payload: PatchTaskPayload }) => {
       return patchTask(payload);
@@ -146,14 +146,13 @@ export const usePatchTask = (isMyTasks = false) => {
                   ...variables.payload.data,
                   assigneeId: updatedData.assigneeId,
                   assigneeFName: updatedData.assigneeFName,
-                  assigneeFullname: updatedData.assigneeFullname,
                   clientId: updatedData.clientId,
                   clientName: updatedData.clientName,
                   clientEntity: updatedData.clientEntity,
                   clientEntities: updatedData.clientEntities,
                   taskTypeId: updatedData.taskTypeId,
                   taskTypeName: updatedData.taskTypeName,
-                  updatedAt: data.updatedAt,
+                  updatedAt: new Date(),
                 };
               }
               return item;
@@ -204,7 +203,7 @@ export const useDeleteTask = (userId: string) => {
 
 // Task Types
 export const useGetTaskTypes = () => {
-  const { data, isLoading } = useQuery(
+  const { data, isLoading, isFetching } = useQuery(
     [QUERY_KEYS.GET_ALL_TASK_TYPES],
     () => getAllTaskTypes(),
     {
@@ -213,5 +212,40 @@ export const useGetTaskTypes = () => {
       onError: () => toast.error(en.toast.taskTypeFetchFailed),
     }
   );
-  return { data, isLoading };
+  return { data, isLoading: isLoading || isFetching };
+};
+
+// Task Types
+export const usePostTaskTypes = () => {
+  return useMutation(
+    ({ payload }: { payload: PostTaskTypePayload }) => {
+      return postTaskTypes(payload);
+    },
+    {
+      onSuccess: (data, variables) => {
+        const oldAllTasksTypes = queryClient.getQueryData([
+          QUERY_KEYS.GET_ALL_TASK_TYPES,
+        ]);
+        if (oldAllTasksTypes) {
+          queryClient.setQueryData(
+            [QUERY_KEYS.GET_ALL_TASK_TYPES],
+            (oldQueryData: any) => {
+              oldQueryData.push({
+                childName: variables.payload.data.childName,
+                parentId: variables.payload.data.parentId,
+              });
+              return oldQueryData.sort(
+                (a: { parentId: number }, b: { parentId: number }) =>
+                  a.parentId < b.parentId
+              );
+            }
+          );
+        }
+        toast.success(en.toast.taskTypeAddSuccess);
+      },
+      onError: (data, variables) => {
+        toast.error(en.toast.taskTypeAddFailed);
+      },
+    }
+  );
 };
