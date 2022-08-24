@@ -289,24 +289,23 @@ const ExpandedTaskGridCell = ({
                     bgcolor={palette.neutral.tint}
                     borderLeft={`${palette.secondary.light} 1px solid`}
                     borderRight={`${palette.secondary.light} 1px solid`}
-                    height="100%"
                   >
                     {[
                       {
                         key: "totalAmount",
-                        label: "Total Amount",
+                        label: "Total",
                         value: formValues.totalAmount,
                         readOnly: false,
                       },
                       {
                         key: "paidAmount",
-                        label: "Paid Amount",
+                        label: "Paid",
                         value: formValues.paidAmount,
                         readOnly: false,
                       },
                       {
                         key: "balanceAmount",
-                        label: "Balance Amount",
+                        label: "Balance",
                         value: formValues.totalAmount - formValues.paidAmount,
                         readOnly: true,
                       },
