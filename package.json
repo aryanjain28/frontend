@@ -14,6 +14,7 @@
     "date-fns": "^2.29.1",
     "moment": "^2.29.4",
     "next": "latest",
+    "nextjs-progressbar": "^0.0.14",
     "nprogress": "^0.2.0",
     "react": "^17.0.2",
     "react-date-range": "^1.4.0",

@@ -3,20 +3,13 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import { CircularProgress, CssBaseline } from "@mui/material";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Router, { useRouter } from "next/router";
-import { API_ROUTES, ROUTES } from "../constants/routes";
+import { useRouter } from "next/router";
+import { ROUTES } from "../constants/routes";
 import { en } from "../constants/labels";
 import React, { useEffect } from "react";
-import nprogress from "nprogress";
+import NextNProgress from "nextjs-progressbar";
 import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
-
-import "../styles/globals.css";
-import "../styles/nprogress.css";
-
-Router.events.on("routeChangeStart", nprogress.start);
-Router.events.on("routeChangeComplete", nprogress.done);
-Router.events.on("routeChangeError", nprogress.done);
 
 export const queryClient = new QueryClient({
   defaultOptions: {
@@ -73,6 +66,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <CssBaseline />
         <ToastContainer position="top-center" theme="dark" />
         <AuthWrapper>
+          <NextNProgress stopDelayMs={0} height={4} />
           <Component {...pageProps} />
         </AuthWrapper>
       </QueryClientProvider>
