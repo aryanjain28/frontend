@@ -5,12 +5,13 @@ import CompletedIcon from "@mui/icons-material/CheckOutlined";
 import OverdueIcon from "@mui/icons-material/RunningWithErrorsOutlined";
 import ApprovedIcon from "@mui/icons-material/ThumbUpAltOutlined";
 import PendingTaskIcon from "@mui/icons-material/PendingActions";
-import ApprovedTaskIcon from "@mui/icons-material/Grading";
 import CompletedTaskIcon from "@mui/icons-material/Done";
+import IncompleteTaskIcon from "@mui/icons-material/RuleOutlined";
+import ApprovedTaskIcon from "@mui/icons-material/ThumbUpAltOutlined";
 import { ROUTES } from "../constants/routes";
-import { AllTasks, ModifiedTask, Task } from "../types/task.types";
+import { AllTasks, ModifiedTask } from "../types/task.types";
 import { ColumnG } from "../types/datagrid.types";
-import { Link, Tooltip, Typography } from "@mui/material";
+import { Tooltip, Typography } from "@mui/material";
 import { formatTime3, isAdmin, isStaff } from "./common.utils";
 import { KeyboardArrowDown, KeyboardArrowUp } from "@mui/icons-material";
 import { CustomTooltip } from "../features/CustomTooltip";
@@ -58,31 +59,59 @@ export const getTasksArr = () => [
 
 export const taskStatus = {
   PENDING: {
-    label: "PENDING",
+    key: "PENDING",
+    label: "Pending",
     icon: (
       <Tooltip title={"Pending"} arrow>
-        <PendingTaskIcon />
+        <PendingTaskIcon fontSize="small" />
       </Tooltip>
     ),
     color: palette.primary.error,
-  },
-  APPROVED: {
-    label: "APPROVED",
-    icon: (
-      <Tooltip title={"Approved"} arrow>
-        <ApprovedTaskIcon />
-      </Tooltip>
-    ),
-    color: palette.primary.success,
+    hidden: isAdmin(),
   },
   COMPLETED: {
-    label: "COMPLETED",
+    key: "COMPLETED",
+    label: "Completed",
     icon: (
       <Tooltip title={"Completed"} arrow>
-        <CompletedTaskIcon />
+        <CompletedTaskIcon fontSize="small" />
       </Tooltip>
     ),
     color: palette.primary.warning,
+    hidden: isAdmin(),
+  },
+  INCOMPLETE: {
+    key: "INCOMPLETE",
+    label: "Incomplete",
+    icon: (
+      <Tooltip title={"Incomplete"} arrow>
+        <IncompleteTaskIcon fontSize="small" />
+      </Tooltip>
+    ),
+    color: palette.primary.warning,
+    hidden: isStaff(),
+  },
+  APPROVED: {
+    key: "APPROVED",
+    label: "Approved",
+    icon: (
+      <Tooltip title={"Approved"} arrow>
+        <ApprovedTaskIcon fontSize="small" />
+      </Tooltip>
+    ),
+    color: palette.primary.success,
+    hidden: isStaff(),
+  },
+  INPROGRESS: {
+    key: "INPROGRESS",
+    label: "In Progress",
+    icon: (
+      <Tooltip title={"In Progress"} arrow>
+        <ProgressIcon fontSize="small" />
+      </Tooltip>
+    ),
+    color: palette.primary.success,
+    hidden: isAdmin(),
   },
 };
 

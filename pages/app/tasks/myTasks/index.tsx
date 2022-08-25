@@ -7,14 +7,11 @@ import { ROUTES } from "../../../../constants/routes";
 import { BreadCrumbsComp } from "../../../../features/BreadCrumbs";
 import { useGetLocalStorage } from "../../../../hooks/auth.hooks";
 import { useDataGrid } from "../../../../hooks/datagrid.hooks";
-import {
-  useGetMyModifiedTasks,
-  useGetMyTasks,
-} from "../../../../hooks/tasks.hooks";
+import { useGetMyTasks } from "../../../../hooks/tasks.hooks";
 import PageLayout from "../../../../layouts/PageLayout";
 import { palette } from "../../../../styles/theme";
 import { FilterMap } from "../../../../types/common.types";
-import { Task } from "../../../../types/task.types";
+import { MyTasks } from "../../../../types/task.types";
 import { getMyTasksColumns } from "../../../../utils/tasks.utils";
 
 const MyTasks = () => {
@@ -23,8 +20,7 @@ const MyTasks = () => {
   const status = router.query?.status;
   const taskId = router.query?.taskId;
 
-  const { isLoading } = useGetMyTasks(userId as string);
-  const { data } = useGetMyModifiedTasks();
+  const { data, isLoading, isFetching } = useGetMyTasks(userId as string);
   const [expandedRowId, setExpandedRowId] = useState<string | null>(
     (taskId as string) || null
   );
@@ -36,7 +32,7 @@ const MyTasks = () => {
   );
   const { paginationProps, dataGridProps } = useDataGrid({
     columns,
-    data: data as Task[],
+    data: data as MyTasks[],
     pageSize: 10,
     query,
     filterMap,
@@ -70,7 +66,7 @@ const MyTasks = () => {
         <Divider sx={{ my: 0 }} />
         <DataGrid
           {...dataGridProps}
-          isLoading={isLoading}
+          isLoading={isLoading || isFetching}
           query={query}
           setQuery={setQuery}
           placeholder={en.searchTaskName}

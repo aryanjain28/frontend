@@ -1,6 +1,7 @@
 import {
   Box,
   Collapse,
+  Divider,
   Grid,
   MenuProps,
   Popover,
@@ -11,7 +12,7 @@ import { Row } from "../types/datagrid.types";
 import { taskStatus } from "../utils/tasks.utils";
 import { Button } from "../components/Button";
 import { useCallback, useEffect, useState } from "react";
-import { isAdmin, isStaff } from "../utils/common.utils";
+import { capitalize, isAdmin, isStaff } from "../utils/common.utils";
 import RupeeIcon from "@mui/icons-material/CurrencyRupeeOutlined";
 import ThreeDotsIcon from "@mui/icons-material/MoreVert";
 import { en } from "../constants/labels";
@@ -200,7 +201,21 @@ const ExpandedTaskGridCell = ({
                                 handleChange={(p) =>
                                   setFormValues({ ...formValues, status: p })
                                 }
-                                options={Object.keys(taskStatus)}
+                                options={Object.values(taskStatus).map((_) => ({
+                                  value: _.key,
+                                  label: (
+                                    <Box
+                                      display="flex"
+                                      alignItems="center"
+                                      justifyContent="start"
+                                      gap={3}
+                                    >
+                                      {_.icon}
+                                      <Typography>{_.label}</Typography>
+                                    </Box>
+                                  ),
+                                  hidden: _.hidden,
+                                }))}
                               />
                             </Box>
                           </Grid>

@@ -60,7 +60,7 @@ export const CommSelectInput = ({
   sx?: any;
   label: string;
   value: string | number | null;
-  options: string[] | Select[];
+  options: string[] | Select[] | { value: string; label: JSX.Element }[];
   handleChange: (value: string | number | null, label?: string | null) => void;
   readOnly?: boolean;
   required?: boolean;
@@ -73,7 +73,7 @@ export const CommSelectInput = ({
       label={`${label} ${readOnly ? "(ReadOnly)" : ""}`}
       selectedOption={value}
       handleSelectOption={handleChange}
-      options={options}
+      options={options as string[] | Select[]}
       sx={{ ...{ width: "100%", background: "white" }, ...sx }}
       isLoading={isLoading}
       readonly={readOnly}

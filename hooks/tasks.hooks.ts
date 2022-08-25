@@ -1,5 +1,4 @@
-import { useCallback, useMemo } from "react";
-import { QueryClient, useMutation, useQuery } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import { toast } from "react-toastify";
 import { en } from "../constants/labels";
 import { QUERY_KEYS } from "../constants/queryKeys";
@@ -18,66 +17,9 @@ import {
   PostTaskPayload,
   PatchTaskPayload,
   Task,
-  AllTasks,
-  ModifiedTask,
   PostTaskTypePayload,
-  GetTaskTypesResponse,
+  MyTasks,
 } from "../types/task.types";
-import { User } from "../types/task.types";
-import { useGetLocalStorage } from "./auth.hooks";
-
-// Setter for modified tasks
-const setData = (allTasks: any[], isMyTasks = false) => {
-  const queryKey = isMyTasks
-    ? QUERY_KEYS.MY_MODIFIED_TASK_VALUES
-    : QUERY_KEYS.ALL_MODIFIED_TASK_VALUES;
-  queryClient.setQueryData([queryKey], () =>
-    allTasks?.map((row) => ({
-      id: row.id,
-      name: row.name,
-      startDate: row.startDate,
-      status: row.status,
-      totalAmount: row.totalAmount,
-      paidAmount: row.paidAmount,
-      balanceAmount: row.balanceAmount,
-      updatedAt: row.updatedAt,
-      createdAt: row.createdAt,
-      createdByName: `${(row.createdBy as User).fName} ${
-        (row.createdBy as User).lName
-      }`,
-      createdByEmail: (row.createdBy as User).email,
-      ...(row?.comments && { comments: row.comments }),
-      ...(row?.endDate && { endDate: row.endDate }),
-      ...(row?.assignee?.id && { assigneeId: row.assignee.id }),
-      ...(row?.assignee?.fName && { assigneeFName: row.assignee.fName }),
-      ...(row?.assignee?.lName && { assigneeLName: row.assignee.lName }),
-      ...(row?.client?.client?.id && { clientId: row.client.client.id }),
-      ...(row?.client?.client?.name && { clientName: row.client.client.name }),
-      ...(row?.client?.entity && { clientEntity: row.client.entity }),
-      ...(row?.client?.client?.entities && {
-        clientEntities: row.client.client.entities,
-      }),
-      ...(row?.type?.id && { taskTypeId: row.type.id }),
-      ...(row?.type?.name && { taskTypeName: row.type.name }),
-      ...(typeof row.assignedBy !== "string" && {
-        assignedByFName: row.assignedBy?.fName || "",
-        assignedByLName: row.assignedBy?.lName || "",
-      }),
-    }))
-  );
-};
-
-export const useGetAllModifiedTasks = () => {
-  return useQuery<ModifiedTask[]>([QUERY_KEYS.ALL_MODIFIED_TASK_VALUES], {
-    placeholderData: [],
-  });
-};
-
-export const useGetMyModifiedTasks = () => {
-  return useQuery([QUERY_KEYS.MY_MODIFIED_TASK_VALUES], {
-    placeholderData: [],
-  });
-};
 
 export const useGetAllTasks = (userId: string) => {
   return useQuery([QUERY_KEYS.GET_ALL_TASKS], () => getAllTasks(), {
@@ -95,8 +37,7 @@ export const useGetMyTasks = (userId: string) => {
     () => (userId ? getMyTasks() : null),
     {
       placeholderData: [],
-      onSuccess: (data: AllTasks[]) => {
-        setData(data, true);
+      onSuccess: (data: MyTasks[]) => {
         // toast.success(en.toast.myTasksFetchedSuccess);
       },
       onError: () => toast.error(en.toast.myTasksFetchedFailed),
@@ -124,7 +65,7 @@ export const usePostTask = () => {
 
 export const usePatchTask = (isMyTasks = false) => {
   const queryKey = isMyTasks
-    ? QUERY_KEYS.MY_MODIFIED_TASK_VALUES
+    ? QUERY_KEYS.GET_MY_TASKS
     : QUERY_KEYS.GET_ALL_TASKS;
   return useMutation(
     ({ payload }: { payload: PatchTaskPayload }) => {
