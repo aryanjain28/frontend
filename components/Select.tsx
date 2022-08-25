@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import { Select as SelectType } from "../types/common.types";
 import { en } from "../constants/labels";
-import { useCallback, useState } from "react";
+import { useState } from "react";
 
 const MenuProps = {
   PaperProps: {
@@ -164,7 +164,10 @@ export const SelectComponent = ({
   selectedOption: string | number | null;
   handleSelectOption: (value: string, label: string) => void;
   label?: string;
-  options: string[] | SelectType[];
+  options:
+    | string[]
+    | SelectType[]
+    | { value: string | number; label: JSX.Element; hidden?: boolean }[];
   sx?: any;
   isLoading?: boolean;
   disabled?: boolean;
@@ -199,12 +202,16 @@ export const SelectComponent = ({
       >
         {options.length > 0 ? (
           options.map((option, index) => {
-            const { label, value } =
-              typeof option === "string"
-                ? { label: option, value: option }
-                : option;
+            const {
+              label,
+              value,
+              hidden = false,
+            } = typeof option === "string"
+              ? { label: option, value: option, hidden: false }
+              : option;
             return (
               <MenuItem
+                sx={hidden ? { display: "none" } : {}}
                 key={`${option}_${index}`}
                 value={value}
                 onClick={() =>

@@ -31,8 +31,7 @@ import { SvgIcon } from "./PageLayout";
 import { useGetLocalStorage } from "../hooks/auth.hooks";
 import { formatTime } from "../utils/common.utils";
 import { taskStatus } from "../utils/tasks.utils";
-import { useGetMyModifiedTasks } from "../hooks/tasks.hooks";
-import { ModifiedTask, Task } from "../types/task.types";
+import { MyTasks } from "../types/task.types";
 
 const drawerWidth = 240;
 
@@ -63,7 +62,6 @@ const AppBarComponent = ({
 }) => {
   const router = useRouter();
   const { fullName } = useGetLocalStorage();
-  const { data: myTasks } = useGetMyModifiedTasks();
 
   const [anchorEl, setAnchorEl] = useState<MenuProps["anchorEl"] | null>(null);
   const [anchorNot, setAnchorNot] = useState<MenuProps["anchorEl"] | null>(
@@ -80,10 +78,7 @@ const AppBarComponent = ({
     router.push(ROUTES.login);
   }, []);
 
-  const newNotifications = useMemo(
-    () => ((myTasks as ModifiedTask[]) || []).filter((t) => t.isNew),
-    [myTasks]
-  );
+  const newNotifications: MyTasks[] = []; // TODO: Add notifications arr to DB
 
   return (
     <>
@@ -230,7 +225,7 @@ const AppBarComponent = ({
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
-        {newNotifications?.map((notif: ModifiedTask, index: number) => {
+        {/* {newNotifications?.map((notif: any, index: number) => {
           const status =
             taskStatus[notif.status as "PENDING" | "APPROVED" | "COMPLETED"];
           return (
@@ -280,7 +275,7 @@ const AppBarComponent = ({
               </Grid>
             </MenuItem>
           );
-        })}
+        })} */}
         <MenuItem>
           <Box
             display="flex"

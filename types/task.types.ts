@@ -61,6 +61,33 @@ export interface AllTasks {
   assignedByLName: string; // "Sao";
 }
 
+export interface MyTasks {
+  id: string; // "63053587b6510a88735e84f7";
+  name: string; // "Task 101";
+  startDate: Date; // "2022-08-23T20:12:34.996Z";
+  status: string; // "PENDING";
+  totalAmount: number; // 4000;
+  paidAmount: number; // 400;
+  balanceAmount: number; // 3600;
+  updatedAt: Date; // "2022-08-23T20:16:07.701Z";
+  createdByName: string; // "SandeepSao";
+  createdByEmail: string; // "sandeepsao@gmail.com";
+  comments: string; // "hsdf.lsd2342342";
+  endDate: Date; // "2022-08-25T20:12:34.996Z";
+  assigneeId: string; // "62f3820ee74d73af9a6a20b0";
+  assigneeFName: string; // "Yash";
+  assigneeLName: string; // "Nema";
+  clientId: string; // "6302119058a4b2b944f696ef";
+  clientName: string; // "Aryan Jain";
+  clientEntity: string;
+  taskTypeId: string; // "62f270e342f3ec082d360886";
+  taskTypeName: string; // "GST-3B";
+  taskTypeParentId: string; // 1;
+  assignedAt: Date; // "2022-08-23T20:16:07.701Z";
+  assignedByFName: string; // "Sandeep";
+  assignedByLName: string; // "Sao";
+}
+
 export interface ModifiedTask {
   id: string;
   name: string;
@@ -99,7 +126,7 @@ export interface GetAllTaskReponse {
 export interface GetUsersTasksResponse {
   status: number;
   message: string;
-  data: Task[];
+  data: MyTasks[];
 }
 
 export interface PostTaskPayload {

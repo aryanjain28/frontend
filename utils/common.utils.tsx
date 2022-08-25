@@ -19,6 +19,13 @@ export const formatTime4 = (timestamp: Date | string) => {
   return timestamp ? moment(timestamp).format("DD MMMM, YY") : null;
 };
 
+export const capitalize = (str: string) => {
+  if (typeof str !== "string") {
+    return str;
+  }
+  return str[0].toUpperCase() + str.slice(1, str.length).toLowerCase();
+};
+
 export const getNestedObjValue = (
   obj: { [key: string]: any },
   key: string

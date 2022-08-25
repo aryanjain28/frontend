@@ -1,10 +1,11 @@
-import { Add } from "@mui/icons-material";
+import { Add, CheckBox } from "@mui/icons-material";
 import { Box, Grid, Popover, Typography } from "@mui/material";
 import { useState } from "react";
 import { Button } from "../components/Button";
 import { SelectMultipleComponent } from "../components/Select";
 import { en } from "../constants/labels";
 import { FilterMap } from "../types/common.types";
+import { taskStatus } from "../utils/tasks.utils";
 import DateRangePopover from "./DateRangePopover";
 
 export const TaskFiltersPopover = ({
@@ -12,6 +13,7 @@ export const TaskFiltersPopover = ({
   setFilterMap,
 }: TaskFiltersPopover) => {
   const [showFiltersPopover, setShowFiltersPopover] = useState(null);
+  const [selected, setSelected] = useState([]);
   const handleSelectOption = (key: string, value: string[]) => {
     if (value.length === 0) {
       delete filterMap[key];
@@ -40,7 +42,7 @@ export const TaskFiltersPopover = ({
         onClose={() => setShowFiltersPopover(null)}
         anchorEl={showFiltersPopover}
       >
-        <Box width="500px">
+        <Box>
           <Grid
             container
             direction="column"
@@ -57,8 +59,40 @@ export const TaskFiltersPopover = ({
                 handleSelectOption("status", value)
               }
               label={en.status}
-              options={["APPROVED", "COMPLETED", "PENDING", "OVERDUE"]}
+              options={Object.values(taskStatus)
+                .filter((p) => !p.hidden)
+                .map((p) => p.label)}
             />
+            {/* <Box>
+              <Typography fontSize="13px" color={"GrayText"} fontWeight={700}>
+                {en.status}
+              </Typography>
+              <Box
+                display="flex"
+                alignItems="center"
+                justifyContent="start"
+                height={40}
+                width="100%"
+                gap={2}
+              >
+                {Object.values(taskStatus)
+                  .filter((p) => !p.hidden)
+                  .map((p) => (
+                    <Box
+                      display="flex"
+                      alignItems="center"
+                      justifyContent="start"
+                    >
+                      <CheckBox
+                        color="success"
+                        fontSize="small"
+                        // onClick={() => handleSelectOption("status", [...filterMap.status, ])}
+                      />
+                      <Typography pl={0.5}>{p.label}</Typography>
+                    </Box>
+                  ))}
+              </Box>
+            </Box> */}
             <Box>
               <Typography fontSize="13px" color={"GrayText"} fontWeight={700}>
                 {en.selectDateRange}

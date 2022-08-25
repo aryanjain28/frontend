@@ -1,6 +1,7 @@
 export type Select = {
   label: string;
   value: string | number;
+  hidden?: boolean;
   groupByValue?: string;
 };
 
