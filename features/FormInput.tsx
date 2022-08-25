@@ -21,6 +21,7 @@ export const FormInput = (props: FormInputProps) => {
     error,
     helperText,
     disabled = false,
+    required = false,
     handleOnChange,
     handleOnBlur,
     startIcon,
@@ -33,16 +34,25 @@ export const FormInput = (props: FormInputProps) => {
 
   return (
     <Box>
-      {Boolean(topLabel) && (
-        <Typography
-          fontSize="13px"
-          variant="subtitle2"
-          fontWeight={700}
-          color="GrayText"
-        >
-          {topLabel}
-        </Typography>
-      )}
+      <Box display="flex" alignItems="center">
+        {Boolean(topLabel) && (
+          <>
+            <Typography
+              fontSize="13px"
+              variant="subtitle2"
+              fontWeight={700}
+              color="GrayText"
+            >
+              {topLabel}
+            </Typography>
+            <Typography variant="subtitle2" fontWeight={700} color="red">
+              {required ? "*" : ""}
+            </Typography>
+          </>
+        )}
+        {isLoading && <CircularProgress sx={{ mx: 1 }} size={13} />}
+      </Box>
+
       <TextField
         label={label}
         type={type}
@@ -66,17 +76,18 @@ export const FormInput = (props: FormInputProps) => {
               </IconButton>
             </InputAdornment>
           ),
-          endAdornment: isLoading ? (
-            <CircularProgress size={13} />
-          ) : (
-            endIcon && (
-              <InputAdornment position="end">
-                <IconButton onClick={(e) => handleEndIconClick!(e)}>
-                  {endIcon}
-                </IconButton>
-              </InputAdornment>
-            )
-          ),
+          endAdornment:
+            !Boolean(topLabel) && isLoading ? (
+              <CircularProgress size={13} />
+            ) : (
+              endIcon && (
+                <InputAdornment position="end">
+                  <IconButton onClick={(e) => handleEndIconClick!(e)}>
+                    {endIcon}
+                  </IconButton>
+                </InputAdornment>
+              )
+            ),
         }}
         sx={{ ...sx }}
       />
@@ -99,6 +110,7 @@ interface FormInputProps {
   error?: boolean;
   helperText?: string;
   disabled?: boolean;
+  required?: boolean;
   startIcon?: any; //SvgIconTypeMap | string;
   endIcon?: any; //SvgIconTypeMap | string;
   handleStartIconClick?: () => void;

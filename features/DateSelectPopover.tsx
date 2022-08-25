@@ -32,7 +32,6 @@ const DateSelectPopover = ({
         sx={sx ? sx : { width: 300 }}
         value={date ? formatTime2(date) || "" : ""}
         handleOnClick={(e: any) => {
-          console.log("FILED CLIKED");
           setDatePopoverOpen(e.currentTarget);
         }}
         handleOnChange={() => null}
@@ -59,7 +58,10 @@ const DateSelectPopover = ({
         anchorEl={datePopoverOpen}
       >
         <Calendar
-          onChange={(item) => setDate(item)}
+          onChange={(item) => {
+            setDate(item);
+            setDatePopoverOpen(null);
+          }}
           date={date as Date}
           minDate={minDate}
           maxDate={maxDate}

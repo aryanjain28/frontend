@@ -1,14 +1,11 @@
-import {
-  useGetAllModifiedTasks,
-  useGetAllTasks,
-} from "../../../hooks/tasks.hooks";
+import { useGetAllTasks } from "../../../hooks/tasks.hooks";
 import { Divider, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import { useState } from "react";
 import { BreadCrumbsComp } from "../../../features/BreadCrumbs";
 import { useDataGrid } from "../../../hooks/datagrid.hooks";
 import PageLayout from "../../../layouts/PageLayout";
-import { Task } from "../../../types/task.types";
+import { AllTasks, ModifiedTask, Task } from "../../../types/task.types";
 import { getTasksCol } from "../../../utils/tasks.utils";
 import { en } from "../../../constants/labels";
 import { ROUTES } from "../../../constants/routes";
@@ -32,8 +29,7 @@ const Tasks = () => {
     (taskId as string) || null
   );
   const columns = getTasksCol(expandedRowId, setExpandedRowId);
-  const { isFetching: isLoading } = useGetAllTasks(userId as string);
-  const { data } = useGetAllModifiedTasks();
+  const { data, isFetching: isLoading } = useGetAllTasks(userId as string);
 
   const [query, setQuery] = useState("");
   const [filterMap, setFilterMap] = useState<FilterMap>(
@@ -41,7 +37,7 @@ const Tasks = () => {
   );
   const { paginationProps, dataGridProps } = useDataGrid({
     columns,
-    data: data as Task[],
+    data: data as AllTasks[],
     pageSize: 10,
     query,
     filterMap,

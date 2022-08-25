@@ -2,9 +2,17 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import Checkbox from "@mui/material/Checkbox";
-import { Box, CircularProgress, Typography } from "@mui/material";
+import {
+  Autocomplete,
+  Box,
+  CircularProgress,
+  Grid,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { Select as SelectType } from "../types/common.types";
 import { en } from "../constants/labels";
+import { useCallback, useState } from "react";
 
 const MenuProps = {
   PaperProps: {
@@ -23,15 +31,86 @@ interface SelectProps {
   disabled?: boolean;
 }
 
-interface SelecComponentProps {
-  selectedOption: string | number;
-  handleSelectOption: (value: string, label: string) => void;
+export const SearchableSelectComponent = ({
+  sx,
+  selectedOption,
+  handleSelectOption,
+  label,
+  options,
+  disabled = false,
+  readonly = false,
+  isLoading = false,
+  required = false,
+  groupBy,
+}: {
+  selectedOption: string | number | null;
+  handleSelectOption: (value: string | null, label: string | null) => void;
   label?: string;
-  options: string[] | SelectType;
+  options: string[] | SelectType[];
   sx?: any;
   isLoading?: boolean;
   disabled?: boolean;
-}
+  readonly?: boolean;
+  required?: boolean;
+  groupBy?: (option: SelectType) => string;
+}) => {
+  const [selectedOptVal, setSelectedOptVal] = useState<SelectType | null>(
+    selectedOption
+      ? { value: selectedOption as string, label: selectedOption as string }
+      : null
+  );
+  const handleChange = (e: any, selected: SelectType | null) => {
+    let value = null;
+    let label = null;
+    if (selected) {
+      value = selected.value as string;
+      label = selected.label;
+    }
+    handleSelectOption(value, label);
+    setSelectedOptVal(
+      selected ? { value: value as string, label: label as string } : null
+    );
+  };
+  return (
+    <>
+      <Box display="flex" alignItems="center">
+        {Boolean(label) && (
+          <>
+            <Typography
+              fontSize="13px"
+              variant="subtitle2"
+              fontWeight={700}
+              color="GrayText"
+            >
+              {label}
+            </Typography>
+            <Typography variant="subtitle2" fontWeight={700} color="red">
+              {required ? "*" : ""}
+            </Typography>
+          </>
+        )}
+        {isLoading && <CircularProgress sx={{ mx: 1 }} size={13} />}
+      </Box>
+
+      <Autocomplete
+        key={selectedOption}
+        value={selectedOptVal}
+        size="small"
+        options={options.map((p) =>
+          typeof p === "string" ? { value: p, label: p } : p
+        )}
+        onChange={handleChange}
+        disabled={disabled}
+        readOnly={readonly}
+        renderInput={(params) => (
+          <TextField {...params} label="" placeholder="Search Options" />
+        )}
+        groupBy={groupBy}
+        sx={{ ...sx }}
+      />
+    </>
+  );
+};
 
 export const SelectMultipleComponent = ({
   sx,
@@ -80,14 +159,37 @@ export const SelectComponent = ({
   options,
   isLoading = false,
   disabled = false,
-}: SelecComponentProps) => {
+  required = false,
+}: {
+  selectedOption: string | number | null;
+  handleSelectOption: (value: string, label: string) => void;
+  label?: string;
+  options: string[] | SelectType[];
+  sx?: any;
+  isLoading?: boolean;
+  disabled?: boolean;
+  readonly?: boolean;
+  required?: boolean;
+}) => {
   return (
-    <FormControl>
-      <Box display="flex" alignItems="center" gap={1}>
-        <Typography fontSize="13px" color={"GrayText"} fontWeight={700}>
-          {label}
-        </Typography>
-        {isLoading && <CircularProgress size={13} />}
+    <Grid container direction="column">
+      <Box display="flex" alignItems="center">
+        {Boolean(label) && (
+          <>
+            <Typography
+              fontSize="13px"
+              variant="subtitle2"
+              fontWeight={700}
+              color="GrayText"
+            >
+              {label}
+            </Typography>
+            <Typography variant="subtitle2" fontWeight={700} color="red">
+              {required ? "*" : ""}
+            </Typography>
+          </>
+        )}
+        {isLoading && <CircularProgress sx={{ mx: 1 }} size={13} />}
       </Box>
       <Select
         size="small"
@@ -121,6 +223,6 @@ export const SelectComponent = ({
           </MenuItem>
         )}
       </Select>
-    </FormControl>
+    </Grid>
   );
 };

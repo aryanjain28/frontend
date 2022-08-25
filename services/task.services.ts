@@ -8,6 +8,8 @@ import {
   PatchTaskResponse,
   PostTaskPayload,
   PostTaskResponse,
+  PostTaskTypePayload,
+  PostTaskTypeResponse,
 } from "../types/task.types";
 import { createRoute } from "../utils/routes";
 import { DELETE, GET, PATCH, POST } from "./api";
@@ -47,4 +49,11 @@ export const deleteTask = (taskId: string) => {
 export const getAllTaskTypes = () => {
   const url = API_ROUTES.GET_TASKS_TYPES;
   return GET<undefined, GetTaskTypesResponse>(url).then((res) => res.data);
+};
+
+export const postTaskTypes = (payload: PostTaskTypePayload) => {
+  const url = API_ROUTES.POST_TASKS_TYPE;
+  return POST<PostTaskTypePayload, PostTaskTypeResponse>(url, payload).then(
+    (res) => res.data
+  );
 };

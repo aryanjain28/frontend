@@ -1,13 +1,10 @@
 import { Box, CircularProgress, Typography } from "@mui/material";
-import {
-  SelectComponent,
-  SearchableSelectComponent,
-} from "../components/Select";
+import { SearchableSelectComponent } from "../components/Select";
 import { Select } from "../types/common.types";
 import DateSelectPopover from "./DateSelectPopover";
 import { FormInput } from "./FormInput";
 
-export const CommFormInput = ({
+export const Input = ({
   sx = {},
   label,
   readOnly = false,
@@ -17,14 +14,14 @@ export const CommFormInput = ({
   handleChange,
   icon,
   rows,
-  type,
+  type = "text",
 }: {
   sx?: any;
   label?: string;
   readOnly?: boolean;
   required?: boolean;
-  value: string | number;
-  handleChange?: (value: string | number) => void;
+  value: string;
+  handleChange: (value: string) => void;
   icon?: any;
   isLoading?: boolean;
   rows?: number;
@@ -32,20 +29,20 @@ export const CommFormInput = ({
 }) => (
   <FormInput
     label={""}
-    type={type}
     value={value}
-    handleOnChange={(value) => (readOnly ? {} : handleChange!(value as string))}
+    handleOnChange={(value) => handleChange(readOnly ? "" : (value as string))}
     variant="outlined"
     topLabel={`${label} ${readOnly ? "(ReadOnly)" : ""}`}
-    sx={{ ...{ width: "100%", background: "white" }, ...sx }}
+    sx={{ ...{ background: "white", width: "100%" }, ...sx }}
     startIcon={icon}
     isLoading={isLoading}
     rows={rows}
+    type={type}
     required={required}
   />
 );
 
-export const CommSelectInput = ({
+export const SelectInput = ({
   sx = {},
   label,
   value,
@@ -54,35 +51,19 @@ export const CommSelectInput = ({
   readOnly = false,
   required = false,
   isLoading = false,
-  isSearchable = false,
-  groupBy,
 }: {
   sx?: any;
   label: string;
-  value: string | number | null;
+  value: string | null;
   options: string[] | Select[];
-  handleChange: (value: string | number | null, label?: string | null) => void;
+  handleChange: (value: string | null, label?: string | null) => void;
   readOnly?: boolean;
   required?: boolean;
   isLoading?: boolean;
-  isSearchable?: boolean;
-  groupBy?: (option: Select) => string;
 }) => {
-  return isSearchable ? (
+  return (
     <SearchableSelectComponent
       label={`${label} ${readOnly ? "(ReadOnly)" : ""}`}
-      selectedOption={value}
-      handleSelectOption={handleChange}
-      options={options}
-      sx={{ ...{ width: "100%", background: "white" }, ...sx }}
-      isLoading={isLoading}
-      readonly={readOnly}
-      required={required}
-      groupBy={groupBy}
-    />
-  ) : (
-    <SelectComponent
-      label={`${label}${required ? "*" : ""} ${readOnly ? "(ReadOnly)" : ""}`}
       selectedOption={value}
       handleSelectOption={handleChange}
       options={options}
@@ -94,7 +75,7 @@ export const CommSelectInput = ({
   );
 };
 
-export const CommDateSelect = ({
+export const DateSelect = ({
   handleChange,
   label,
   value,

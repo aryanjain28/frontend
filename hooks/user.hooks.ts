@@ -63,7 +63,7 @@ export const usePostUser = () => {
 
 export const useGetUserDetails = () => {
   const { userId } = useGetLocalStorage();
-  const { data, isLoading, isFetching, refetch } = useQuery(
+  const { data, isLoading, isFetching } = useQuery(
     [QUERY_KEYS.GET_USER_DETAILS, userId],
     () => (userId ? getUserDetails(userId) : null),
     { placeholderData: null }
@@ -72,7 +72,7 @@ export const useGetUserDetails = () => {
 };
 
 export const useGetAllUsersInfo = () => {
-  const { data, isLoading, isFetching, refetch } = useQuery(
+  const { data, isLoading, isFetching } = useQuery(
     [QUERY_KEYS.GET_USERS_INFO],
     () => getUsersInfo(),
     { placeholderData: [] }
