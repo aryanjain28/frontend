@@ -43,8 +43,6 @@ const ExpandedTaskGridCell = ({
   const isMyTask = router.pathname.includes(ROUTES.myTasks);
   const { userId } = useGetLocalStorage();
 
-  console.log(row);
-
   const [formValues, setFormValues] = useState<any>(row);
   useEffect(() => {
     setFormValues({ ...row });

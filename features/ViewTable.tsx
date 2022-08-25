@@ -41,8 +41,6 @@ export const ViewTable = ({
   colSpan,
   height,
 }: ViewTableProps) => {
-  console.log(data);
-
   return (
     <TableContainer sx={{ height: "100%", borderRadius: 3 }}>
       <Table size="small" stickyHeader>
