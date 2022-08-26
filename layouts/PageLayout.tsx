@@ -1,7 +1,7 @@
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
 import { styled } from "@mui/system";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AppBarComponent from "./AppBarComponent";
 import DrawerComponent, { DrawerHeader } from "./DrawerComponent";
 
@@ -18,15 +18,27 @@ export default function PageLayout({
   showLayout?: boolean;
   children: any;
 }) {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(
+    localStorage.getItem("drawer_state") === "1"
+  );
+
+  useEffect(() => {
+    localStorage.setItem("drawer_state", open ? "1" : "0");
+  }, [open]);
 
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
       {showLayout && (
         <>
-          <AppBarComponent open={open} setOpen={() => setOpen(true)} />
-          <DrawerComponent open={open} setOpen={() => setOpen(false)} />
+          <AppBarComponent
+            open={Boolean(Number(open))}
+            setOpen={() => setOpen(!open)}
+          />
+          <DrawerComponent
+            open={Boolean(Number(open))}
+            setOpen={() => setOpen(!open)}
+          />
         </>
       )}
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
