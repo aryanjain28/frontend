@@ -58,6 +58,8 @@ export const en = {
   totalAmount: "Total Amount",
   paidAmount: "Paid Amount",
   balanceAmount: "Balance Amount",
+  sendMessage: "Send Message",
+  messageHistory: "Message History",
 
   // login and signUp
   login: "Login",

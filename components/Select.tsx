@@ -198,7 +198,7 @@ export const SelectComponent = ({
         size="small"
         value={selectedOption}
         disabled={disabled}
-        sx={sx ? sx : {}}
+        sx={{ ...{ background: "white" }, ...sx }}
       >
         {options.length > 0 ? (
           options.map((option, index) => {

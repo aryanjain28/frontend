@@ -27,7 +27,7 @@ import {
 import { useRouter } from "next/router";
 import { ROUTES } from "../constants/routes";
 import { useGetLocalStorage } from "../hooks/auth.hooks";
-import { palette } from "../styles/theme";
+import { gradients, palette } from "../styles/theme";
 import { Select } from "../types/common.types";
 import { useGetAllOptions } from "../hooks/utilities.hooks";
 

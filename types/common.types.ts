@@ -1,5 +1,5 @@
 export type Select = {
-  label: string;
+  label: string | JSX.Element;
   value: string | number;
   hidden?: boolean;
   groupByValue?: string;

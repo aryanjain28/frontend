@@ -47,14 +47,12 @@ const Tasks = () => {
     <PageLayout>
       <Box
         sx={{
-          mx: 4,
-          my: 2,
           border: `${palette.secondary.light} 1.5px solid`,
           borderRadius: "5px",
         }}
       >
         <Box display="flex" alignItems="center" justifyContent="space-between">
-          <Box>
+          <Box mb={1}>
             <BreadCrumbsComp
               breadCrumbs={[
                 { label: en.dashboard, url: ROUTES.dashboard },
