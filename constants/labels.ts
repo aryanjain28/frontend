@@ -97,6 +97,13 @@ export const en = {
   contactDetails: "Contact Details",
   gstCreds: "GST Website Credentials",
 
+  // Message
+  selectContacts: "Select Contacts",
+  selectedContacts: "Selected Contacts",
+  message: "Message",
+  searchByNameNumber: "Search by name or mobile",
+  templates: "Templates",
+
   // toast messages
   toast: {
     custom404Error: "Invalid URL. Redirecting to dashboard.",

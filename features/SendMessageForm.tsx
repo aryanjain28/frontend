@@ -8,6 +8,7 @@ import {
   ListItem,
   ListItemIcon,
   TextareaAutosize,
+  Tooltip,
   Typography,
 } from "@mui/material";
 import { Box } from "@mui/system";
@@ -18,21 +19,26 @@ import ButtonWithOptions from "../components/ButonWithOptions";
 import WhatsappIcon from "@mui/icons-material/Whatsapp";
 import EmailIcon from "@mui/icons-material/EmailOutlined";
 import SMSIcon from "@mui/icons-material/TextsmsOutlined";
+import CopyIcon from "@mui/icons-material/ContentCopyOutlined";
+import TickIcon from "@mui/icons-material/DoneOutlined";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { CHAR_LIMIT } from "../constants/message.constants";
+import { en } from "../constants/labels";
 
-const SelectContacts = () => {
-  const [items, setItems] = useState([
-    { index: 0, isSelected: false, name: "Ashok Kumar", number: "9479848823" },
-    { index: 1, isSelected: false, name: "Aryan Jain", number: "9479848823" },
-    { index: 2, isSelected: false, name: "Parth Kodape", number: "9479848823" },
-    { index: 3, isSelected: false, name: "Sandeep Sao", number: "9479848823" },
-    { index: 4, isSelected: false, name: "Ashok Kumar", number: "9479848823" },
-    { index: 5, isSelected: false, name: "Aryan Jain", number: "9479848823" },
-    { index: 6, isSelected: false, name: "Parth Kodape", number: "9479848823" },
-    { index: 7, isSelected: false, name: "Sandeep Sao", number: "9479848823" },
-  ]);
+interface Item {
+  name: string;
+  number: string;
+  isSelected: boolean;
+  index: number;
+}
 
+const SelectContacts = ({
+  items,
+  setItems,
+}: {
+  items: Item[];
+  setItems: (value: Item[]) => void;
+}) => {
   const [query, setQuery] = useState<string>("");
 
   const filteredItems = useMemo(
@@ -40,7 +46,7 @@ const SelectContacts = () => {
       items.filter(
         ({ name, number }) => name.includes(query) || number.includes(query)
       ),
-    [query]
+    [query, items]
   );
 
   const selected = useMemo(
@@ -67,7 +73,7 @@ const SelectContacts = () => {
       <Box p={1} width="100%">
         <FormInput
           label=""
-          placeholder="Search"
+          placeholder={en.searchByNameNumber}
           value={query}
           handleOnChange={(value) => setQuery(value as string)}
           sx={{ width: "100%" }}
@@ -86,7 +92,7 @@ const SelectContacts = () => {
             disabled={items.length === 0}
           />
         }
-        title={"Selected Contacts"}
+        title={en.selectedContacts}
         subheader={`${selected.length}/${items.length} selected`}
       ></CardHeader>
 
@@ -123,8 +129,8 @@ const SelectContacts = () => {
                 <ListItemIcon>
                   <Checkbox
                     checked={isSelected}
-                    onChange={({ target: { checked } }) => {
-                      items[index].isSelected = checked;
+                    onChange={() => {
+                      items[index].isSelected = !isSelected;
                       setItems([...items]);
                     }}
                     size="small"
@@ -134,7 +140,9 @@ const SelectContacts = () => {
                   <Typography letterSpacing={1} fontSize={15}>
                     {name}
                   </Typography>
-                  <Typography fontSize={12}>{number}</Typography>
+                  <Typography color={palette.primary.tint} variant="subtitle2">
+                    {`+91 ${number.slice(0, 5)} ${number.slice(5)}`}
+                  </Typography>
                 </Box>
               </ListItem>
             );
@@ -148,6 +156,7 @@ const SelectContacts = () => {
 
 export const SendMessageForm = (props: SendMessageFormProps) => {
   const [selectedType, setSelectedType] = useState<number>(1);
+  const [copied, setCopied] = useState<boolean>(false);
 
   const typeMap = {
     1: { icon: <WhatsappIcon />, label: "WhatsApp" },
@@ -161,18 +170,48 @@ export const SendMessageForm = (props: SendMessageFormProps) => {
     { icon: <SMSIcon />, label: "SMS", value: 3 },
   ];
 
+  const clients = [
+    { index: 0, isSelected: false, name: "Ashok Kumar", number: "6538473035" },
+    { index: 1, isSelected: false, name: "Aryan Jain", number: "9479488833" },
+    { index: 2, isSelected: false, name: "Parth Kodape", number: "8261874468" },
+    { index: 3, isSelected: false, name: "Sandeep Sao", number: "9479848823" },
+    { index: 4, isSelected: false, name: "Ashok Kumar", number: "5235896545" },
+    { index: 5, isSelected: false, name: "Aryan Jain", number: "7823434565" },
+    { index: 6, isSelected: false, name: "Parth Kodape", number: "9988343456" },
+    { index: 7, isSelected: false, name: "Sandeep Sao", number: "7435899495" },
+  ];
+
   const [formValues, setFormValues] = useState({
     type: "",
     template: "",
     content: "",
   });
 
-  const getLabel = (icon: JSX.Element, label: string) => (
-    <Box display="flex" alignItems="center" justifyContent="center" gap={2}>
-      {icon}
-      <Typography>{label}</Typography>
-    </Box>
+  const [items, setItems] = useState<Item[]>(clients);
+
+  const getLabel = useCallback(
+    (icon: JSX.Element, label: string) => (
+      <Box display="flex" alignItems="center" justifyContent="center" gap={2}>
+        {icon}
+        <Typography>{label}</Typography>
+      </Box>
+    ),
+    []
   );
+
+  const handleSendMessage = useCallback(() => {
+    const payload = {
+      type: formValues.type,
+      template: formValues.template,
+      message: formValues.content,
+      clients: items.filter((p) => p.isSelected),
+      platform: selectedType,
+    };
+    console.log(payload);
+  }, [formValues, items, selectedType]);
+
+  const rand =
+    "Sometimes, programmers require to create a string which is generated by selecting the random characters. Random String Generator helps to create a random string by choosing some characters randomly. This string can be a simple character string or an alpha-numeric string.  In this chapter, you will get the different methods to create a random string generator. We will create a random string generator program using the JavaScript programming language to generate a random string. Each time it will generate a new string. For this, we will use the Math.random() function of JavaScript.";
 
   return (
     <Box display="flex" alignItems="start" justifyContent="center">
@@ -199,9 +238,9 @@ export const SendMessageForm = (props: SendMessageFormProps) => {
           py={2}
         >
           <Typography color={palette.primary.tint} letterSpacing={1}>
-            Select Contacts
+            {en.selectContacts}
           </Typography>
-          <SelectContacts />
+          <SelectContacts items={items} setItems={setItems} />
         </Grid>
         <Grid
           container
@@ -222,7 +261,7 @@ export const SendMessageForm = (props: SendMessageFormProps) => {
             width="100%"
           >
             <Typography color={palette.primary.tint} letterSpacing={1}>
-              Message
+              {en.message}
             </Typography>
           </Box>
           <Box
@@ -251,11 +290,19 @@ export const SendMessageForm = (props: SendMessageFormProps) => {
                 handleSelectOption={(template) =>
                   setFormValues({ ...formValues, template })
                 }
-                options={["Template1", "Template2", "Template3", "Template4"]}
+                options={new Array(10)
+                  .fill("Template_")
+                  .map((p, index) => p + index + "")}
               />
               <Box width="100%">
                 <TextareaAutosize
-                  style={{ resize: "none", width: "100%" }}
+                  maxLength={CHAR_LIMIT}
+                  style={{
+                    maxHeight: 125,
+                    overflowY: "scroll",
+                    resize: "none",
+                    width: "100%",
+                  }}
                   minRows={8}
                   value={formValues.content}
                   onChange={(e) =>
@@ -287,11 +334,77 @@ export const SendMessageForm = (props: SendMessageFormProps) => {
                   label: getLabel(icon, label),
                   value,
                 }))}
-                handleClick={() => {}}
+                handleClick={handleSendMessage}
                 handleSelected={(value) => setSelectedType(value as number)}
                 selectedOption={selectedType as number}
                 sx={{ background: palette.primary.success }}
               />
+            </Grid>
+          </Box>
+        </Grid>
+        <Grid
+          container
+          direction="column"
+          alignItems="center"
+          justifyContent="space-between"
+          width="25%"
+          height={415}
+          borderRadius={3}
+          sx={{ boxShadow: 3, background: palette.primary.white }}
+          py={2}
+        >
+          <Box
+            display="flex"
+            alignItems="start"
+            justifyContent="center"
+            height="6%"
+            width="100%"
+          >
+            <Typography color={palette.primary.tint} letterSpacing={1}>
+              {en.templates}
+            </Typography>
+          </Box>
+          <Box width="100%" height="90%" sx={{ overflowY: "scroll" }}>
+            <Grid
+              container
+              direction="column"
+              alignItems="center"
+              justifyContent="space-between"
+            >
+              {new Array(10).fill(rand).map((p) => (
+                <Box
+                  my={1}
+                  display="flex"
+                  alignItems="start"
+                  justifyContent="start"
+                  width="90%"
+                  height={120}
+                  borderRadius={2}
+                  gap={2}
+                  sx={{
+                    p: 1,
+                    boxShadow: 3,
+                    background: palette.primary.main,
+                    color: palette.primary.white,
+                  }}
+                >
+                  <Tooltip
+                    title={copied ? "Copied!" : "Copy"}
+                    onMouseLeave={() => setCopied(false)} //setTimeout(() => setCopied(false), 100)}
+                  >
+                    <CopyIcon
+                      sx={{ cursor: "pointer", my: 0.5, fontSize: 20 }}
+                      onClick={() => {
+                        setCopied(true);
+                        navigator.clipboard.writeText(p);
+                      }}
+                    />
+                  </Tooltip>
+                  <Typography variant="subtitle2" letterSpacing={1}>
+                    {p}
+                  </Typography>
+                </Box>
+              ))}
             </Grid>
           </Box>
         </Grid>
