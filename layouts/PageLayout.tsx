@@ -1,9 +1,10 @@
+import { Toolbar } from "@mui/material";
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
 import { styled } from "@mui/system";
 import { useEffect, useState } from "react";
 import AppBarComponent from "./AppBarComponent";
-import DrawerComponent, { DrawerHeader } from "./DrawerComponent";
+import DrawerComponent from "./DrawerComponent";
 
 export const SvgIcon = styled("img")({
   display: "flex",
@@ -42,7 +43,7 @@ export default function PageLayout({
         </>
       )}
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-        {showLayout && <DrawerHeader />}
+        {showLayout && <Toolbar />}
         {children}
       </Box>
     </Box>
