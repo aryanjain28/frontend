@@ -12,7 +12,7 @@ import { Box } from "@mui/system";
 import { useRouter } from "next/router";
 import { ExpandLess, ExpandMore } from "@mui/icons-material";
 import { useState } from "react";
-import { Collapse } from "@mui/material";
+import { Collapse, Grid, Typography } from "@mui/material";
 import { palette } from "../styles/theme.js";
 import { drawerElements } from "../utils/drawer.utils";
 
@@ -130,7 +130,21 @@ const DrawerComponent = ({
                         ...(isSelected && { color: palette.primary.white }),
                       }}
                     >
-                      {icon}
+                      <Grid
+                        container
+                        direction="column"
+                        alignItems="center"
+                        justifyContent="center"
+                      >
+                        {icon}
+                        <Typography
+                          display={open ? "none" : undefined}
+                          fontSize={7}
+                          fontWeight={700}
+                        >
+                          {`${label}`.toUpperCase()}
+                        </Typography>
+                      </Grid>
                     </ListItemIcon>
                     <ListItemText
                       primary={label}
