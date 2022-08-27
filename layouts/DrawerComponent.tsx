@@ -1,6 +1,4 @@
-import MuiDrawer from "@mui/material/Drawer";
 import { makeStyles } from "@material-ui/core/styles";
-import { styled, Theme, CSSObject } from "@mui/material/styles";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
@@ -22,71 +20,12 @@ import {
 } from "@mui/material";
 import { palette } from "../styles/theme.js";
 import { drawerElements } from "../utils/drawer.utils";
-
-const drawerWidth = 240;
-
-const openedMixin = (theme: Theme): CSSObject => ({
-  width: drawerWidth,
-  transition: theme.transitions.create("width", {
-    easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.enteringScreen,
-  }),
-  overflowX: "hidden",
-});
-
-const closedMixin = (theme: Theme): CSSObject => ({
-  transition: theme.transitions.create("width", {
-    easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.leavingScreen,
-  }),
-  overflowX: "hidden",
-  width: `calc(${theme.spacing(7)} + 1px)`,
-  [theme.breakpoints.up("sm")]: {
-    width: `calc(${theme.spacing(8)} + 1px)`,
-  },
-});
-
-export const DrawerHeader = styled("div")(({ theme }) => ({
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "flex-end",
-  padding: theme.spacing(0, 1),
-  // necessary for content to be below app bar
-  ...theme.mixins.toolbar,
-}));
-
-const Drawer = styled(MuiDrawer, {
-  shouldForwardProp: (prop) => prop !== "open",
-})(({ theme, open }) => ({
-  width: drawerWidth,
-  flexShrink: 0,
-  whiteSpace: "nowrap",
-  boxSizing: "border-box",
-  ...(open && {
-    ...openedMixin(theme),
-    "& .MuiDrawer-paper": openedMixin(theme),
-  }),
-  ...(!open && {
-    ...closedMixin(theme),
-    "& .MuiDrawer-paper": closedMixin(theme),
-  }),
-}));
-
-const PopoverBox = ({
-  popoverEnter,
-  popoverLeave,
-}: {
-  popoverEnter: (e: MouseEvent<HTMLElement>, isIcon: boolean) => void;
-  popoverLeave: (e: MouseEvent<HTMLElement>, isIcon: boolean) => void;
-}) => (
-  <Box
-    sx={{ pointerEvents: "auto", background: palette.primary.main }}
-    width={200}
-    height={400}
-    onMouseEnter={(e) => popoverEnter(e, false)}
-    onMouseLeave={(e) => popoverLeave(e, false)}
-  ></Box>
-);
+import {
+  Children,
+  Drawer,
+  DrawerHeader,
+  PopoverBox,
+} from "../features/DrawerElements";
 
 const DrawerComponent = ({
   open,
@@ -97,6 +36,7 @@ const DrawerComponent = ({
 }) => {
   const router = useRouter();
   const [openParentId, setOpenParentId] = useState<number | null>(-1);
+  const [parentIndex, setParentIndex] = useState<number>(-1);
   const [anchorEl, setAnchorE1] = useState<EventTarget | null>(null);
   const [openedPopover, setOpenedPopover] = useState(false);
 
@@ -116,12 +56,18 @@ const DrawerComponent = ({
     if (isIcon) setAnchorE1(null);
     setOpenedPopover(false);
   };
-  const popoverEnter = (e: MouseEvent<HTMLElement>, isIcon = true) => {
+
+  const popoverEnter = (
+    e: MouseEvent<HTMLElement>,
+    parentIndex: number,
+    isIcon = true
+  ) => {
     setAnchorE1(anchorEl);
     if (isIcon) {
       setAnchorE1(e.currentTarget);
     }
     setOpenedPopover(true);
+    setParentIndex(parentIndex);
   };
 
   return (
@@ -151,7 +97,9 @@ const DrawerComponent = ({
                   }}
                   aria-owns={openedPopover ? "mouse-over-popover" : undefined}
                   onMouseEnter={
-                    !open && children.length > 0 ? popoverEnter : () => {}
+                    !open && children.length > 0
+                      ? (e) => popoverEnter(e, index)
+                      : () => {}
                   }
                   onMouseLeave={
                     !open && children.length > 0 ? popoverLeave : () => {}
@@ -161,13 +109,14 @@ const DrawerComponent = ({
                     key={label}
                     disablePadding
                     sx={{ display: "block" }}
-                    onClick={() =>
+                    onClick={() => {
+                      setParentIndex(index);
                       children.length < 1
                         ? router.push(route)
                         : setOpenParentId(
-                            openParentId === parentId ? null : parentId
-                          )
-                    }
+                            openParentId === parentId ? -1 : parentId
+                          );
+                    }}
                   >
                     <ListItemButton
                       sx={{
@@ -193,7 +142,7 @@ const DrawerComponent = ({
                           {icon}
                           <Typography
                             display={open ? "none" : undefined}
-                            fontSize={7}
+                            fontSize={8}
                             fontWeight={700}
                           >
                             {`${label}`.toUpperCase()}
@@ -212,51 +161,13 @@ const DrawerComponent = ({
                           <ExpandMore />
                         ))}
                     </ListItemButton>
-                    {
-                      <Collapse
-                        in={parentId === openParentId}
-                        timeout="auto"
-                        unmountOnExit
-                      >
-                        {children.map(
-                          ({ label, icon, route, hidden }, index) =>
-                            !hidden && (
-                              <List key={`${label}_${index}`} disablePadding>
-                                <Box
-                                  sx={{
-                                    ...(router.pathname === route
-                                      ? {
-                                          color: palette.primary.white,
-                                          bgcolor: palette.secondary.main,
-                                        }
-                                      : {
-                                          color: palette.primary.black,
-                                          bgcolor: palette.primary.white,
-                                        }),
-                                  }}
-                                >
-                                  <ListItemButton
-                                    sx={{ pl: 4 }}
-                                    onClick={() => router.push(route)}
-                                  >
-                                    <ListItemIcon
-                                      sx={{
-                                        color:
-                                          router.pathname === route
-                                            ? palette.primary.white
-                                            : palette.neutral.main,
-                                      }}
-                                    >
-                                      {icon}
-                                    </ListItemIcon>
-                                    <ListItemText primary={label} />
-                                  </ListItemButton>
-                                </Box>
-                              </List>
-                            )
-                        )}
-                      </Collapse>
-                    }
+                    <Collapse
+                      in={open && parentId === openParentId}
+                      timeout="auto"
+                      unmountOnExit
+                    >
+                      <Children parentIndex={parentIndex} />
+                    </Collapse>
                   </ListItem>
                 </Box>
               );
@@ -265,26 +176,32 @@ const DrawerComponent = ({
         </List>
       </Drawer>
 
-      <Popover
-        id="mouse-over-popover"
-        className={classes.popover}
-        classes={{ paper: classes.popoverContent }}
-        open={openedPopover}
-        anchorEl={anchorEl as Element}
-        anchorOrigin={{
-          vertical: "top",
-          horizontal: "right",
-        }}
-        transformOrigin={{
-          vertical: "top",
-          horizontal: "left",
-        }}
-        disableRestoreFocus
-        transitionDuration={100}
-        TransitionComponent={Zoom}
-      >
-        <PopoverBox popoverEnter={popoverEnter} popoverLeave={popoverLeave} />
-      </Popover>
+      {parentIndex > -1 && (
+        <Popover
+          id="mouse-over-popover"
+          className={classes.popover}
+          classes={{ paper: classes.popoverContent }}
+          open={openedPopover}
+          anchorEl={anchorEl as Element}
+          anchorOrigin={{
+            vertical: "top",
+            horizontal: "right",
+          }}
+          transformOrigin={{
+            vertical: "top",
+            horizontal: "left",
+          }}
+          disableRestoreFocus
+          transitionDuration={0}
+          TransitionComponent={Zoom}
+        >
+          <PopoverBox
+            parentIndex={parentIndex}
+            popoverEnter={popoverEnter}
+            popoverLeave={popoverLeave}
+          />
+        </Popover>
+      )}
     </>
   );
 };

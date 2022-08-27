@@ -13,6 +13,9 @@ import AddTaskIcon from "@mui/icons-material/PlaylistAddOutlined";
 import AddTaskTypeIcon from "@mui/icons-material/LibraryAddOutlined";
 import { ROUTES } from "../constants/routes";
 import { isAdmin, isStaff } from "./common.utils";
+import { styled, Theme, CSSObject } from "@mui/material/styles";
+
+export const drawerWidth = 240;
 
 export const drawerElements = [
   {
@@ -44,7 +47,7 @@ export const drawerElements = [
         hidden: isStaff(),
       },
       {
-        label: "Create Task Type",
+        label: "Create Task-Type",
         icon: <AddTaskTypeIcon />,
         route: ROUTES.taskTypes,
         hidden: false,
@@ -125,3 +128,24 @@ export const drawerElements = [
     hidden: false,
   },
 ];
+
+export const openedMixin = (theme: Theme): CSSObject => ({
+  width: drawerWidth,
+  transition: theme.transitions.create("width", {
+    easing: theme.transitions.easing.sharp,
+    duration: theme.transitions.duration.enteringScreen,
+  }),
+  overflowX: "hidden",
+});
+
+export const closedMixin = (theme: Theme): CSSObject => ({
+  transition: theme.transitions.create("width", {
+    easing: theme.transitions.easing.sharp,
+    duration: theme.transitions.duration.leavingScreen,
+  }),
+  overflowX: "hidden",
+  width: `calc(${theme.spacing(7)} + 1px)`,
+  [theme.breakpoints.up("sm")]: {
+    width: `calc(${theme.spacing(8)} + 1px)`,
+  },
+});
