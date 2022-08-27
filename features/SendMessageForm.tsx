@@ -18,24 +18,44 @@ import ButtonWithOptions from "../components/ButonWithOptions";
 import WhatsappIcon from "@mui/icons-material/Whatsapp";
 import EmailIcon from "@mui/icons-material/EmailOutlined";
 import SMSIcon from "@mui/icons-material/TextsmsOutlined";
-import { useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { CHAR_LIMIT } from "../constants/message.constants";
 
 const SelectContacts = () => {
-  const items = [
-    { isSelected: false, name: "Ashok Kumar", number: "9479848823" },
-    { isSelected: false, name: "Aryan Jain", number: "9479848823" },
-    { isSelected: false, name: "Parth Kodape", number: "9479848823" },
-    { isSelected: false, name: "Sandeep Sao", number: "9479848823" },
-    { isSelected: false, name: "Ashok Kumar", number: "9479848823" },
-    { isSelected: false, name: "Aryan Jain", number: "9479848823" },
-    { isSelected: false, name: "Parth Kodape", number: "9479848823" },
-    { isSelected: false, name: "Sandeep Sao", number: "9479848823" },
-  ];
+  const [items, setItems] = useState([
+    { index: 0, isSelected: false, name: "Ashok Kumar", number: "9479848823" },
+    { index: 1, isSelected: false, name: "Aryan Jain", number: "9479848823" },
+    { index: 2, isSelected: false, name: "Parth Kodape", number: "9479848823" },
+    { index: 3, isSelected: false, name: "Sandeep Sao", number: "9479848823" },
+    { index: 4, isSelected: false, name: "Ashok Kumar", number: "9479848823" },
+    { index: 5, isSelected: false, name: "Aryan Jain", number: "9479848823" },
+    { index: 6, isSelected: false, name: "Parth Kodape", number: "9479848823" },
+    { index: 7, isSelected: false, name: "Sandeep Sao", number: "9479848823" },
+  ]);
 
   const [query, setQuery] = useState<string>("");
-  const [selected, setSelected] = useState<{ name: string; number: string }[]>(
-    []
+
+  const filteredItems = useMemo(
+    () =>
+      items.filter(
+        ({ name, number }) => name.includes(query) || number.includes(query)
+      ),
+    [query]
   );
+
+  const selected = useMemo(
+    () => filteredItems.filter((p) => p.isSelected),
+    [items, filteredItems, query]
+  );
+
+  const toggleAllSelected = useCallback(() => {
+    setItems(
+      items.map((p) => ({
+        ...p,
+        isSelected: !(selected.length === items.length),
+      }))
+    );
+  }, [items, selected, filteredItems]);
 
   return (
     <Card
@@ -58,11 +78,7 @@ const SelectContacts = () => {
         sx={{ px: 2, py: 1 }}
         avatar={
           <Checkbox
-            onChange={(e) =>
-              selected.length === items.length
-                ? setSelected([])
-                : setSelected(items)
-            }
+            onChange={toggleAllSelected}
             checked={selected.length === items.length}
             indeterminate={
               selected.length !== items.length && selected.length !== 0
@@ -83,32 +99,47 @@ const SelectContacts = () => {
         }}
         dense
       >
-        {items.map(({ name, number, isSelected }) => {
-          return (
-            <ListItem
-              key={name}
-              role="listitem"
-              button
-              onClick={() => {}}
-              disablePadding
-              sx={{ px: 1, py: 1 }}
-            >
-              <ListItemIcon>
-                <Checkbox
-                  checked={isSelected}
-                  // onChange={(e) => (e.target.checked ? "remove" : "")}
-                  size="small"
-                />
-              </ListItemIcon>
-              <Box>
-                <Typography letterSpacing={1} fontSize={15}>
-                  {name}
-                </Typography>
-                <Typography fontSize={12}>{number}</Typography>
-              </Box>
-            </ListItem>
-          );
-        })}
+        {filteredItems.map(
+          ({
+            name,
+            number,
+            isSelected,
+            index,
+          }: {
+            name: string;
+            number: string;
+            isSelected: boolean;
+            index: number;
+          }) => {
+            return (
+              <ListItem
+                key={`${index}_${name}`}
+                role="listitem"
+                button
+                onClick={() => {}}
+                disablePadding
+                sx={{ px: 1, py: 1 }}
+              >
+                <ListItemIcon>
+                  <Checkbox
+                    checked={isSelected}
+                    onChange={({ target: { checked } }) => {
+                      items[index].isSelected = checked;
+                      setItems([...items]);
+                    }}
+                    size="small"
+                  />
+                </ListItemIcon>
+                <Box>
+                  <Typography letterSpacing={1} fontSize={15}>
+                    {name}
+                  </Typography>
+                  <Typography fontSize={12}>{number}</Typography>
+                </Box>
+              </ListItem>
+            );
+          }
+        )}
         <ListItem />
       </List>
     </Card>
@@ -130,7 +161,11 @@ export const SendMessageForm = (props: SendMessageFormProps) => {
     { icon: <SMSIcon />, label: "SMS", value: 3 },
   ];
 
-  const [formValues, setFormValues] = useState({ content: "" });
+  const [formValues, setFormValues] = useState({
+    type: "",
+    template: "",
+    content: "",
+  });
 
   const getLabel = (icon: JSX.Element, label: string) => (
     <Box display="flex" alignItems="center" justifyContent="center" gap={2}>
@@ -205,14 +240,18 @@ export const SendMessageForm = (props: SendMessageFormProps) => {
               height="100%"
             >
               <SelectComponent
-                selectedOption={""}
-                handleSelectOption={() => {}}
+                selectedOption={formValues.type}
+                handleSelectOption={(type) =>
+                  setFormValues({ ...formValues, type })
+                }
                 options={["Type1", "Type2"]}
               />
               <SelectComponent
-                selectedOption={""}
-                handleSelectOption={() => {}}
-                options={["Type1", "Type2"]}
+                selectedOption={formValues.template}
+                handleSelectOption={(template) =>
+                  setFormValues({ ...formValues, template })
+                }
+                options={["Template1", "Template2", "Template3", "Template4"]}
               />
               <Box width="100%">
                 <TextareaAutosize
@@ -220,7 +259,12 @@ export const SendMessageForm = (props: SendMessageFormProps) => {
                   minRows={8}
                   value={formValues.content}
                   onChange={(e) =>
-                    setFormValues({ ...formValues, content: e.target.value })
+                    CHAR_LIMIT === e.target.value.length
+                      ? null
+                      : setFormValues({
+                          ...formValues,
+                          content: e.target.value,
+                        })
                   }
                 />
                 <Typography
@@ -230,8 +274,8 @@ export const SendMessageForm = (props: SendMessageFormProps) => {
                   fontStyle="oblique"
                 >
                   {`Characters remaining ${
-                    100 - formValues.content.length
-                  }/100`}
+                    CHAR_LIMIT - formValues.content.length
+                  }/${CHAR_LIMIT}`}
                 </Typography>
               </Box>
               <ButtonWithOptions
