@@ -27,6 +27,7 @@ export const QUERY_KEYS = {
 
   // Utilities
   GET_OPTIONS: "GET_OPTIONS",
+  GET_DASHBOARD: "GET_DASHBOARD",
 
   // notifications
   GET_NOTIFICATIONS: "GET_NOTIFICATIONS",

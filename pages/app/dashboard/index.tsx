@@ -5,9 +5,8 @@ import PageLayout, { SvgIcon } from "../../../layouts/PageLayout";
 import Tasks from "../../../features/Tasks";
 import Clients from "../../../features/Clients";
 import Transactions from "../../../features/Transactions";
-import { useGetLocalStorage } from "../../../hooks/auth.hooks";
-import { useGetMyTasks } from "../../../hooks/tasks.hooks";
 import { palette } from "../../../styles/theme";
+import { useGetDashboardDetails } from "../../../hooks/utilities.hooks";
 
 const Header = () => (
   <>
@@ -47,15 +46,18 @@ const Header = () => (
 );
 
 const dashboard = () => {
-  const { userId } = useGetLocalStorage();
+  const {
+    data: { amount, status, types },
+  } = useGetDashboardDetails();
+
   return (
     <PageLayout>
       <Header />
-      <Tasks />
+      <Tasks tasks={status} />
       <Divider />
-      <Clients />
+      <Clients types={types} />
       <Divider />
-      <Transactions />
+      <Transactions amount={amount} />
     </PageLayout>
   );
 };

@@ -20,3 +20,13 @@ export interface GetAllOptionsTypes {
     users: UserOption[];
   };
 }
+
+export interface GetDashBoardResponse {
+  status: number;
+  message: string;
+  data: {
+    types: { [key: string]: number };
+    status: { [key: string]: number };
+    amount: { [key: string]: number };
+  };
+}

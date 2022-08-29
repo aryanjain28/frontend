@@ -1,13 +1,42 @@
 import { Grid, Link, Typography } from "@mui/material";
 import { Box } from "@mui/material";
 import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 import { en } from "../constants/labels";
 import { palette } from "../styles/theme";
 import { getTasksArr } from "../utils/tasks.utils";
 
-function Tasks() {
+function Tasks({
+  tasks: {
+    PENDING = 0,
+    COMPLETED = 0,
+    INCOMPLETE = 0,
+    APPROVED = 0,
+    INPROGRESS = 0,
+  },
+}: {
+  tasks: {
+    PENDING: number;
+    COMPLETED: number;
+    INCOMPLETE: number;
+    APPROVED: number;
+    INPROGRESS: number;
+  };
+}) {
   const router = useRouter();
   const tasks = getTasksArr();
+
+  const [tasksState, setTasksState] = useState([
+    PENDING,
+    INPROGRESS,
+    COMPLETED,
+    INCOMPLETE,
+    APPROVED,
+  ]);
+
+  useEffect(() => {
+    setTasksState([PENDING, INPROGRESS, COMPLETED, INCOMPLETE, APPROVED]);
+  }, [PENDING, INPROGRESS, COMPLETED, INCOMPLETE, APPROVED]);
 
   return (
     <Box my={2}>
@@ -27,7 +56,8 @@ function Tasks() {
         xs={12}
         gap={3}
       >
-        {tasks.map(({ label, icon, count, route }, index) => {
+        {tasks.map(({ label, icon, route }, index) => {
+          const count = index === 0 ? 40 : tasksState[index];
           return (
             <Grid key={`${label}_${index}`} item xs={1.8}>
               <Box

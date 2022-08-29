@@ -1,29 +1,25 @@
 import { Grid, Typography } from "@mui/material";
 import { Box } from "@mui/material";
 import { en } from "../constants/labels";
-import TotalFeesIcon from "@mui/icons-material/ArticleOutlined";
-import TotalPaidIcon from "@mui/icons-material/GradingOutlined";
-import BalanceIcon from "@mui/icons-material/NoteAddOutlined";
 import { palette } from "../styles/theme";
+import { useEffect, useState } from "react";
+import { transactions } from "../constants/dashboard.constants";
 
-function Transactions() {
-  const transactions = [
-    {
-      label: "Total Fees",
-      count: 439032,
-      icon: <TotalFeesIcon fontSize="large" />,
-    },
-    {
-      label: "Total Paid",
-      count: 181922,
-      icon: <TotalPaidIcon fontSize="large" />,
-    },
-    {
-      label: "Balance",
-      count: 419843,
-      icon: <BalanceIcon fontSize="large" />,
-    },
-  ];
+function Transactions({
+  amount: { totalAmount = 0, balanceAmount = 0, paidAmount = 0 },
+}: {
+  amount: { totalAmount: number; balanceAmount: number; paidAmount: number };
+}) {
+  const [amountState, setAmountState] = useState([
+    totalAmount,
+    balanceAmount,
+    paidAmount,
+  ]);
+
+  useEffect(() => {
+    setAmountState([totalAmount, balanceAmount, paidAmount]);
+  }, [totalAmount, balanceAmount, paidAmount]);
+
   return (
     <Box my={2}>
       <Typography
@@ -43,7 +39,8 @@ function Transactions() {
         xs={12}
         gap={2}
       >
-        {transactions.map(({ label, icon, count }, index) => {
+        {transactions.map(({ label, icon }, index) => {
+          const count = amountState[index];
           return (
             <Grid key={`${label}_${index}`} item xs={2}>
               <Box

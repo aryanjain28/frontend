@@ -1,47 +1,42 @@
 import { Grid, Typography } from "@mui/material";
 import { Box } from "@mui/material";
 import { en } from "../constants/labels";
-import ITIcon from "@mui/icons-material/RequestPageOutlined";
-import GSTIcon from "@mui/icons-material/DocumentScannerOutlined";
-import CompanyIcon from "@mui/icons-material/ApartmentOutlined";
-import TallyIcon from "@mui/icons-material/TextSnippetOutlined";
-import AuditIcon from "@mui/icons-material/InventoryOutlined";
-import OtherIcon from "@mui/icons-material/AltRouteOutlined";
 import { palette } from "../styles/theme";
+import { useEffect, useState } from "react";
+import { clients } from "../constants/dashboard.constants";
 
-function Clients() {
-  const clients = [
-    {
-      label: "IT",
-      count: 182,
-      icon: <ITIcon fontSize="large" />,
-    },
-    {
-      label: "GST",
-      count: 51,
-      icon: <GSTIcon fontSize="large" />,
-    },
-    {
-      label: "Company",
-      count: 12,
-      icon: <CompanyIcon fontSize="large" />,
-    },
-    {
-      label: "Tally",
-      count: 135,
-      icon: <TallyIcon fontSize="large" />,
-    },
-    {
-      label: "Audit",
-      count: 52,
-      icon: <AuditIcon fontSize="large" />,
-    },
-    {
-      label: "Other",
-      count: 52,
-      icon: <OtherIcon fontSize="large" />,
-    },
-  ];
+function Clients({
+  types: {
+    gst = 0,
+    it = 0,
+    tally = 0,
+    reports = 0,
+    registrations = 0,
+    others = 0,
+  },
+}: {
+  types: {
+    gst: number;
+    it: number;
+    tally: number;
+    reports: number;
+    registrations: number;
+    others: number;
+  };
+}) {
+  const [typesState, setTypesState] = useState([
+    gst,
+    it,
+    tally,
+    reports,
+    registrations,
+    others,
+  ]);
+
+  useEffect(() => {
+    setTypesState([gst, it, tally, reports, registrations, others]);
+  }, [gst, it, tally, reports, registrations, others]);
+
   return (
     <Box my={2}>
       <Typography
@@ -60,7 +55,8 @@ function Clients() {
         justifyContent="space-between"
         xs={12}
       >
-        {clients.map(({ label, icon, count }, index) => {
+        {clients.map(({ label, icon }, index) => {
+          const count = typesState[index];
           return (
             <Grid item xs={1.8} key={`${label}_${index}`}>
               <Box
