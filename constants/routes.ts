@@ -51,4 +51,8 @@ export const ROUTES = {
   myTasks: "/app/tasks/myTasks",
   createTask: "/app/tasks/create",
   taskTypes: "/app/tasks/taskTypes",
+
+  messages: "messages",
+  messagesSent: "/app/messages/sent",
+  messagesSend: "/app/messages/send",
 };

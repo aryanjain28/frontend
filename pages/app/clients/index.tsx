@@ -32,8 +32,6 @@ const Clients = () => {
     <PageLayout>
       <Box
         sx={{
-          mx: 4,
-          my: 2,
           border: `${palette.secondary.light} 1.5px solid`,
           borderRadius: "5px",
         }}

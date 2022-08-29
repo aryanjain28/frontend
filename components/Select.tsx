@@ -66,7 +66,7 @@ export const SearchableSelectComponent = ({
       value = selected.value as string;
       label = selected.label;
     }
-    handleSelectOption(value, label);
+    handleSelectOption(value, label as string);
     setSelectedOptVal(
       selected ? { value: value as string, label: label as string } : null
     );
@@ -198,7 +198,7 @@ export const SelectComponent = ({
         size="small"
         value={selectedOption}
         disabled={disabled}
-        sx={sx ? sx : {}}
+        sx={{ ...{ background: "white" }, ...sx }}
       >
         {options.length > 0 ? (
           options.map((option, index) => {

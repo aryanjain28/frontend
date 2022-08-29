@@ -58,6 +58,8 @@ export const en = {
   totalAmount: "Total Amount",
   paidAmount: "Paid Amount",
   balanceAmount: "Balance Amount",
+  sendMessage: "Send Message",
+  messageHistory: "Message History",
 
   // login and signUp
   login: "Login",
@@ -94,6 +96,13 @@ export const en = {
   gstPassword: "Password",
   contactDetails: "Contact Details",
   gstCreds: "GST Website Credentials",
+
+  // Message
+  selectContacts: "Select Contacts",
+  selectedContacts: "Selected Contacts",
+  message: "Message",
+  searchByNameNumber: "Search by name or mobile",
+  templates: "Templates",
 
   // toast messages
   toast: {

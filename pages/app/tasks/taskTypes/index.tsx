@@ -8,7 +8,7 @@ import {
   CommSelectInput,
 } from "../../../../features/CommTaskInputs";
 import PageLayout from "../../../../layouts/PageLayout";
-import { palette } from "../../../../styles/theme";
+import { gradients, palette } from "../../../../styles/theme";
 import { useState } from "react";
 import { taskParentTypes } from "../../../../constants/clients.constants";
 import { Select } from "../../../../types/common.types";
@@ -41,14 +41,12 @@ const TaskTypes = () => {
     <PageLayout>
       <Box
         sx={{
-          mx: 4,
-          my: 2,
           border: `${palette.secondary.light} 1.5px solid`,
           borderRadius: "5px",
         }}
       >
         <Box display="flex" alignItems="center" justifyContent="space-between">
-          <Box>
+          <Box mb={1}>
             <BreadCrumbsComp
               breadCrumbs={[
                 { label: en.dashboard, url: ROUTES.dashboard },
@@ -66,7 +64,7 @@ const TaskTypes = () => {
           display="flex"
           alignItems="center"
           justifyContent="space-evenly"
-          sx={{ background: palette.primary.light }}
+          style={{ background: gradients.gradient1 }}
           py={5}
         >
           <Box

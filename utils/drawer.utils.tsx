@@ -8,6 +8,9 @@ import LinksIcon from "@mui/icons-material/LinkOutlined";
 import SettingsIcon from "@mui/icons-material/SettingsOutlined";
 import ReportsIcon from "@mui/icons-material/EqualizerOutlined";
 import MyTaskIcon from "@mui/icons-material/ContactPageOutlined";
+import MessageIcon from "@mui/icons-material/Message";
+import MessageHistoryIcon from "@mui/icons-material/ForumOutlined";
+import SendMessageIcon from "@mui/icons-material/SendOutlined";
 import { PeopleAltOutlined } from "@mui/icons-material";
 import AddTaskIcon from "@mui/icons-material/PlaylistAddOutlined";
 import AddTaskTypeIcon from "@mui/icons-material/LibraryAddOutlined";
@@ -94,6 +97,27 @@ export const drawerElements = [
   },
   {
     id: 6,
+    label: "Messages",
+    icon: <MessageIcon />,
+    route: ROUTES.messages,
+    children: [
+      {
+        label: "Messages Sent",
+        icon: <MessageHistoryIcon />,
+        route: ROUTES.messagesSent,
+        hidden: false,
+      },
+      {
+        label: "Send Message",
+        icon: <SendMessageIcon />,
+        route: ROUTES.messagesSend,
+        hidden: false,
+      },
+    ],
+    hidden: false,
+  },
+  {
+    id: 7,
     label: "HR",
     icon: <HrIcon />,
     route: ROUTES.hr,
@@ -101,7 +125,7 @@ export const drawerElements = [
     hidden: false,
   },
   {
-    id: 7,
+    id: 8,
     label: "Links",
     icon: <LinksIcon />,
     route: ROUTES.links,
@@ -109,7 +133,7 @@ export const drawerElements = [
     hidden: false,
   },
   {
-    id: 8,
+    id: 9,
     label: "Settings",
     icon: <SettingsIcon />,
     route: ROUTES.settings,
@@ -117,7 +141,7 @@ export const drawerElements = [
     hidden: false,
   },
   {
-    id: 9,
+    id: 10,
     label: "Reports",
     icon: <ReportsIcon />,
     route: ROUTES.reports,
