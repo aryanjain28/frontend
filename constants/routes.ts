@@ -30,6 +30,10 @@ export const API_ROUTES = {
 
   // Utilities
   GET_OPTIONS: "/utilities/options",
+
+  // Notifications
+  GET_NOTIFICATIONS: "/notifications/:userId",
+  REMOVE_NOTIFICATIONS: "/notifications/:userId",
 };
 
 export const ROUTES = {

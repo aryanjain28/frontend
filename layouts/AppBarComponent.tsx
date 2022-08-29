@@ -17,6 +17,7 @@ import {
 } from "@mui/icons-material";
 import {
   Badge,
+  Chip,
   Grid,
   Icon,
   Menu,
@@ -29,9 +30,14 @@ import { ROUTES } from "../constants/routes";
 import { useRouter } from "next/router";
 import { SvgIcon } from "./PageLayout";
 import { useGetLocalStorage } from "../hooks/auth.hooks";
-import { formatTime } from "../utils/common.utils";
-import { taskStatus } from "../utils/tasks.utils";
-import { MyTasks } from "../types/task.types";
+import { formatTime2 } from "../utils/common.utils";
+import {
+  useGetNotifications,
+  usePatchNotifications,
+} from "../hooks/notifications.hooks";
+import { Notification } from "../types/notifications.types";
+import { palette } from "../styles/theme";
+import { taskParentTypes } from "../constants/clients.constants";
 
 const drawerWidth = 240;
 
@@ -61,7 +67,9 @@ const AppBarComponent = ({
   setOpen: () => void;
 }) => {
   const router = useRouter();
-  const { fullName } = useGetLocalStorage();
+  const { fullName, userId } = useGetLocalStorage();
+  const { data: notifications } = useGetNotifications(userId as string);
+  const { mutate: removeNotifications } = usePatchNotifications();
 
   const [anchorEl, setAnchorEl] = useState<MenuProps["anchorEl"] | null>(null);
   const [anchorNot, setAnchorNot] = useState<MenuProps["anchorEl"] | null>(
@@ -77,8 +85,6 @@ const AppBarComponent = ({
     toast.success(en.toast.successLogout);
     router.push(ROUTES.login);
   }, []);
-
-  const newNotifications: MyTasks[] = []; // TODO: Add notifications arr to DB
 
   return (
     <>
@@ -123,7 +129,7 @@ const AppBarComponent = ({
                 color="inherit"
                 onClick={(e) => setAnchorNot(e.currentTarget)}
               >
-                <Badge badgeContent={newNotifications?.length} color="error">
+                <Badge badgeContent={notifications?.length} color="error">
                   <Notifications />
                 </Badge>
               </IconButton>
@@ -194,8 +200,14 @@ const AppBarComponent = ({
       <Menu
         anchorEl={anchorNot}
         open={Boolean(anchorNot)}
-        onClose={() => setAnchorNot(null)}
-        onClick={() => setAnchorNot(null)}
+        onClose={() => {
+          removeNotifications({ userId: userId as string });
+          setAnchorNot(null);
+        }}
+        onClick={() => {
+          removeNotifications({ userId: userId as string });
+          setAnchorNot(null);
+        }}
         PaperProps={{
           elevation: 0,
           sx: {
@@ -225,57 +237,119 @@ const AppBarComponent = ({
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
-        {/* {newNotifications?.map((notif: any, index: number) => {
-          const status =
-            taskStatus[notif.status as "PENDING" | "APPROVED" | "COMPLETED"];
-          return (
-            <MenuItem
-              key={index}
-              onClick={() =>
-                router.push(
-                  `${ROUTES.myTasks}/?status=${status.label}&taskId=${notif.id}`
-                )
-              }
-            >
-              <Grid
-                container
-                direction="row"
-                alignItems="center"
-                justifyContent="center"
-                xs={12}
-                width="400px"
-                pb={1}
-                borderBottom="1px #dadada solid"
+        {(notifications || [])?.map(
+          (
+            {
+              id,
+              parentId,
+              name,
+              type,
+              notification,
+              updatedBy,
+              updatedAt,
+            }: Notification,
+            index: number
+          ) => {
+            const color =
+              notification === "NEW"
+                ? palette.primary.success
+                : palette.primary.warning;
+            const time = formatTime2(updatedAt);
+            const parent =
+              taskParentTypes[parentId as keyof typeof taskParentTypes].label;
+            return (
+              <MenuItem
+                key={index}
+                onClick={() => router.push(`${ROUTES.myTasks}/?taskId=${id}`)}
               >
                 <Grid
                   container
                   direction="column"
-                  justifyContent="space-evenly"
                   alignItems="center"
-                  xs={2}
+                  justifyContent="space-between"
+                  xs={12}
+                  width={400}
+                  height={60}
+                  border={`1px ${palette.primary.border} solid`}
+                  borderRadius={2}
                 >
-                  {status.icon}
+                  <Box
+                    display="flex"
+                    alignItems="center"
+                    justifyContent="space-between"
+                    borderBottom={`1px ${palette.secondary.light} solid`}
+                    width="100%"
+                    height="40%"
+                    px={1}
+                  >
+                    <Box
+                      sx={{
+                        borderRadius: 2,
+                        background: color,
+                      }}
+                    >
+                      <Typography
+                        px={1}
+                        color={palette.primary.white}
+                        fontSize={10}
+                        fontWeight={600}
+                      >
+                        {notification}
+                      </Typography>
+                    </Box>
+
+                    <Typography
+                      fontWeight={700}
+                      fontSize={12}
+                      color={palette.primary.tint}
+                    >
+                      {`${updatedBy}, ${time}`}
+                    </Typography>
+                  </Box>
+                  <Box
+                    display="flex"
+                    alignItems="center"
+                    justifyContent="space-around"
+                    width="100%"
+                    height="60%"
+                    px={1}
+                  >
+                    <Box
+                      height="100%"
+                      width="60%"
+                      borderRight={`1px ${palette.secondary.light} solid`}
+                    >
+                      <Typography
+                        color={palette.primary.main}
+                        fontSize={15}
+                        noWrap
+                      >
+                        {name}
+                      </Typography>
+                    </Box>
+                    <Box
+                      display="flex"
+                      alignItems="center"
+                      justifyContent="center"
+                      width="40%"
+                      borderRadius={2}
+                      sx={{ background: palette.primary.tint }}
+                      m={1}
+                      px={1}
+                    >
+                      <Typography
+                        color={palette.primary.white}
+                        fontSize={12}
+                        fontWeight={600}
+                        noWrap
+                      >{`${parent} - ${type}`}</Typography>
+                    </Box>
+                  </Box>
                 </Grid>
-                <Grid
-                  xs={10}
-                  container
-                  direction="column"
-                  alignItems="flex-start"
-                  justifyContent="space-evenly"
-                >
-                  <Typography variant="caption">
-                    {`${notif.assignedByFName || ""} ${
-                      notif.assignedByLName || ""
-                    } (${formatTime(notif.assignedAt as Date)})`}
-                  </Typography>
-                  <Typography mt={0.5} variant="body2" maxWidth={"100%"} noWrap>
-                    {notif.name}
-                  </Typography>
-                </Grid>
-              </Grid>
-            </MenuItem>
-          );
-        })} */}
+              </MenuItem>
+            );
+          }
+        )}
         <MenuItem>
           <Box
             display="flex"
@@ -284,9 +358,7 @@ const AppBarComponent = ({
             width="100%"
           >
             <Typography color="GrayText">
-              {newNotifications?.length > 0
-                ? "Show All Notifications"
-                : "No New Notification"}
+              {(notifications || []).length < 1 && "No New Notification"}
             </Typography>
           </Box>
         </MenuItem>

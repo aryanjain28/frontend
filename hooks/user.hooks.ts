@@ -25,7 +25,7 @@ export const useLoginUser = () => {
     {
       onSuccess: (data, variables) => {
         toast.success(data.message);
-        localStorage.setItem("drawer_state", "1");
+        localStorage.setItem("drawer_state", "0");
         localStorage.setItem("access_token", data.data.token);
         localStorage.setItem("user_id", data.data.userId);
         localStorage.setItem("role", data.data.role);

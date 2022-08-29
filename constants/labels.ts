@@ -104,6 +104,10 @@ export const en = {
   searchByNameNumber: "Search by name or mobile",
   templates: "Templates",
 
+  // Notifications Message
+  NEW: "A new task is assigned to you.",
+  UPDATE: "There's an update on your task",
+
   // toast messages
   toast: {
     custom404Error: "Invalid URL. Redirecting to dashboard.",

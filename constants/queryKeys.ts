@@ -27,4 +27,8 @@ export const QUERY_KEYS = {
 
   // Utilities
   GET_OPTIONS: "GET_OPTIONS",
+
+  // notifications
+  GET_NOTIFICATIONS: "GET_NOTIFICATIONS",
+  UPDATE_NOTIFICATIONS: "UPDATE_NOTIFICATIONS",
 };
