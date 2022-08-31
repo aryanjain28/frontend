@@ -386,9 +386,12 @@ export const SendMessageForm = (props: SendMessageFormProps) => {
                       }}
                     />
                   </Tooltip>
-                  <Typography variant="subtitle2" letterSpacing={1}>
-                    {p}
-                  </Typography>
+
+                  <Box sx={{ overflow: "auto", height: "100%" }}>
+                    <Typography variant="subtitle2" letterSpacing={1}>
+                      {p}
+                    </Typography>
+                  </Box>
                 </Box>
               ))}
             </Grid>
