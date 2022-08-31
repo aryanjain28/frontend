@@ -14,7 +14,7 @@ import { ExpandLess, ExpandMore } from "@mui/icons-material";
 import { useState } from "react";
 import { Collapse, Grid, Typography } from "@mui/material";
 import { palette } from "../styles/theme.js";
-import { drawerElements } from "../utils/drawer.utils";
+import { getDrawerElements } from "../utils/drawer.utils";
 
 const drawerWidth = 240;
 
@@ -74,6 +74,7 @@ const DrawerComponent = ({
 }) => {
   const router = useRouter();
   const [openParentId, setOpenParentId] = useState<number>(-1);
+  const drawerElements = getDrawerElements();
 
   return (
     <Drawer variant="permanent" open={open}>
@@ -154,9 +155,9 @@ const DrawerComponent = ({
                       {open &&
                         children.length > 0 &&
                         (parentId === openParentId ? (
-                          <ExpandLess />
+                          <ExpandLess sx={{ fontSize: 15 }} />
                         ) : (
-                          <ExpandMore />
+                          <ExpandMore sx={{ fontSize: 15 }} />
                         ))}
                     </ListItemButton>
                     {
@@ -178,12 +179,12 @@ const DrawerComponent = ({
                                         }
                                       : {
                                           color: palette.primary.black,
-                                          bgcolor: palette.primary.white,
+                                          background: palette.secondary.light,
                                         }),
                                   }}
                                 >
                                   <ListItemButton
-                                    sx={{ pl: 4 }}
+                                    sx={{ px: open ? 4 : 0.5 }}
                                     onClick={() => router.push(route)}
                                   >
                                     <ListItemIcon
@@ -194,9 +195,23 @@ const DrawerComponent = ({
                                             : palette.neutral.main,
                                       }}
                                     >
-                                      {icon}
+                                      <Grid
+                                        container
+                                        direction="column"
+                                        alignItems="center"
+                                        justifyContent="center"
+                                      >
+                                        {icon}
+                                        <Typography
+                                          display={open ? "none" : undefined}
+                                          fontSize={7}
+                                          fontWeight={700}
+                                        >
+                                          {`${label}`.toUpperCase()}
+                                        </Typography>
+                                      </Grid>
                                     </ListItemIcon>
-                                    <ListItemText primary={label} />
+                                    {open && <ListItemText primary={label} />}
                                   </ListItemButton>
                                 </Box>
                               </List>

@@ -64,7 +64,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     <>
       <QueryClientProvider client={queryClient}>
         <CssBaseline />
-        <ToastContainer position="top-center" theme="dark" />
+        <ToastContainer autoClose={3000} position="top-center" theme="dark" />
         <AuthWrapper>
           <NextNProgress stopDelayMs={0} height={4} />
           <Component {...pageProps} />

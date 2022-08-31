@@ -377,6 +377,8 @@ const ExpandedTaskGridCell = ({
                           <Typography
                             fontSize="12px"
                             sx={{ fontStyle: "oblique" }}
+                            noWrap
+                            maxWidth={200}
                           >
                             Updated{" "}
                             {moment(row?.updatedAt, "YYYYMMDD").fromNow()}

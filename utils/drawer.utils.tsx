@@ -17,7 +17,7 @@ import AddTaskTypeIcon from "@mui/icons-material/LibraryAddOutlined";
 import { ROUTES } from "../constants/routes";
 import { isAdmin, isStaff } from "./common.utils";
 
-export const drawerElements = [
+export const getDrawerElements = () => [
   {
     id: 1,
     label: "Dashboard",
@@ -41,19 +41,19 @@ export const drawerElements = [
     route: ROUTES.tasks,
     children: [
       {
-        label: "Create Task",
+        label: "Create",
         icon: <AddTaskIcon />,
         route: ROUTES.createTask,
         hidden: isStaff(),
       },
       {
-        label: "Create Task Type",
+        label: "Types",
         icon: <AddTaskTypeIcon />,
         route: ROUTES.taskTypes,
         hidden: false,
       },
       {
-        label: "All Tasks",
+        label: "View All",
         icon: <AllTasksIcon />,
         route: ROUTES.tasks,
         hidden: false,
@@ -81,13 +81,13 @@ export const drawerElements = [
     route: ROUTES.clients,
     children: [
       {
-        label: "Add New Client",
+        label: "Add New",
         icon: <AddTaskIcon />,
         route: ROUTES.createClient,
         hidden: false,
       },
       {
-        label: "View Clients",
+        label: "View All",
         icon: <PeopleAltOutlined />,
         route: ROUTES.clients,
         hidden: false,
@@ -102,13 +102,13 @@ export const drawerElements = [
     route: ROUTES.messages,
     children: [
       {
-        label: "Messages Sent",
+        label: "History",
         icon: <MessageHistoryIcon />,
         route: ROUTES.messagesSent,
         hidden: false,
       },
       {
-        label: "Send Message",
+        label: "Send",
         icon: <SendMessageIcon />,
         route: ROUTES.messagesSend,
         hidden: false,
@@ -134,14 +134,6 @@ export const drawerElements = [
   },
   {
     id: 9,
-    label: "Settings",
-    icon: <SettingsIcon />,
-    route: ROUTES.settings,
-    children: [],
-    hidden: false,
-  },
-  {
-    id: 10,
     label: "Reports",
     icon: <ReportsIcon />,
     route: ROUTES.reports,
