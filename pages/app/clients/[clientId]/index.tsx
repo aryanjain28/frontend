@@ -62,7 +62,7 @@ const EditClient = () => {
             <BreadCrumbsComp
               breadCrumbs={[
                 { label: en.dashboard as string, url: ROUTES.dashboard },
-                { label: en.updatedClientInfo as string, url: "#" },
+                { label: en.clients as string, url: ROUTES.clients },
                 { label: formValues.name || "", url: "#" },
               ]}
             />

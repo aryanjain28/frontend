@@ -5,7 +5,7 @@ import { Button } from "../components/Button";
 import { SelectMultipleComponent } from "../components/Select";
 import { en } from "../constants/labels";
 import { FilterMap } from "../types/common.types";
-import { taskStatus } from "../utils/tasks.utils";
+import { getTaskStatus } from "../utils/tasks.utils";
 import DateRangePopover from "./DateRangePopover";
 
 export const TaskFiltersPopover = ({
@@ -22,6 +22,7 @@ export const TaskFiltersPopover = ({
       setFilterMap({ ...filterMap, [key]: value });
     }
   };
+  const taskStatus = getTaskStatus();
   return (
     <>
       <Button

@@ -9,7 +9,7 @@ import {
   Typography,
 } from "@mui/material";
 import { Row } from "../types/datagrid.types";
-import { taskStatus } from "../utils/tasks.utils";
+import { getTaskStatus } from "../utils/tasks.utils";
 import { Button } from "../components/Button";
 import { useCallback, useEffect, useState } from "react";
 import { capitalize, isAdmin, isStaff } from "../utils/common.utils";
@@ -65,6 +65,7 @@ const ExpandedTaskGridCell = ({
   const { mutate: deleteTask, isLoading: isDeleting } = useDeleteTask(
     userId as string
   );
+  const taskStatus = getTaskStatus();
 
   return (
     <>

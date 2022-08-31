@@ -57,7 +57,7 @@ export const getTasksArr = () => [
   },
 ];
 
-export const taskStatus = {
+export const getTaskStatus = () => ({
   PENDING: {
     key: "PENDING",
     label: "Pending",
@@ -113,247 +113,253 @@ export const taskStatus = {
     color: palette.primary.success,
     hidden: isAdmin(),
   },
-};
+});
 
 export const getTasksCol = (
   expandedRowId: string | null,
   setExpandedRowId: (id: string | null) => void
-): ColumnG<AllTasks>[] => [
-  {
-    headerName: "Date",
-    key: "assignedAt",
-    Component: ({ row }) => {
-      return (
-        <Typography maxWidth="100px" noWrap>
-          {formatTime3(row.assignedAt) || "NA"}
-        </Typography>
-      );
-    },
-  },
-  {
-    headerName: "Client",
-    key: "clientName",
-    Component: ({ row }) => {
-      return (
-        <Typography maxWidth="100px" noWrap>
-          {row.clientName}
-        </Typography>
-      );
-    },
-  },
-  {
-    headerName: "Entity",
-    key: "clientEntity",
-    Component: ({ row }) => {
-      return <Typography noWrap>{row.clientEntity || "NA"}</Typography>;
-    },
-  },
-  {
-    headerName: "Name",
-    key: "name",
-    Component: ({ row }) => {
-      return (
-        <CustomTooltip title={row.name}>
-          <Typography maxWidth="250px" noWrap>
-            {row.name}
+): ColumnG<AllTasks>[] => {
+  const taskStatus = getTaskStatus();
+  return [
+    {
+      headerName: "Date",
+      key: "assignedAt",
+      Component: ({ row }) => {
+        return (
+          <Typography maxWidth="100px" noWrap>
+            {formatTime3(row.assignedAt) || "NA"}
           </Typography>
-        </CustomTooltip>
-      );
+        );
+      },
     },
-  },
-  {
-    headerName: "Type",
-    key: "type",
-    Component: ({ row }) => {
-      return (
-        <CustomTooltip title={row.taskTypeName}>
-          <Typography maxWidth="250px" noWrap>
-            {row.taskTypeName}
+    {
+      headerName: "Client",
+      key: "clientName",
+      Component: ({ row }) => {
+        return (
+          <Typography maxWidth="100px" noWrap>
+            {row.clientName}
           </Typography>
-        </CustomTooltip>
-      );
+        );
+      },
     },
-  },
-  {
-    headerName: "Assignee",
-    key: "assigneeFName",
-    Component: ({ row }) => {
-      return (
-        <Typography maxWidth="200px" noWrap>
-          {`${row.assigneeFName}`}
+    {
+      headerName: "Entity",
+      key: "clientEntity",
+      Component: ({ row }) => {
+        return <Typography noWrap>{row.clientEntity || "NA"}</Typography>;
+      },
+    },
+    {
+      headerName: "Name",
+      key: "name",
+      Component: ({ row }) => {
+        return (
+          <CustomTooltip title={row.name}>
+            <Typography maxWidth="250px" noWrap>
+              {row.name}
+            </Typography>
+          </CustomTooltip>
+        );
+      },
+    },
+    {
+      headerName: "Type",
+      key: "type",
+      Component: ({ row }) => {
+        return (
+          <CustomTooltip title={row.taskTypeName}>
+            <Typography maxWidth="250px" noWrap>
+              {row.taskTypeName}
+            </Typography>
+          </CustomTooltip>
+        );
+      },
+    },
+    {
+      headerName: "Assignee",
+      key: "assigneeFName",
+      Component: ({ row }) => {
+        return (
+          <Typography maxWidth="200px" noWrap>
+            {`${row.assigneeFName}`}
+          </Typography>
+        );
+      },
+    },
+    {
+      headerName: "Status",
+      key: "status",
+      Component: ({ row }) => {
+        return taskStatus[row.status as keyof typeof taskStatus].icon;
+      },
+    },
+    {
+      headerName: "Total",
+      key: "totalAmount",
+    },
+    {
+      headerName: "Paid",
+      key: "paidAmount",
+    },
+    {
+      headerName: "Balance",
+      key: "balanceAmount",
+      Component: ({ row }) => (
+        <Typography maxWidth={130} noWrap>
+          {row.totalAmount - row.balanceAmount}
         </Typography>
-      );
+      ),
     },
-  },
-  {
-    headerName: "Status",
-    key: "status",
-    Component: ({ row }) => {
-      return taskStatus[row.status as keyof typeof taskStatus].icon;
+    {
+      headerName: "Start Date",
+      key: "startDate",
+      Component: ({ row }) => {
+        return (
+          <Typography maxWidth="100px" noWrap>
+            {formatTime3(row.startDate) || "NA"}
+          </Typography>
+        );
+      },
     },
-  },
-  {
-    headerName: "Total",
-    key: "totalAmount",
-  },
-  {
-    headerName: "Paid",
-    key: "paidAmount",
-  },
-  {
-    headerName: "Balance",
-    key: "balanceAmount",
-    Component: ({ row }) => (
-      <Typography maxWidth={130} noWrap>
-        {row.totalAmount - row.balanceAmount}
-      </Typography>
-    ),
-  },
-  {
-    headerName: "Start Date",
-    key: "startDate",
-    Component: ({ row }) => {
-      return (
-        <Typography maxWidth="100px" noWrap>
-          {formatTime3(row.startDate) || "NA"}
-        </Typography>
-      );
+    {
+      headerName: "End Date",
+      key: "endDate",
+      Component: ({ row }) => {
+        return (
+          <Typography maxWidth="100px" noWrap>
+            {formatTime3(row.endDate!) || "NA"}
+          </Typography>
+        );
+      },
     },
-  },
-  {
-    headerName: "End Date",
-    key: "endDate",
-    Component: ({ row }) => {
-      return (
-        <Typography maxWidth="100px" noWrap>
-          {formatTime3(row.endDate!) || "NA"}
-        </Typography>
-      );
+    {
+      headerName: "",
+      key: "",
+      hidden: isStaff(),
+      Component: ({ row }) => {
+        return expandedRowId === row.id ? (
+          <KeyboardArrowUp
+            sx={{ mr: 1, cursor: "pointer" }}
+            onClick={() => setExpandedRowId(null)}
+          />
+        ) : (
+          <KeyboardArrowDown
+            sx={{ mr: 1, cursor: "pointer" }}
+            onClick={() => setExpandedRowId(row.id)}
+          />
+        );
+      },
     },
-  },
-  {
-    headerName: "",
-    key: "",
-    hidden: isStaff(),
-    Component: ({ row }) => {
-      return expandedRowId === row.id ? (
-        <KeyboardArrowUp
-          sx={{ mr: 1, cursor: "pointer" }}
-          onClick={() => setExpandedRowId(null)}
-        />
-      ) : (
-        <KeyboardArrowDown
-          sx={{ mr: 1, cursor: "pointer" }}
-          onClick={() => setExpandedRowId(row.id)}
-        />
-      );
-    },
-  },
-];
+  ];
+};
 
 export const getMyTasksColumns = (
   expandedRowId: string | null,
   setExpandedRowId: (id: string | null) => void
-): ColumnG<ModifiedTask>[] => [
-  {
-    headerName: "Create Date",
-    key: "createdAt",
-    Component: ({ row }) => {
-      return (
-        <Typography maxWidth="100px" noWrap>
-          {formatTime3(row.createdAt) || "NA"}
-        </Typography>
-      );
-    },
-  },
-  {
-    headerName: "Client",
-    key: "client.clientName",
-    Component: ({ row }) => {
-      return <Typography>{row.clientName}</Typography>;
-    },
-  },
-  {
-    headerName: "Entity",
-    key: "client.entity",
-    Component: ({ row }) => {
-      return <Typography>{row.clientEntity}</Typography>;
-    },
-  },
-  {
-    headerName: "Name",
-    key: "name",
-    Component: ({ row }) => {
-      return (
-        <CustomTooltip title={row.name}>
-          <Typography maxWidth="250px" noWrap>
-            {row.name}
+): ColumnG<ModifiedTask>[] => {
+  const taskStatus = getTaskStatus();
+  return [
+    {
+      headerName: "Create Date",
+      key: "createdAt",
+      Component: ({ row }) => {
+        return (
+          <Typography maxWidth="100px" noWrap>
+            {formatTime3(row.createdAt) || "NA"}
           </Typography>
-        </CustomTooltip>
-      );
+        );
+      },
     },
-  },
-  {
-    headerName: "Type",
-    key: "type",
-    Component: ({ row }) => {
-      return (
-        <CustomTooltip title={row.taskTypeName}>
-          <Typography maxWidth="250px" noWrap>
-            {row.taskTypeName}
-          </Typography>
-        </CustomTooltip>
-      );
+    {
+      headerName: "Client",
+      key: "client.clientName",
+      Component: ({ row }) => {
+        return <Typography>{row.clientName}</Typography>;
+      },
     },
-  },
-  {
-    headerName: "Status",
-    key: "status",
-    Component: ({ row }) => {
-      return taskStatus[row.status].icon;
+    {
+      headerName: "Entity",
+      key: "client.entity",
+      Component: ({ row }) => {
+        return <Typography>{row.clientEntity}</Typography>;
+      },
     },
-  },
-  {
-    headerName: "Total",
-    key: "totalAmount",
-  },
-  {
-    headerName: "Paid",
-    key: "paidAmount",
-  },
-  {
-    headerName: "Balance",
-    key: "balanceAmount",
-  },
-  {
-    headerName: "Start Date",
-    key: "startDate",
-    Component: ({ row }) => {
-      return <Typography>{formatTime3(row.startDate) || "NA"}</Typography>;
+    {
+      headerName: "Name",
+      key: "name",
+      Component: ({ row }) => {
+        return (
+          <CustomTooltip title={row.name}>
+            <Typography maxWidth="250px" noWrap>
+              {row.name}
+            </Typography>
+          </CustomTooltip>
+        );
+      },
     },
-  },
-  {
-    headerName: "End Date",
-    key: "endDate",
-    Component: ({ row }) => {
-      return <Typography>{formatTime3(row.endDate!) || "NA"}</Typography>;
+    {
+      headerName: "Type",
+      key: "type",
+      Component: ({ row }) => {
+        return (
+          <CustomTooltip title={row.taskTypeName}>
+            <Typography maxWidth="250px" noWrap>
+              {row.taskTypeName}
+            </Typography>
+          </CustomTooltip>
+        );
+      },
     },
-  },
-  {
-    headerName: "",
-    key: "",
-    Component: ({ row }) => {
-      return expandedRowId === row.id ? (
-        <KeyboardArrowUp
-          sx={{ mr: 1, cursor: "pointer" }}
-          onClick={() => setExpandedRowId(null)}
-        />
-      ) : (
-        <KeyboardArrowDown
-          sx={{ mr: 1, cursor: "pointer" }}
-          onClick={() => setExpandedRowId(row.id)}
-        />
-      );
+    {
+      headerName: "Status",
+      key: "status",
+      Component: ({ row }) => {
+        return taskStatus[row.status].icon;
+      },
     },
-  },
-];
+    {
+      headerName: "Total",
+      key: "totalAmount",
+    },
+    {
+      headerName: "Paid",
+      key: "paidAmount",
+    },
+    {
+      headerName: "Balance",
+      key: "balanceAmount",
+    },
+    {
+      headerName: "Start Date",
+      key: "startDate",
+      Component: ({ row }) => {
+        return <Typography>{formatTime3(row.startDate) || "NA"}</Typography>;
+      },
+    },
+    {
+      headerName: "End Date",
+      key: "endDate",
+      Component: ({ row }) => {
+        return <Typography>{formatTime3(row.endDate!) || "NA"}</Typography>;
+      },
+    },
+    {
+      headerName: "",
+      key: "",
+      Component: ({ row }) => {
+        return expandedRowId === row.id ? (
+          <KeyboardArrowUp
+            sx={{ mr: 1, cursor: "pointer" }}
+            onClick={() => setExpandedRowId(null)}
+          />
+        ) : (
+          <KeyboardArrowDown
+            sx={{ mr: 1, cursor: "pointer" }}
+            onClick={() => setExpandedRowId(row.id)}
+          />
+        );
+      },
+    },
+  ];
+};
