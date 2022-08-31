@@ -60,6 +60,7 @@ export const en = {
   balanceAmount: "Balance Amount",
   sendMessage: "Send Message",
   messageHistory: "Message History",
+  updatedClientInfo: "Update Client Info",
 
   // login and signUp
   login: "Login",

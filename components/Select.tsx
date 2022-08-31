@@ -33,10 +33,10 @@ interface SelectProps {
 
 export const SearchableSelectComponent = ({
   sx,
-  selectedOption,
+  selectedOption = "",
   handleSelectOption,
   label,
-  options,
+  options = [],
   disabled = false,
   readonly = false,
   isLoading = false,
@@ -54,10 +54,20 @@ export const SearchableSelectComponent = ({
   required?: boolean;
   groupBy?: (option: SelectType) => string;
 }) => {
-  const [selectedOptVal, setSelectedOptVal] = useState<SelectType | null>(
-    selectedOption
-      ? { value: selectedOption as string, label: selectedOption as string }
-      : null
+  const optionsMap: { [key: string]: { label: string; value: string } } = (
+    options as ({ label: string; value: string } | string)[]
+  ).reduce(
+    (
+      prev: { label: string; value: string } | {},
+      curr: string | SelectType
+    ) => {
+      if (typeof curr === "string") {
+        return { ...prev, ...{ [curr]: { value: curr, label: curr } } };
+      } else {
+        return { ...prev, ...{ [curr.value]: curr } };
+      }
+    },
+    {}
   );
   const handleChange = (e: any, selected: SelectType | null) => {
     let value = null;
@@ -67,9 +77,6 @@ export const SearchableSelectComponent = ({
       label = selected.label;
     }
     handleSelectOption(value, label as string);
-    setSelectedOptVal(
-      selected ? { value: value as string, label: label as string } : null
-    );
   };
   return (
     <>
@@ -93,12 +100,11 @@ export const SearchableSelectComponent = ({
       </Box>
 
       <Autocomplete
-        key={selectedOption}
-        value={selectedOptVal}
+        key={`${Math.random()}_${selectedOption}`}
+        inputValue={optionsMap[selectedOption as string]?.label as string}
+        value={optionsMap[selectedOption as string]}
         size="small"
-        options={options.map((p) =>
-          typeof p === "string" ? { value: p, label: p } : p
-        )}
+        options={Object.values(optionsMap) as SelectType[]}
         onChange={handleChange}
         disabled={disabled}
         readOnly={readonly}

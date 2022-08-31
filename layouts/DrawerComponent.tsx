@@ -94,117 +94,119 @@ const DrawerComponent = ({
           ) => {
             const isSelected = router.pathname.includes(route);
             return (
-              <Box
-                key={`${label}_${index}`}
-                sx={{
-                  ...(isSelected && {
-                    bgcolor: palette.primary.main,
-                    color: palette.primary.white,
-                  }),
-                }}
-              >
-                <ListItem
-                  key={label}
-                  disablePadding
-                  sx={{ display: "block" }}
-                  onClick={() =>
-                    children.length < 1
-                      ? router.push(route)
-                      : setOpenParentId(
-                          openParentId === parentId ? -1 : parentId
-                        )
-                  }
+              !hidden && (
+                <Box
+                  key={`${label}_${index}`}
+                  sx={{
+                    ...(isSelected && {
+                      bgcolor: palette.primary.main,
+                      color: palette.primary.white,
+                    }),
+                  }}
                 >
-                  <ListItemButton
-                    sx={{
-                      minHeight: 48,
-                      justifyContent: open ? "initial" : "center",
-                      px: 2.5,
-                    }}
+                  <ListItem
+                    key={label}
+                    disablePadding
+                    sx={{ display: "block" }}
+                    onClick={() =>
+                      children.length < 1
+                        ? router.push(route)
+                        : setOpenParentId(
+                            openParentId === parentId ? -1 : parentId
+                          )
+                    }
                   >
-                    <ListItemIcon
+                    <ListItemButton
                       sx={{
-                        minWidth: 0,
-                        mr: open ? 3 : "auto",
-                        justifyContent: "center",
-                        ...(isSelected && { color: palette.primary.white }),
+                        minHeight: 48,
+                        justifyContent: open ? "initial" : "center",
+                        px: 2.5,
                       }}
                     >
-                      <Grid
-                        container
-                        direction="column"
-                        alignItems="center"
-                        justifyContent="center"
+                      <ListItemIcon
+                        sx={{
+                          minWidth: 0,
+                          mr: open ? 3 : "auto",
+                          justifyContent: "center",
+                          ...(isSelected && { color: palette.primary.white }),
+                        }}
                       >
-                        {icon}
-                        <Typography
-                          display={open ? "none" : undefined}
-                          fontSize={7}
-                          fontWeight={700}
+                        <Grid
+                          container
+                          direction="column"
+                          alignItems="center"
+                          justifyContent="center"
                         >
-                          {`${label}`.toUpperCase()}
-                        </Typography>
-                      </Grid>
-                    </ListItemIcon>
-                    <ListItemText
-                      primary={label}
-                      sx={{ opacity: open ? 1 : 0 }}
-                    />
-                    {open &&
-                      children.length > 0 &&
-                      (parentId === openParentId ? (
-                        <ExpandLess />
-                      ) : (
-                        <ExpandMore />
-                      ))}
-                  </ListItemButton>
-                  {
-                    <Collapse
-                      in={parentId === openParentId}
-                      timeout="auto"
-                      unmountOnExit
-                    >
-                      {children.map(
-                        ({ label, icon, route, hidden }, index) =>
-                          !hidden && (
-                            <List key={`${label}_${index}`} disablePadding>
-                              <Box
-                                sx={{
-                                  ...(router.pathname === route
-                                    ? {
-                                        color: palette.primary.white,
-                                        bgcolor: palette.secondary.main,
-                                      }
-                                    : {
-                                        color: palette.primary.black,
-                                        bgcolor: palette.primary.white,
-                                      }),
-                                }}
-                              >
-                                <ListItemButton
-                                  sx={{ pl: 4 }}
-                                  onClick={() => router.push(route)}
+                          {icon}
+                          <Typography
+                            display={open ? "none" : undefined}
+                            fontSize={7}
+                            fontWeight={700}
+                          >
+                            {`${label}`.toUpperCase()}
+                          </Typography>
+                        </Grid>
+                      </ListItemIcon>
+                      <ListItemText
+                        primary={label}
+                        sx={{ opacity: open ? 1 : 0 }}
+                      />
+                      {open &&
+                        children.length > 0 &&
+                        (parentId === openParentId ? (
+                          <ExpandLess />
+                        ) : (
+                          <ExpandMore />
+                        ))}
+                    </ListItemButton>
+                    {
+                      <Collapse
+                        in={parentId === openParentId}
+                        timeout="auto"
+                        unmountOnExit
+                      >
+                        {children.map(
+                          ({ label, icon, route, hidden }, index) =>
+                            !hidden && (
+                              <List key={`${label}_${index}`} disablePadding>
+                                <Box
+                                  sx={{
+                                    ...(router.pathname === route
+                                      ? {
+                                          color: palette.primary.white,
+                                          bgcolor: palette.secondary.main,
+                                        }
+                                      : {
+                                          color: palette.primary.black,
+                                          bgcolor: palette.primary.white,
+                                        }),
+                                  }}
                                 >
-                                  <ListItemIcon
-                                    sx={{
-                                      color:
-                                        router.pathname === route
-                                          ? palette.primary.white
-                                          : palette.neutral.main,
-                                    }}
+                                  <ListItemButton
+                                    sx={{ pl: 4 }}
+                                    onClick={() => router.push(route)}
                                   >
-                                    {icon}
-                                  </ListItemIcon>
-                                  <ListItemText primary={label} />
-                                </ListItemButton>
-                              </Box>
-                            </List>
-                          )
-                      )}
-                    </Collapse>
-                  }
-                </ListItem>
-              </Box>
+                                    <ListItemIcon
+                                      sx={{
+                                        color:
+                                          router.pathname === route
+                                            ? palette.primary.white
+                                            : palette.neutral.main,
+                                      }}
+                                    >
+                                      {icon}
+                                    </ListItemIcon>
+                                    <ListItemText primary={label} />
+                                  </ListItemButton>
+                                </Box>
+                              </List>
+                            )
+                        )}
+                      </Collapse>
+                    }
+                  </ListItem>
+                </Box>
+              )
             );
           }
         )}

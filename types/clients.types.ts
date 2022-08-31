@@ -75,6 +75,12 @@ export interface GetAllClientsResponse {
   message: string;
 }
 
+export interface GetClientDetailsResponse {
+  status: number;
+  data: Client;
+  message: string;
+}
+
 export interface GetClientTasksResponse {
   status: number;
   data: {

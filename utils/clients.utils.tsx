@@ -6,6 +6,9 @@ import UnavailableIcon from "@mui/icons-material/MoreHoriz";
 import { palette } from "../styles/theme";
 import { KeyboardArrowDown, KeyboardArrowUp } from "@mui/icons-material";
 import { Select } from "../types/common.types";
+import { Link, Typography } from "@mui/material";
+import { createRoute } from "./routes";
+import { ROUTES } from "../constants/routes";
 
 export const getArrInGroups = (arr: any, perGroup: number = 4) => {
   const nGroups = arr.length % perGroup;
@@ -40,6 +43,14 @@ export const getClientsColumns = (
   {
     headerName: "Name",
     key: "name",
+    Component: ({ row }) => {
+      const url = createRoute(ROUTES.clientUpdate, { clientId: `${row.id}` });
+      return (
+        <Link href={url}>
+          <Typography variant="body1">{row.name}</Typography>
+        </Link>
+      );
+    },
   },
   {
     headerName: "GST IN",

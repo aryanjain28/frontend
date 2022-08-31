@@ -23,6 +23,7 @@ export const API_ROUTES = {
 
   // Clients
   GET_ALL_CLIENTS: "/clients",
+  GET_CLIENT_DETAILS: "/clients/client/:clientId",
   GET_CLIENT_TASKS: "/tasks/:clientId",
   GET_ALL_TAXPAYER_TYPES: "/clients/taxpayerTypes",
   GET_ALL_PINCODES: "/clients/pincodes",
@@ -46,6 +47,7 @@ export const ROUTES = {
   dayBook: "/app/daybook",
   gstInvoice: "/app/gstInvoice",
   clients: "/app/clients",
+  clientUpdate: "/app/clients/:clientId",
   createClient: "/app/clients/create",
   hr: "/app/hr",
   links: "/app/links",

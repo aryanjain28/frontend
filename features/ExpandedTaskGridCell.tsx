@@ -73,7 +73,7 @@ const ExpandedTaskGridCell = ({
           <Box
             border="1px solid"
             borderColor={palette.primary.light}
-            sx={{ background: palette.primary.light }}
+            sx={{ background: gradients.gradient5 }}
           >
             <Box m={2} sx={{ boxShadow: 3 }}>
               <Grid
@@ -431,7 +431,12 @@ const ExpandedTaskGridCell = ({
       <ConfimationModal
         open={openConfirmModal}
         setOpen={(p) => setOpenConfirmModal(p)}
-        handleClick={() => deleteTask({ taskId: formValues.id })}
+        handleClick={() =>
+          deleteTask({
+            taskId: formValues.id,
+            callback: () => setOpenConfirmModal(false),
+          })
+        }
         isLoading={isDeleting}
       />
     </>

@@ -50,6 +50,9 @@ export const isStaff = () => {
   return role === "STAFF";
 };
 
+export const isEmptyObject = (obj: { [key: string]: any }) =>
+  Object.keys(obj).length === 0;
+
 export const colors = [
   "primary",
   "default",

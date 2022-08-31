@@ -94,20 +94,25 @@ const FormRow = ({
       return (
         <Grid container item spacing={2}>
           {formFields.map(
-            ({ name, fieldType, required, readOnly, isLoading, options }) => (
-              <FormField
-                name={name}
-                fieldType={fieldType}
-                required={required}
-                value={formValues[name as keyof typeof formValues] as string}
-                setFormValues={(name: string, value: string | Date) =>
-                  setFormValues({ ...formValues, [name]: value })
-                }
-                options={options}
-                readOnly={readOnly}
-                isLoading={isLoading}
-              />
-            )
+            ({ name, fieldType, required, readOnly, isLoading, options }) => {
+              const value = formValues[
+                name as keyof typeof formValues
+              ] as string;
+              return (
+                <FormField
+                  name={name}
+                  fieldType={fieldType}
+                  required={required}
+                  value={value}
+                  setFormValues={(name: string, value: string | Date) =>
+                    setFormValues({ ...formValues, [name]: value })
+                  }
+                  options={options}
+                  readOnly={readOnly}
+                  isLoading={isLoading}
+                />
+              );
+            }
           )}
         </Grid>
       );

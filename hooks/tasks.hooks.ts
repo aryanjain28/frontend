@@ -108,14 +108,13 @@ export const usePatchTask = (isMyTasks = false) => {
 
 export const useDeleteTask = (userId: string) => {
   return useMutation(
-    ({ taskId }: { taskId: string }) => {
+    ({ taskId, callback }: { taskId: string; callback: () => void }) => {
       return deleteTask(taskId);
     },
     {
       onSuccess: (data, variables) => {
         const oldAllTasks = queryClient.getQueryData([
           QUERY_KEYS.GET_ALL_TASKS,
-          userId,
         ]);
         if (oldAllTasks) {
           queryClient.setQueryData(
@@ -128,6 +127,7 @@ export const useDeleteTask = (userId: string) => {
             }
           );
         }
+        variables.callback();
         toast.success(en.toast.taskDeletedSuccess);
       },
       onError: (data, variables) => {

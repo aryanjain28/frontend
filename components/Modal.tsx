@@ -58,6 +58,7 @@ export default function ConfimationModal({
                 label="Confirm"
                 color="error"
                 onClick={handleClick}
+                isLoading={isLoading}
                 variant="contained"
               />
             </Box>

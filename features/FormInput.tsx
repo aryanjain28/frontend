@@ -38,6 +38,7 @@ export const FormInput = (props: FormInputProps) => {
         {Boolean(topLabel) && (
           <>
             <Typography
+              noWrap
               fontSize="13px"
               variant="subtitle2"
               fontWeight={700}
@@ -45,7 +46,7 @@ export const FormInput = (props: FormInputProps) => {
             >
               {topLabel}
             </Typography>
-            <Typography variant="subtitle2" fontWeight={700} color="red">
+            <Typography noWrap variant="subtitle2" fontWeight={700} color="red">
               {required ? "*" : ""}
             </Typography>
           </>

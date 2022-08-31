@@ -6,6 +6,7 @@ import {
   getAllClients,
   getAllPincodes,
   getAllTaxpayertypes,
+  getClientDetails,
   getClientTasks,
   postClient,
 } from "../services/clients.services";
@@ -18,6 +19,19 @@ export const useGetClients = () => {
     placeholderData: [],
     // refetchOnMount: true,
   });
+};
+
+export const useGetClientDetails = (clientId: string) => {
+  return useQuery(
+    [QUERY_KEYS.GET_CLIENT_DETAILS, clientId],
+    () => (clientId ? getClientDetails(clientId) : null),
+    {
+      // onSuccess: () => toast.success(en.toast.clientsFetchSuccess),
+      onError: () => toast.error(en.toast.clientsFetchFailed),
+      placeholderData: null,
+      // refetchOnMount: true,
+    }
+  );
 };
 
 export const useGetClientTasks = (clientId: string) => {

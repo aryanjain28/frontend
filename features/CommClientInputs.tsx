@@ -97,35 +97,37 @@ export const DateSelect = ({
   sx?: any;
   minDate?: Date;
   maxDate?: Date;
-}) => (
-  <Box>
-    <Box display="flex" alignItems="center">
-      {Boolean(label) && (
-        <>
-          <Typography
-            fontSize="13px"
-            variant="subtitle2"
-            fontWeight={700}
-            color="GrayText"
-          >
-            {label}
-          </Typography>
-          <Typography variant="subtitle2" fontWeight={700} color="red">
-            {required ? "*" : ""}
-          </Typography>
-        </>
-      )}
-      {isLoading && <CircularProgress sx={{ mx: 1 }} size={13} />}
-    </Box>
+}) => {
+  return (
+    <Box>
+      <Box display="flex" alignItems="center">
+        {Boolean(label) && (
+          <>
+            <Typography
+              fontSize="13px"
+              variant="subtitle2"
+              fontWeight={700}
+              color="GrayText"
+            >
+              {label}
+            </Typography>
+            <Typography variant="subtitle2" fontWeight={700} color="red">
+              {required ? "*" : ""}
+            </Typography>
+          </>
+        )}
+        {isLoading && <CircularProgress sx={{ mx: 1 }} size={13} />}
+      </Box>
 
-    <DateSelectPopover
-      date={value}
-      sx={{ ...{ width: "100%", background: "white" }, ...sx }}
-      setDate={(item) => handleChange(item as Date)}
-      showCancleIcon={showCancleIcon}
-      readOnly={readOnly}
-      minDate={minDate}
-      maxDate={maxDate}
-    />
-  </Box>
-);
+      <DateSelectPopover
+        date={value ? new Date(`${value}`) : new Date()}
+        sx={{ ...{ width: "100%", background: "white" }, ...sx }}
+        setDate={(item) => handleChange(item as Date)}
+        showCancleIcon={showCancleIcon}
+        readOnly={readOnly}
+        minDate={minDate}
+        maxDate={maxDate}
+      />
+    </Box>
+  );
+};

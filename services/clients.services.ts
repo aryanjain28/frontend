@@ -3,6 +3,7 @@ import {
   GetAllClientsResponse,
   GetAllPincodesResponse,
   GetAllTaxpayerTypesResponse,
+  GetClientDetailsResponse,
   GetClientTasksResponse,
   PostClientPayload,
   PostClientResponse,
@@ -13,6 +14,11 @@ import { GET, POST } from "./api";
 export const getAllClients = () => {
   const url = API_ROUTES.GET_ALL_CLIENTS;
   return GET<undefined, GetAllClientsResponse>(url).then((res) => res.data);
+};
+
+export const getClientDetails = (clientId: string) => {
+  const url = createRoute(API_ROUTES.GET_CLIENT_DETAILS, { clientId });
+  return GET<undefined, GetClientDetailsResponse>(url).then((res) => res.data);
 };
 
 export const getClientTasks = (clientId: string) => {
