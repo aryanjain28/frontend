@@ -5,11 +5,12 @@ import {
   GetAllTaxpayerTypesResponse,
   GetClientDetailsResponse,
   GetClientTasksResponse,
+  PatchClientPayload,
   PostClientPayload,
   PostClientResponse,
 } from "../types/clients.types";
 import { createRoute } from "../utils/routes";
-import { GET, POST } from "./api";
+import { GET, PATCH, POST } from "./api";
 
 export const getAllClients = () => {
   const url = API_ROUTES.GET_ALL_CLIENTS;
@@ -31,6 +32,11 @@ export const postClient = (payload: PostClientPayload) => {
   return POST<PostClientPayload, PostClientResponse>(url, payload).then(
     (res) => res.data
   );
+};
+
+export const patchClient = (payload: PatchClientPayload, clientId: string) => {
+  const url = createRoute(API_ROUTES.PATCH_CLIENT, { clientId });
+  return PATCH<PatchClientPayload, undefined>(url, payload).then((res) => res);
 };
 
 export const getAllTaxpayertypes = () => {

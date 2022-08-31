@@ -194,8 +194,14 @@ const GstDetails = ({
   );
 };
 
-const NewClientForm = (props: NewClientFormProps) => {
-  const { formValues, setFormValues, onSave, isSaving } = props;
+const ClientForm = (props: ClientFormProps) => {
+  const {
+    formValues,
+    setFormValues,
+    onSave,
+    isSaving,
+    isUpdate = false,
+  } = props;
   const { data: taxpayerTypes, isFetching: taxpayerTypesIsLoading } =
     useGetTaxpayerTypes();
   const { data: pincodes, isFetching: pincodesIsLoading } = useGetPincodes();
@@ -253,7 +259,7 @@ const NewClientForm = (props: NewClientFormProps) => {
       >
         <Button label="Go Back" onClick={() => router.back()} />
         <Button
-          label="Save"
+          label={isUpdate ? "Update" : "Save"}
           color="success"
           onClick={onSave}
           variant="contained"
@@ -264,11 +270,12 @@ const NewClientForm = (props: NewClientFormProps) => {
   );
 };
 
-interface NewClientFormProps {
+interface ClientFormProps {
   formValues: ModifiedClientFields;
   setFormValues: (formValues: ModifiedClientFields) => void;
   onSave: () => void;
   isSaving: boolean;
+  isUpdate?: boolean;
 }
 
-export default NewClientForm;
+export default ClientForm;

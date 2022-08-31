@@ -136,5 +136,7 @@ export const en = {
     pincodesFetchFailed: "Failed to fetch pincodes.",
     clientCreatedSuccessfully: "Client information saved successfully.",
     clientCreatedFailed: "Failed to save client information.",
+    clientUpdatedSuccessfully: "Client information updated successfully.",
+    clientUpdatedFailed: "Failed to update client information.",
   },
 };

@@ -3,7 +3,7 @@ import { useState } from "react";
 import { en } from "../../../../constants/labels";
 import { ROUTES } from "../../../../constants/routes";
 import { BreadCrumbsComp } from "../../../../features/BreadCrumbs";
-import NewClientForm from "../../../../features/NewClientForm";
+import NewClientForm from "../../../../features/ClientForm";
 import { usePostClient } from "../../../../hooks/clients.hooks";
 import PageLayout from "../../../../layouts/PageLayout";
 import { palette } from "../../../../styles/theme";

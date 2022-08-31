@@ -378,7 +378,7 @@ const ExpandedTaskGridCell = ({
                             sx={{ fontStyle: "oblique" }}
                           >
                             Updated{" "}
-                            {moment(formValues.updatedAt, "YYYYMMDD").fromNow()}
+                            {moment(row?.updatedAt, "YYYYMMDD").fromNow()}
                           </Typography>
                         </Grid>
                         {isAdmin() && (

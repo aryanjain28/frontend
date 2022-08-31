@@ -8,9 +8,10 @@ import {
   getAllTaxpayertypes,
   getClientDetails,
   getClientTasks,
+  patchClient,
   postClient,
 } from "../services/clients.services";
-import { PostClientPayload } from "../types/clients.types";
+import { PatchClientPayload, PostClientPayload } from "../types/clients.types";
 
 export const useGetClients = () => {
   return useQuery([QUERY_KEYS.GET_ALL_CLIENTS], () => getAllClients(), {
@@ -57,6 +58,28 @@ export const usePostClient = () => {
       },
       onError: (data, variables) => {
         toast.error(en.toast.clientCreatedFailed);
+      },
+    }
+  );
+};
+
+export const usePatchClient = () => {
+  return useMutation(
+    ({
+      payload,
+      clientId,
+    }: {
+      payload: PatchClientPayload;
+      clientId: string;
+    }) => {
+      return patchClient(payload, clientId);
+    },
+    {
+      onSuccess: (data, variables) => {
+        toast.success(en.toast.clientUpdatedSuccessfully);
+      },
+      onError: (data, variables) => {
+        toast.error(en.toast.clientUpdatedFailed);
       },
     }
   );

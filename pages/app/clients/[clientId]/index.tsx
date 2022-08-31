@@ -5,8 +5,11 @@ import { useEffect, useState } from "react";
 import { en } from "../../../../constants/labels";
 import { ROUTES } from "../../../../constants/routes";
 import { BreadCrumbsComp } from "../../../../features/BreadCrumbs";
-import UpdateClientForm from "../../../../features/NewClientForm";
-import { useGetClientDetails } from "../../../../hooks/clients.hooks";
+import UpdateClientForm from "../../../../features/ClientForm";
+import {
+  useGetClientDetails,
+  usePatchClient,
+} from "../../../../hooks/clients.hooks";
 import PageLayout from "../../../../layouts/PageLayout";
 import { palette } from "../../../../styles/theme";
 import { ModifiedClientFields } from "../../../../types/clients.types";
@@ -18,6 +21,7 @@ const EditClient = () => {
   const { data = {}, isFetching: isLoading } = useGetClientDetails(
     clientId as string
   );
+  const { mutate: updateClientInfo, isLoading: isUpdating } = usePatchClient();
 
   const [formValues, setFormValues] = useState<ModifiedClientFields>({
     gstIn: "",
@@ -83,10 +87,15 @@ const EditClient = () => {
             <UpdateClientForm
               formValues={formValues}
               setFormValues={setFormValues}
-              isSaving={false}
+              isSaving={isUpdating}
               onSave={() => {
                 console.log(formValues);
+                updateClientInfo({
+                  payload: { data: formValues },
+                  clientId: clientId as string,
+                });
               }}
+              isUpdate
             />
           )
         )}

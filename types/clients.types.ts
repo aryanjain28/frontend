@@ -119,6 +119,10 @@ export interface PostClientPayload {
   data: ModifiedClientFields;
 }
 
+export interface PatchClientPayload {
+  data: ModifiedClientFields;
+}
+
 export interface PostClientResponse {
   status: number;
   message: string;

@@ -120,7 +120,7 @@ export const getTasksCol = (
   setExpandedRowId: (id: string | null) => void
 ): ColumnG<AllTasks>[] => [
   {
-    headerName: "Assigned Date",
+    headerName: "Date",
     key: "assignedAt",
     Component: ({ row }) => {
       return (
