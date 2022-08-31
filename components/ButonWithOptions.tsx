@@ -77,7 +77,7 @@ export default function ButtonWithOptions({
                     const { label, value } = option as Select;
                     return (
                       <MenuItem
-                        key={`${option}`}
+                        key={`${Math.random()}_${option}`}
                         onClick={() => {
                           handleSelected(value);
                           setOpen(false);

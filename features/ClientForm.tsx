@@ -100,6 +100,7 @@ const FormRow = ({
               ] as string;
               return (
                 <FormField
+                  key={`${Math.random}_${name}`}
                   name={name}
                   fieldType={fieldType}
                   required={required}

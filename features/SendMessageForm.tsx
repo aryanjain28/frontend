@@ -24,6 +24,7 @@ import TickIcon from "@mui/icons-material/DoneOutlined";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { CHAR_LIMIT } from "../constants/message.constants";
 import { en } from "../constants/labels";
+import { Button } from "../components/Button";
 
 interface Item {
   name: string;
@@ -155,13 +156,13 @@ const SelectContacts = ({
 };
 
 export const SendMessageForm = (props: SendMessageFormProps) => {
-  const [selectedType, setSelectedType] = useState<number>(1);
+  const [selectedType, setSelectedType] = useState<number>(3);
   const [copied, setCopied] = useState<boolean>(false);
 
   const typeMap = {
     1: { icon: <WhatsappIcon />, label: "WhatsApp" },
     2: { icon: <EmailIcon />, label: "Email" },
-    3: { icon: <SMSIcon />, label: "SMS" },
+    3: { icon: <SMSIcon fontSize="small" />, label: "SMS" },
   };
 
   const options = [
@@ -285,34 +286,26 @@ export const SendMessageForm = (props: SendMessageFormProps) => {
                 }
                 options={["Type1", "Type2"]}
               />
-              <SelectComponent
-                selectedOption={formValues.template}
-                handleSelectOption={(template) =>
-                  setFormValues({ ...formValues, template })
-                }
-                options={new Array(10)
-                  .fill("Template_")
-                  .map((p, index) => p + index + "")}
-              />
               <Box width="100%">
-                <TextareaAutosize
-                  maxLength={CHAR_LIMIT}
-                  style={{
-                    maxHeight: 125,
-                    overflowY: "scroll",
-                    resize: "none",
-                    width: "100%",
-                  }}
-                  minRows={8}
+                <FormInput
+                  rows={8}
+                  label=""
                   value={formValues.content}
-                  onChange={(e) =>
-                    CHAR_LIMIT === e.target.value.length
+                  handleOnChange={(value) => {
+                    CHAR_LIMIT === (value as string).length - 1
                       ? null
                       : setFormValues({
                           ...formValues,
-                          content: e.target.value,
-                        })
-                  }
+                          content: (value as string).slice(0, CHAR_LIMIT),
+                        });
+                  }}
+                  sx={{
+                    maxHeight: 400,
+                    fontSize: 10,
+                    overflowY: "auto",
+                    width: "100%",
+                  }}
+                  placeholder="Message Content..."
                 />
                 <Typography
                   fontSize={10}
@@ -325,19 +318,12 @@ export const SendMessageForm = (props: SendMessageFormProps) => {
                   }/${CHAR_LIMIT}`}
                 </Typography>
               </Box>
-              <ButtonWithOptions
-                label={getLabel(
-                  typeMap[selectedType as keyof typeof typeMap].icon,
-                  typeMap[selectedType as keyof typeof typeMap].label
-                )}
-                options={options.map(({ value, icon, label }) => ({
-                  label: getLabel(icon, label),
-                  value,
-                }))}
-                handleClick={handleSendMessage}
-                handleSelected={(value) => setSelectedType(value as number)}
-                selectedOption={selectedType as number}
-                sx={{ background: palette.primary.success }}
+              <Button
+                fullWidth
+                variant="contained"
+                color="success"
+                label={getLabel(typeMap[3].icon, typeMap[3].label as string)}
+                onClick={handleSendMessage}
               />
             </Grid>
           </Box>

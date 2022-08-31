@@ -120,7 +120,7 @@ export default function TransferList() {
         {items.map((value: number) => {
           return (
             <ListItem
-              key={value}
+              key={`${Math.random()}_${value}`}
               role="listitem"
               button
               onClick={handleToggle(value)}
@@ -147,31 +147,6 @@ export default function TransferList() {
   return (
     <Grid container spacing={2} justifyContent="center" alignItems="center">
       <Grid item>{customList("Select Contacts", left)}</Grid>
-      {/* <Grid item> */}
-        {/* <Grid container direction="column" alignItems="center">
-          <Button
-            sx={{ my: 0.5 }}
-            variant="contained"
-            size="small"
-            onClick={handleCheckedRight}
-            disabled={leftChecked.length === 0}
-            aria-label="move selected right"
-          >
-            <KeyboardArrowRightOutlined />
-          </Button>
-          <Button
-            sx={{ my: 0.5 }}
-            variant="contained"
-            size="small"
-            onClick={handleCheckedLeft}
-            disabled={rightChecked.length === 0}
-            aria-label="move selected left"
-          >
-            <KeyboardArrowLeftOutlined />
-          </Button>
-        </Grid> */}
-      {/* </Grid> */}
-      {/* <Grid item>{customList("Selected Contacts", right)}</Grid> */}
     </Grid>
   );
 }

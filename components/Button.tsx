@@ -48,7 +48,7 @@ interface ButtonProps {
     | "success"
     | "info"
     | "warning";
-  label: string;
+  label: string | JSX.Element;
   variant?: "outlined" | "contained" | "text";
   fullWidth?: boolean;
 }
