@@ -164,6 +164,8 @@ export const en = {
     clientTasksFetchFailed: "Failed to fetch clients' tasks.",
     taxpayerTypesFetchFailed: "Failed to fetch taxpayer types.",
     pincodesFetchFailed: "Failed to fetch pincodes.",
+    pincodesInvalid: "Invalid Pincode.",
+    ifscInvalid: "Invalid IFSC Code.",
     clientCreatedSuccessfully: "Client information saved successfully.",
     clientCreatedFailed: "Failed to save client information.",
     clientUpdatedSuccessfully: "Client information updated successfully.",

@@ -42,6 +42,10 @@ export const getClientsColumns = (
   setExpandedRowId: (id: string | number | null) => void
 ): ColumnG<ModClient>[] => [
   {
+    headerName: "Code",
+    key: "code",
+  },
+  {
     headerName: "Name",
     key: "name",
     Component: ({ row }) => {
@@ -68,10 +72,6 @@ export const getClientsColumns = (
   {
     headerName: "Business",
     key: "businessName",
-  },
-  {
-    headerName: "Taxpayer",
-    key: "taxpayerTypeName",
   },
   {
     headerName: "GST",
@@ -123,16 +123,9 @@ export const getClientsColumns = (
   },
 ];
 
-export const getClientFormFields = (
-  options: {
-    taxpayerTypesOptions: Select[];
-    pincodesOptions: Select[];
-  },
-  isLoadingState: {
-    taxpayerTypesIsLoading: boolean;
-    pincodesIsLoading: boolean;
-  }
-): ClientFormFields => ({
+export const getClientFormFields = (isLoadingState: {
+  pincodesIsLoading: boolean;
+}): ClientFormFields => ({
   personalInfo: [
     { name: "code" },
     {
@@ -167,17 +160,15 @@ export const getClientFormFields = (
 
     {
       name: "pincode",
-      fieldType: "select",
       required: true,
-      options: options.pincodesOptions,
       isLoading: isLoadingState.pincodesIsLoading,
     },
-    { name: "district", required: true, readOnly: true },
-    { name: "city", required: true, readOnly: true },
-    { name: "state", required: true, readOnly: true },
+    { name: "district" },
+    { name: "city" },
+    { name: "state" },
     { name: "primaryMobile", required: true },
     { name: "secondaryMobile" },
-    { name: "primaryEmail" },
+    { name: "primaryEmail", required: true },
   ],
   businessInfo: [
     { name: "panNumber" },
@@ -231,3 +222,44 @@ export const getClientFieldsInit = ({
     formFields: bankDetails,
   },
 ];
+
+export const getClientInfoInit = () => ({
+  code: "",
+  prefix: "",
+  firstName: "",
+  middleName: "",
+  lastName: "",
+  spouseName: "",
+  fatherName: "",
+  dob: "",
+  sex: "",
+  maritalStatus: "",
+  addressLine1: "",
+  addressLine2: "",
+  pincode: "",
+  district: "",
+  city: "",
+  state: "",
+  primaryMobile: "",
+  secondaryMobile: "",
+  primaryEmail: "",
+  panNumber: "",
+  aadharNumber: "",
+  aadharName: "",
+  passportNumber: "",
+  gstIn: "",
+  gstUsername: "",
+  gstPassword: "",
+  businessName: "",
+  businessActivity: "",
+  registrationDate: "",
+  bankIFSC: "",
+  bankMICR: "",
+  bankName: "",
+  bankBranch: "",
+  bankAddress: "",
+  bankCity: "",
+  bankState: "",
+  bankCentre: "",
+  bankContact: "",
+});

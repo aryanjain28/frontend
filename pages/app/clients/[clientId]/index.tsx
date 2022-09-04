@@ -13,6 +13,7 @@ import {
 import PageLayout from "../../../../layouts/PageLayout";
 import { palette } from "../../../../styles/theme";
 import { ModifiedClientFields } from "../../../../types/clients.types";
+import { getClientInfoInit } from "../../../../utils/clients.utils";
 import { isEmptyObject } from "../../../../utils/common.utils";
 
 const EditClient = () => {
@@ -23,27 +24,9 @@ const EditClient = () => {
   );
   const { mutate: updateClientInfo, isLoading: isUpdating } = usePatchClient();
 
-  const [formValues, setFormValues] = useState<ModifiedClientFields>({
-    gstIn: "",
-    registrationDate: "",
-    taxpayerType: "",
-    legalName: "",
-    businessName: "",
-    businessConstitution: "",
-    businessActivity: "",
-    panNumber: "",
-    pincode: "",
-    name: "",
-    address: "",
-    city: "",
-    primaryMobile: "",
-    primaryEmail: "",
-    secondaryMobile: "",
-    gstUsername: "",
-    gstPassword: "",
-    district: "",
-    state: "",
-  });
+  const [formValues, setFormValues] = useState<ModifiedClientFields>(
+    getClientInfoInit()
+  );
 
   useEffect(() => {
     setFormValues({ ...formValues, ...data });
@@ -63,7 +46,7 @@ const EditClient = () => {
               breadCrumbs={[
                 { label: en.dashboard as string, url: ROUTES.dashboard },
                 { label: en.clients as string, url: ROUTES.clients },
-                { label: formValues.name || "", url: "#" },
+                { label: formValues.firstName || "", url: "#" },
               ]}
             />
             <Typography mx={3} color={palette.primary.main} variant="h6">
@@ -89,7 +72,6 @@ const EditClient = () => {
               setFormValues={setFormValues}
               isSaving={isUpdating}
               onSave={() => {
-                console.log(formValues);
                 updateClientInfo({
                   payload: { data: formValues },
                   clientId: clientId as string,

@@ -5,6 +5,8 @@ import {
   GetAllTaxpayerTypesResponse,
   GetClientDetailsResponse,
   GetClientTasksResponse,
+  GetIFSCDetailsResponse,
+  GetPincodeDetailsResponse,
   PatchClientPayload,
   PostClientPayload,
   PostClientResponse,
@@ -49,4 +51,14 @@ export const getAllTaxpayertypes = () => {
 export const getAllPincodes = () => {
   const url = API_ROUTES.GET_ALL_PINCODES;
   return GET<undefined, GetAllPincodesResponse>(url).then((res) => res.data);
+};
+
+export const getPincodeDetails = (pincode: string) => {
+  const url = createRoute(API_ROUTES.GET_PINCODE_DETAILS, { pincode });
+  return GET<undefined, GetPincodeDetailsResponse>(url).then((res) => res.data);
+};
+
+export const getBankDetails = (ifsc: string) => {
+  const url = createRoute(API_ROUTES.GET_BANK_DETAILS, { ifsc });
+  return GET<undefined, GetIFSCDetailsResponse>(url).then((res) => res.data);
 };

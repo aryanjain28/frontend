@@ -8,11 +8,13 @@ import { usePostClient } from "../../../../hooks/clients.hooks";
 import PageLayout from "../../../../layouts/PageLayout";
 import { palette } from "../../../../styles/theme";
 import { ModifiedClientFields } from "../../../../types/clients.types";
+import { getClientInfoInit } from "../../../../utils/clients.utils";
 
 const CreateClient = () => {
-  const [formValues, setFormValues] = useState<ModifiedClientFields>({});
-
-  const { mutate, isLoading: isSaving } = usePostClient();
+  const [formValues, setFormValues] = useState<ModifiedClientFields>(
+    getClientInfoInit()
+  );
+  const { mutate: createClient, isLoading: isSaving } = usePostClient();
 
   return (
     <PageLayout>
@@ -40,10 +42,7 @@ const CreateClient = () => {
           formValues={formValues}
           setFormValues={setFormValues}
           isSaving={isSaving}
-          onSave={
-            () => console.log(formValues)
-            /*mutate({ payload: { data: formValues } })*/
-          }
+          onSave={() => createClient({ payload: { data: formValues } })}
         />
       </Box>
     </PageLayout>

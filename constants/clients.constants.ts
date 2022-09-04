@@ -6,3 +6,6 @@ export const taskParentTypes = {
   5: { key: "registrations", label: "Registrations" },
   6: { key: "others", label: "Others" },
 };
+
+export const IFSC_LENGTH = 11;
+export const PINCODE_LENGTH = 6;

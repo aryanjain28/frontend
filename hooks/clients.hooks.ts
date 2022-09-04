@@ -1,13 +1,16 @@
 import { useMutation, useQuery } from "react-query";
 import { toast } from "react-toastify";
+import { IFSC_LENGTH, PINCODE_LENGTH } from "../constants/clients.constants";
 import { en } from "../constants/labels";
 import { QUERY_KEYS } from "../constants/queryKeys";
 import {
   getAllClients,
   getAllPincodes,
   getAllTaxpayertypes,
+  getBankDetails,
   getClientDetails,
   getClientTasks,
+  getPincodeDetails,
   patchClient,
   postClient,
 } from "../services/clients.services";
@@ -103,4 +106,31 @@ export const useGetPincodes = () => {
     onError: () => toast.error(en.toast.pincodesFetchFailed),
     placeholderData: null,
   });
+};
+
+export const useGetPincodeDetails = (pincode: string) => {
+  return useQuery(
+    [QUERY_KEYS.GET_PINCODE_DETAILS, pincode],
+    () =>
+      pincode && pincode.length === PINCODE_LENGTH
+        ? getPincodeDetails(pincode)
+        : null,
+    {
+      // onSuccess: () => toast.success(en.toast.clientsFetchSuccess),
+      onError: () => toast.error(en.toast.pincodesInvalid),
+      placeholderData: null,
+    }
+  );
+};
+
+export const useGetBankDetails = (ifsc: string) => {
+  return useQuery(
+    [QUERY_KEYS.GET_BANK_DETAILS, ifsc],
+    () => (ifsc && ifsc.length === IFSC_LENGTH ? getBankDetails(ifsc) : null),
+    {
+      // onSuccess: () => toast.success(en.toast.clientsFetchSuccess),
+      onError: () => toast.error(en.toast.ifscInvalid),
+      placeholderData: null,
+    }
+  );
 };

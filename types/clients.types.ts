@@ -7,8 +7,6 @@ export type Client = {
   gstIn: string | null;
   panNumber: string | null;
   primaryMobile: string;
-  taxpayerTypeId: string;
-  taxpayerTypeName: string;
   taskParentIds: number[];
 };
 
@@ -33,25 +31,44 @@ export interface ModClient {
 }
 
 export interface ModifiedClientFields {
-  name?: string;
-  gstIn?: string;
-  registrationDate?: string;
-  taxpayerType?: string;
-  legalName?: string;
-  businessName?: string;
-  businessConstitution?: string;
-  businessActivity?: string;
-  panNumber?: string;
-  address?: string;
-  city?: string;
-  district?: string;
-  state?: string;
+  code?: string;
+  prefix?: string;
+  firstName?: string;
+  middleName?: string;
+  lastName?: string;
+  spouseName?: string;
+  fatherName?: string;
+  dob?: string;
+  sex?: string;
+  maritalStatus?: string;
+  addressLine1?: string;
+  addressLine2?: string;
   pincode?: string;
+  district?: string;
+  city?: string;
+  state?: string;
   primaryMobile?: string;
   secondaryMobile?: string;
   primaryEmail?: string;
+  panNumber?: string;
+  aadharName?: string;
+  aadharNumber?: string;
+  passportNumber?: string;
+  gstIn?: string;
   gstUsername?: string;
   gstPassword?: string;
+  businessName?: string;
+  businessActivity?: string;
+  registrationDate?: string;
+  bankMICR?: string;
+  bankIFSC?: string;
+  bankName?: string;
+  bankBranch?: string;
+  bankAddress?: string;
+  bankCity?: string;
+  bankCentre?: string;
+  bankState?: string;
+  bankContact?: string;
 }
 
 export interface ClientFormFieldType {
@@ -112,6 +129,33 @@ export interface GetAllPincodesResponse {
       state: string;
       id: string;
     };
+  };
+  message: string;
+}
+
+export interface GetPincodeDetailsResponse {
+  status: number;
+  data: {
+    pincode: string;
+    district: string;
+    state: string;
+    city: string;
+  };
+  message: string;
+}
+
+export interface GetIFSCDetailsResponse {
+  status: number;
+  data: {
+    bankMICR: string; // "560226263";
+    bankIFSC: string; // "HDFC0CAGSBK";
+    bankName: string; // "HDFC Bank";
+    bankBranch: string; // "THE AGS EMPLOYEES COOP BANK LTD";
+    bankAddress: string; // "SANGMESH BIRADAR BANGALORE";
+    bankCity: string; // "BANGALORE";
+    bankCentre: string; // "BANGALORE URBAN";
+    bankState: string; // "KARNATAKA";
+    bankContact: string; // "+91802265658";
   };
   message: string;
 }

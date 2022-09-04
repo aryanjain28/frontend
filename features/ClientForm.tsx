@@ -18,12 +18,16 @@ import {
 } from "../types/clients.types";
 import { useRouter } from "next/router";
 import { Select } from "../types/common.types";
-import { useGetPincodes, useGetTaxpayerTypes } from "../hooks/clients.hooks";
+import {
+  useGetBankDetails,
+  useGetPincodeDetails,
+} from "../hooks/clients.hooks";
 import { useCallback, useEffect, useState } from "react";
 import {
   KeyboardArrowDownOutlined,
   KeyboardArrowUpOutlined,
 } from "@mui/icons-material";
+import { IFSC_LENGTH, PINCODE_LENGTH } from "../constants/clients.constants";
 
 function FormField({
   name,
@@ -135,33 +139,40 @@ const ClientForm = (props: ClientFormProps) => {
     isUpdate = false,
   } = props;
   const router = useRouter();
-  const { data: taxpayerTypes, isFetching: taxpayerTypesIsLoading } =
-    useGetTaxpayerTypes();
-  const { data: pincodes, isFetching: pincodesIsLoading } = useGetPincodes();
+
+  const { data: location, isFetching: isFetchingLocation } =
+    useGetPincodeDetails(formValues.pincode || "");
+
+  const { data: bankDetails, isFetching: isFetchingBankDetails } =
+    useGetBankDetails(formValues.bankIFSC || "");
 
   useEffect(() => {
     if (!formValues.pincode) {
       setFormValues({ ...formValues, state: "", district: "", city: "" });
-    } else if (pincodes && formValues.pincode) {
-      const { state, name: city, district } = pincodes[formValues.pincode];
-      setFormValues({ ...formValues, state, district, city });
+    } else if (
+      location &&
+      formValues.pincode &&
+      formValues.pincode.length === PINCODE_LENGTH
+    ) {
+      const { pincode = "", state = "", city = "", district = "" } = location;
+      setFormValues({ ...formValues, pincode, state, district, city });
+    } else if (!location) {
+      setFormValues({ ...formValues, state: "", district: "", city: "" });
     }
-  }, [formValues.pincode]);
+  }, [location, formValues.pincode]);
 
-  const options = {
-    taxpayerTypesOptions: (taxpayerTypes || []).map((p) => ({
-      value: p.id,
-      label: p.name,
-    })),
-    pincodesOptions: Object.values(pincodes || {}).map((p) => ({
-      value: p.id,
-      label: `${p.pincode}`,
-    })),
-  };
+  useEffect(() => {
+    if (
+      bankDetails &&
+      formValues.bankIFSC &&
+      formValues.bankIFSC.length === IFSC_LENGTH
+    ) {
+      setFormValues({ ...formValues, ...bankDetails });
+    }
+  }, [bankDetails, formValues.bankIFSC]);
 
-  const fields = getClientFormFields(options, {
-    taxpayerTypesIsLoading,
-    pincodesIsLoading,
+  const fields = getClientFormFields({
+    pincodesIsLoading: false,
   });
 
   const [clientFormFields, setClientFormFields] = useState(
@@ -184,6 +195,10 @@ const ClientForm = (props: ClientFormProps) => {
           sx={{
             flexGrow: 1,
             border: `1px solid ${palette.secondary.light}`,
+            ...(!isExpanded && {
+              color: "white",
+              background: palette.primary.main,
+            }),
           }}
           p={2}
         >
@@ -194,7 +209,7 @@ const ClientForm = (props: ClientFormProps) => {
           >
             <Typography
               variant="h6"
-              color={palette.primary.main}
+              color={!isExpanded ? palette.primary.white : palette.primary.main}
               letterSpacing={1}
             >
               {label}
