@@ -46,6 +46,7 @@ export const en = {
   startDate: "Start Date",
   taskName: "Task Name",
   client: "Client",
+  personalInfo: "Personal Info",
   newClient: "New Client",
   createNewClient: "Create New Client",
   assignee: "Assignee",
@@ -75,6 +76,24 @@ export const en = {
   forgotPwd: "Forgot Password?",
 
   // Client Create Page
+  code: "Code",
+  prefix: "Prefix",
+  firstName: "First Name",
+  middleName: "Middle Name",
+  lastName: "Last Name",
+  spouseName: "Spouse Fullname",
+  fatherName: "Father's Fullname",
+  dob: "Date of Birth",
+  sex: "Sex",
+  maritalStatus: "Marital Status",
+
+  addressLine1: "Address Line 1",
+  addressLine2: "Address Line 2",
+
+  aadharNumber: "Aadhar Card Number",
+  aadharName: "Name as per addhar",
+  passportNumber: "Passport Number",
+
   name: "Name",
   gstIn: "GSTIN",
   registrationDate: "Date of Registration",
@@ -97,6 +116,17 @@ export const en = {
   gstPassword: "Password",
   contactDetails: "Contact Details",
   gstCreds: "GST Website Credentials",
+  businessDetails: "Business Details",
+  bankDetails: "Bank Details",
+  bankIFSC: "IFSC",
+  bankMICR: "MICR",
+  bankName: "Name",
+  bankBranch: "Branch",
+  bankAddress: "Address",
+  bankCity: "City",
+  bankState: "State",
+  bankCentre: "Centre",
+  bankContact: "Contact",
 
   // Message
   selectContacts: "Select Contacts",

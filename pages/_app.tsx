@@ -1,6 +1,6 @@
 import { AppProps } from "next/app";
 import { QueryClient, QueryClientProvider } from "react-query";
-import { CircularProgress, CssBaseline } from "@mui/material";
+import { CircularProgress, CssBaseline, ThemeProvider } from "@mui/material";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useRouter } from "next/router";
@@ -10,6 +10,7 @@ import React, { useEffect } from "react";
 import NextNProgress from "nextjs-progressbar";
 import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
+import { theme } from "../styles/theme";
 
 export const queryClient = new QueryClient({
   defaultOptions: {
@@ -62,14 +63,16 @@ const AuthWrapper: React.FC = ({ children }) => {
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <>
-      <QueryClientProvider client={queryClient}>
-        <CssBaseline />
-        <ToastContainer autoClose={3000} position="top-center" theme="dark" />
-        <AuthWrapper>
-          <NextNProgress stopDelayMs={0} height={4} />
-          <Component {...pageProps} />
-        </AuthWrapper>
-      </QueryClientProvider>
+      <ThemeProvider theme={theme}>
+        <QueryClientProvider client={queryClient}>
+          <CssBaseline />
+          <ToastContainer autoClose={3000} position="top-center" theme="dark" />
+          <AuthWrapper>
+            <NextNProgress stopDelayMs={0} height={4} />
+            <Component {...pageProps} />
+          </AuthWrapper>
+        </QueryClientProvider>
+      </ThemeProvider>
     </>
   );
 }

@@ -100,7 +100,7 @@ const CreateNewTask = () => {
           </Box>
         </Box>
         <Divider sx={{ my: 0 }} />
-        <Box p={3} style={{ background: gradients.gradient4 }}>
+        <Box p={3}>
           <Grid container direction="row">
             <Box px={2} width="33%">
               <Grid

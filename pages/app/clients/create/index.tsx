@@ -10,16 +10,7 @@ import { palette } from "../../../../styles/theme";
 import { ModifiedClientFields } from "../../../../types/clients.types";
 
 const CreateClient = () => {
-  const [formValues, setFormValues] = useState<ModifiedClientFields>({
-    gstIn: "",
-    registrationDate: "",
-    taxpayerType: "",
-    legalName: "",
-    businessName: "",
-    businessConstitution: "",
-    businessActivity: "",
-    panNumber: "",
-  });
+  const [formValues, setFormValues] = useState<ModifiedClientFields>({});
 
   const { mutate, isLoading: isSaving } = usePostClient();
 
@@ -49,7 +40,10 @@ const CreateClient = () => {
           formValues={formValues}
           setFormValues={setFormValues}
           isSaving={isSaving}
-          onSave={() => mutate({ payload: { data: formValues } })}
+          onSave={
+            () => console.log(formValues)
+            /*mutate({ payload: { data: formValues } })*/
+          }
         />
       </Box>
     </PageLayout>

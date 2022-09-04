@@ -64,9 +64,10 @@ export interface ClientFormFieldType {
 }
 
 export interface ClientFormFields {
-  businessInfo: ClientFormFieldType[];
+  personalInfo: ClientFormFieldType[];
   contactDetails: ClientFormFieldType[];
-  gstFields: ClientFormFieldType[];
+  businessInfo: ClientFormFieldType[];
+  bankDetails: ClientFormFieldType[];
 }
 
 export interface GetAllClientsResponse {

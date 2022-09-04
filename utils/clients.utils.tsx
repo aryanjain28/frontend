@@ -9,6 +9,7 @@ import { Select } from "../types/common.types";
 import { Link, Typography } from "@mui/material";
 import { createRoute } from "./routes";
 import { ROUTES } from "../constants/routes";
+import { en } from "../constants/labels";
 
 export const getArrInGroups = (arr: any, perGroup: number = 4) => {
   const nGroups = arr.length % perGroup;
@@ -132,25 +133,38 @@ export const getClientFormFields = (
     pincodesIsLoading: boolean;
   }
 ): ClientFormFields => ({
-  businessInfo: [
-    { name: "name", required: true },
-    { name: "panNumber" },
-    { name: "gstIn" },
-    { name: "registrationDate", fieldType: "date" },
+  personalInfo: [
+    { name: "code" },
     {
-      name: "taxpayerType",
+      name: "prefix",
       fieldType: "select",
-      options: options.taxpayerTypesOptions,
+      options: ["Mr.", "Mrs.", "Ms."],
       required: true,
-      isLoading: isLoadingState.taxpayerTypesIsLoading,
     },
-    { name: "legalName", required: true },
-    { name: "businessName", required: true },
-    { name: "businessConstitution", fieldType: "select" },
-    { name: "businessActivity" },
-    { name: "entities", fieldType: "select" },
+    { name: "firstName", required: true },
+    { name: "middleName" },
+    { name: "lastName" },
+
+    { name: "spouseName" },
+    { name: "fatherName" },
+
+    { name: "dob", fieldType: "date", required: true },
+    {
+      name: "sex",
+      fieldType: "select",
+      options: ["Male", "Female", "Prefer Not to Say"],
+      required: true,
+    },
+    {
+      name: "maritalStatus",
+      fieldType: "select",
+      options: ["Single", "Married", "Divorced", "Widowed"],
+    },
   ],
   contactDetails: [
+    { name: "addressLine1", required: true },
+    { name: "addressLine2" },
+
     {
       name: "pincode",
       fieldType: "select",
@@ -158,16 +172,62 @@ export const getClientFormFields = (
       options: options.pincodesOptions,
       isLoading: isLoadingState.pincodesIsLoading,
     },
-    { name: "city", required: true, readOnly: true },
     { name: "district", required: true, readOnly: true },
+    { name: "city", required: true, readOnly: true },
     { name: "state", required: true, readOnly: true },
-    { name: "address", required: true },
     { name: "primaryMobile", required: true },
     { name: "secondaryMobile" },
     { name: "primaryEmail" },
   ],
-  gstFields: [
+  businessInfo: [
+    { name: "panNumber" },
+    { name: "aadharNumber" },
+    { name: "aadharName" },
+    { name: "passportNumber" },
+    { name: "gstIn" },
     { name: "gstUsername" },
     { name: "gstPassword", fieldType: "password" },
+    { name: "businessName", required: true },
+    { name: "businessActivity" },
+    { name: "registrationDate", fieldType: "date" },
+  ],
+  bankDetails: [
+    { name: "bankIFSC" },
+    { name: "bankMICR" },
+    { name: "bankName" },
+    { name: "bankBranch" },
+    { name: "bankAddress" },
+    { name: "bankCity" },
+    { name: "bankState" },
+    { name: "bankCentre" },
+    { name: "bankContact" },
   ],
 });
+
+export const getClientFieldsInit = ({
+  personalInfo,
+  contactDetails,
+  businessInfo,
+  bankDetails,
+}: ClientFormFields) => [
+  {
+    isExpanded: true,
+    label: `1. ${en.personalInfo}`,
+    formFields: personalInfo,
+  },
+  {
+    isExpanded: true,
+    label: `2. ${en.contactDetails}`,
+    formFields: contactDetails,
+  },
+  {
+    isExpanded: true,
+    label: `3. ${en.businessDetails}`,
+    formFields: businessInfo,
+  },
+  {
+    isExpanded: true,
+    label: `4. ${en.bankDetails}`,
+    formFields: bankDetails,
+  },
+];

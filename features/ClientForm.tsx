@@ -1,6 +1,6 @@
-import { Divider, Grid, Paper, styled, Typography } from "@mui/material";
+import { Collapse, Divider, Grid, Typography } from "@mui/material";
 import { Box } from "@mui/system";
-import { palette } from "../styles/theme";
+import { gradients, palette } from "../styles/theme";
 import {
   Input as ClientInfoInput,
   SelectInput as ClientInfoSelect,
@@ -8,7 +8,10 @@ import {
 } from "./CommClientInputs";
 import { en } from "../constants/labels";
 import { Button } from "../components/Button";
-import { getClientFormFields, getArrInGroups } from "../utils/clients.utils";
+import {
+  getClientFormFields,
+  getClientFieldsInit,
+} from "../utils/clients.utils";
 import {
   ClientFormFieldType,
   ModifiedClientFields,
@@ -16,7 +19,11 @@ import {
 import { useRouter } from "next/router";
 import { Select } from "../types/common.types";
 import { useGetPincodes, useGetTaxpayerTypes } from "../hooks/clients.hooks";
-import { useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
+import {
+  KeyboardArrowDownOutlined,
+  KeyboardArrowUpOutlined,
+} from "@mui/icons-material";
 
 function FormField({
   name,
@@ -38,159 +45,83 @@ function FormField({
   isLoading?: boolean;
 }) {
   return (
-    <Grid item xs={3}>
-      <Box py={1} height="100%">
-        {(fieldType === "text" || fieldType === "password") && (
-          <ClientInfoInput
-            label={en[name as keyof typeof en] as string}
-            value={value}
-            handleChange={(value) => setFormValues(name, value)}
-            required={required}
-            type={fieldType}
-            readOnly={readOnly}
-            isLoading={isLoading}
-          />
-        )}
-        {fieldType === "select" && (
-          <ClientInfoSelect
-            label={en[name as keyof typeof en] as string}
-            value={value}
-            handleChange={(value, label) =>
-              setFormValues(name, value as string, label as string)
-            }
-            options={options}
-            required={required}
-            readOnly={readOnly}
-            isLoading={isLoading}
-          />
-        )}
-        {fieldType === "date" && (
-          <ClientDateSelect
-            label={en[name as keyof typeof en] as string}
-            value={value}
-            handleChange={(value) => setFormValues(name, value)}
-            required={required}
-            showCancleIcon
-            readOnly={readOnly}
-            isLoading={isLoading}
-          />
-        )}
-      </Box>
-    </Grid>
+    <Box py={0.5} width="20%" height="100%" px={0.5}>
+      {(fieldType === "text" || fieldType === "password") && (
+        <ClientInfoInput
+          label={en[name as keyof typeof en] as string}
+          value={value}
+          handleChange={(value) => setFormValues(name, value)}
+          required={required}
+          type={fieldType}
+          readOnly={readOnly}
+          isLoading={isLoading}
+        />
+      )}
+      {fieldType === "select" && (
+        <ClientInfoSelect
+          label={en[name as keyof typeof en] as string}
+          value={value}
+          handleChange={(value, label) =>
+            setFormValues(name, value as string, label as string)
+          }
+          options={options}
+          required={required}
+          readOnly={readOnly}
+          isLoading={isLoading}
+        />
+      )}
+      {fieldType === "date" && (
+        <ClientDateSelect
+          label={en[name as keyof typeof en] as string}
+          value={value}
+          handleChange={(value) => setFormValues(name, value)}
+          required={required}
+          showCancleIcon
+          readOnly={readOnly}
+          isLoading={isLoading}
+        />
+      )}
+    </Box>
   );
 }
 
 const FormRow = ({
-  allFormFields,
-  formValues,
-  setFormValues,
-}: {
-  allFormFields: ClientFormFieldType[][];
-  formValues: ModifiedClientFields;
-  setFormValues: (formValues: ModifiedClientFields) => void;
-}) => (
-  <Grid container spacing={2}>
-    {allFormFields.map((formFields: ClientFormFieldType[]) => {
-      return (
-        <Grid container item spacing={2}>
-          {formFields.map(
-            ({ name, fieldType, required, readOnly, isLoading, options }) => {
-              const value = formValues[
-                name as keyof typeof formValues
-              ] as string;
-              return (
-                <FormField
-                  key={`${Math.random}_${name}`}
-                  name={name}
-                  fieldType={fieldType}
-                  required={required}
-                  value={value}
-                  setFormValues={(name: string, value: string | Date) =>
-                    setFormValues({ ...formValues, [name]: value })
-                  }
-                  options={options}
-                  readOnly={readOnly}
-                  isLoading={isLoading}
-                />
-              );
-            }
-          )}
-        </Grid>
-      );
-    })}
-  </Grid>
-);
-
-const ClientBusinessInfo = ({
-  formValues,
   formFields,
+  formValues,
   setFormValues,
 }: {
-  formValues: ModifiedClientFields;
   formFields: ClientFormFieldType[];
+  formValues: ModifiedClientFields;
   setFormValues: (formValues: ModifiedClientFields) => void;
 }) => {
-  const dividedFormFields = getArrInGroups(formFields);
   return (
-    <Box sx={{ flexGrow: 1 }} py={1} px={2} m={1}>
-      <Typography variant="h6" color={palette.primary.main} letterSpacing={1}>
-        {`1. ${en.client}`}
-      </Typography>
-      <Divider />
-      <FormRow
-        allFormFields={dividedFormFields}
-        formValues={formValues}
-        setFormValues={setFormValues}
-      />
-    </Box>
-  );
-};
-
-const ContactDetails = ({
-  formValues,
-  formFields,
-  setFormValues,
-}: {
-  formValues: ModifiedClientFields;
-  formFields: ClientFormFieldType[];
-  setFormValues: (formValues: ModifiedClientFields) => void;
-}) => {
-  const dividedFormFields = getArrInGroups(formFields);
-  return (
-    <Box sx={{ flexGrow: 1 }} py={1} px={2} m={1}>
-      <Typography variant="h6" color={palette.primary.main} letterSpacing={1}>
-        {`2. ${en.contactDetails}`}
-      </Typography>
-      <Divider />
-      <FormRow
-        allFormFields={dividedFormFields}
-        formValues={formValues}
-        setFormValues={setFormValues}
-      />
-    </Box>
-  );
-};
-
-const GstDetails = ({
-  formValues,
-  formFields,
-  setFormValues,
-}: {
-  formValues: ModifiedClientFields;
-  formFields: ClientFormFieldType[];
-  setFormValues: (formValues: ModifiedClientFields) => void;
-}) => {
-  const dividedFormFields = getArrInGroups(formFields);
-  return (
-    <Box sx={{ flexGrow: 1 }} py={1} px={2} m={1}>
-      <Typography variant="h6" color={palette.primary.main} letterSpacing={1}>
-        {`3. ${en.gstCreds}`}
-      </Typography>
-      <FormRow
-        allFormFields={dividedFormFields}
-        formValues={formValues}
-        setFormValues={setFormValues}
-      />
+    <Box
+      display="flex"
+      alignItems="center"
+      justifyContent="start"
+      sx={{ flexWrap: "wrap" }}
+      p={1}
+    >
+      {formFields.map(
+        ({ name, fieldType, required, readOnly, isLoading, options }) => {
+          const value = formValues[name as keyof typeof formValues] as string;
+          return (
+            <FormField
+              key={`${Math.random}_${name}`}
+              name={name}
+              fieldType={fieldType}
+              required={required}
+              value={value}
+              setFormValues={(name: string, value: string | Date) =>
+                setFormValues({ ...formValues, [name]: value })
+              }
+              options={options}
+              readOnly={readOnly}
+              isLoading={isLoading}
+            />
+          );
+        }
+      )}
     </Box>
   );
 };
@@ -203,6 +134,7 @@ const ClientForm = (props: ClientFormProps) => {
     isSaving,
     isUpdate = false,
   } = props;
+  const router = useRouter();
   const { data: taxpayerTypes, isFetching: taxpayerTypesIsLoading } =
     useGetTaxpayerTypes();
   const { data: pincodes, isFetching: pincodesIsLoading } = useGetPincodes();
@@ -227,29 +159,74 @@ const ClientForm = (props: ClientFormProps) => {
     })),
   };
 
-  const { businessInfo, contactDetails, gstFields } = getClientFormFields(
-    options,
-    { taxpayerTypesIsLoading, pincodesIsLoading }
+  const fields = getClientFormFields(options, {
+    taxpayerTypesIsLoading,
+    pincodesIsLoading,
+  });
+
+  const [clientFormFields, setClientFormFields] = useState(
+    getClientFieldsInit(fields)
   );
-  const router = useRouter();
+
+  const toggleExpandedState = useCallback(
+    (index: number, isExpanded: boolean) => {
+      clientFormFields[index].isExpanded = !isExpanded;
+      setClientFormFields([...clientFormFields]);
+    },
+    []
+  );
 
   return (
-    <Box px={2} borderRadius={2}>
-      <ClientBusinessInfo
-        formValues={formValues}
-        formFields={businessInfo}
-        setFormValues={setFormValues}
-      />
-      <ContactDetails
-        formValues={formValues}
-        formFields={contactDetails}
-        setFormValues={setFormValues}
-      />
-      <GstDetails
-        formValues={formValues}
-        formFields={gstFields}
-        setFormValues={setFormValues}
-      />
+    <Grid container direction="column" gap={4} p={2}>
+      {clientFormFields.map(({ isExpanded, label, formFields }, index) => (
+        <Box
+          borderRadius={3}
+          sx={{
+            flexGrow: 1,
+            border: `1px solid ${palette.secondary.light}`,
+          }}
+          p={2}
+        >
+          <Box
+            display="flex"
+            alignItems="center"
+            justifyContent="space-between"
+          >
+            <Typography
+              variant="h6"
+              color={palette.primary.main}
+              letterSpacing={1}
+            >
+              {label}
+            </Typography>
+            {isExpanded ? (
+              <KeyboardArrowUpOutlined
+                onClick={() => toggleExpandedState(index, isExpanded)}
+                sx={{ fontSize: 20, mx: 3, cursor: "pointer" }}
+              />
+            ) : (
+              <KeyboardArrowDownOutlined
+                onClick={() => toggleExpandedState(index, isExpanded)}
+                sx={{ fontSize: 20, mx: 3, cursor: "pointer" }}
+              />
+            )}
+          </Box>
+          <Collapse in={isExpanded}>
+            <Divider />
+            <FormRow
+              formFields={formFields}
+              formValues={formValues}
+              setFormValues={setFormValues}
+            />
+          </Collapse>
+        </Box>
+      ))}
+      <Box sx={{ flexGrow: 1 }} px={2}>
+        <Typography variant="h6" color={palette.primary.main} letterSpacing={1}>
+          {"5. Additional Info"}
+        </Typography>
+        <Divider />
+      </Box>
       <Box
         display="flex"
         alignItems="center"
@@ -267,7 +244,7 @@ const ClientForm = (props: ClientFormProps) => {
           isLoading={isSaving}
         />
       </Box>
-    </Box>
+    </Grid>
   );
 };
 
