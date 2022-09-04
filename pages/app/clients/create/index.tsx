@@ -42,7 +42,16 @@ const CreateClient = () => {
           formValues={formValues}
           setFormValues={setFormValues}
           isSaving={isSaving}
-          onSave={() => createClient({ payload: { data: formValues } })}
+          onSave={() =>
+            createClient({
+              payload: {
+                data: {
+                  ...formValues,
+                  additionalInfo: JSON.stringify(formValues.additionalInfo),
+                },
+              },
+            })
+          }
         />
       </Box>
     </PageLayout>

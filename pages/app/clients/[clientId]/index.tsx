@@ -29,7 +29,11 @@ const EditClient = () => {
   );
 
   useEffect(() => {
-    setFormValues({ ...formValues, ...data });
+    setFormValues({
+      ...formValues,
+      ...data,
+      additionalInfo: JSON.parse((data?.additionalInfo as string) || "[]"),
+    });
   }, [data]);
 
   return (
@@ -73,7 +77,12 @@ const EditClient = () => {
               isSaving={isUpdating}
               onSave={() => {
                 updateClientInfo({
-                  payload: { data: formValues },
+                  payload: {
+                    data: {
+                      ...formValues,
+                      additionalInfo: JSON.stringify(formValues.additionalInfo),
+                    },
+                  },
                   clientId: clientId as string,
                 });
               }}

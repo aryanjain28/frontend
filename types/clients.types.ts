@@ -69,6 +69,7 @@ export interface ModifiedClientFields {
   bankCentre?: string;
   bankState?: string;
   bankContact?: string;
+  additionalInfo?: string | { key: string; value: string }[];
 }
 
 export interface ClientFormFieldType {
@@ -95,7 +96,7 @@ export interface GetAllClientsResponse {
 
 export interface GetClientDetailsResponse {
   status: number;
-  data: Client;
+  data: ModifiedClientFields;
   message: string;
 }
 

@@ -9,3 +9,5 @@ export const taskParentTypes = {
 
 export const IFSC_LENGTH = 11;
 export const PINCODE_LENGTH = 6;
+export const MAX_ADDITIONAL_FIELDS = 5;
+export const MIN_ADDITIONAL_FIELDS = 1;

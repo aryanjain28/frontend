@@ -118,6 +118,7 @@ export const en = {
   gstCreds: "GST Website Credentials",
   businessDetails: "Business Details",
   bankDetails: "Bank Details",
+  additionalInfo: "Additional Info",
   bankIFSC: "IFSC",
   bankMICR: "MICR",
   bankName: "Name",

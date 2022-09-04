@@ -221,6 +221,11 @@ export const getClientFieldsInit = ({
     label: `4. ${en.bankDetails}`,
     formFields: bankDetails,
   },
+  {
+    isExpanded: true,
+    label: `5. ${en.additionalInfo}`,
+    isAdditional: true,
+  },
 ];
 
 export const getClientInfoInit = () => ({
@@ -262,4 +267,5 @@ export const getClientInfoInit = () => ({
   bankState: "",
   bankCentre: "",
   bankContact: "",
+  additionalInfo: [],
 });
