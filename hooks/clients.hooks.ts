@@ -33,7 +33,8 @@ export const useGetClientDetails = (clientId: string) => {
       // onSuccess: () => toast.success(en.toast.clientsFetchSuccess),
       onError: () => toast.error(en.toast.clientsFetchFailed),
       placeholderData: null,
-      // refetchOnMount: true,
+      refetchOnMount: false,
+      refetchOnWindowFocus: false,
     }
   );
 };

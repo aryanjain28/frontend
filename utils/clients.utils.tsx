@@ -103,24 +103,6 @@ export const getClientsColumns = (
     key: "isOther",
     Component: ({ row }) => checkAvailibility(6, row.taskParentIds),
   },
-  {
-    headerName: "",
-    key: "",
-    hidden: isStaff(),
-    Component: ({ row }) => {
-      return expandedRowId === row.id ? (
-        <KeyboardArrowUp
-          sx={{ mr: 1, cursor: "pointer" }}
-          onClick={() => setExpandedRowId(null)}
-        />
-      ) : (
-        <KeyboardArrowDown
-          sx={{ mr: 1, cursor: "pointer" }}
-          onClick={() => setExpandedRowId(row.id)}
-        />
-      );
-    },
-  },
 ];
 
 export const getClientFormFields = (isLoadingState: {

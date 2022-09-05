@@ -62,6 +62,7 @@ export const en = {
   sendMessage: "Send Message",
   messageHistory: "Message History",
   updatedClientInfo: "Update Client Info",
+  clientDetails: "Client Details",
 
   // login and signUp
   login: "Login",
@@ -128,6 +129,9 @@ export const en = {
   bankState: "State",
   bankCentre: "Centre",
   bankContact: "Contact",
+  updateClientDetails: "Update Client Details",
+  viewOnly: "View Only",
+  jobDetails: "Job Details",
 
   // Message
   selectContacts: "Select Contacts",

@@ -70,6 +70,11 @@ export interface ModifiedClientFields {
   bankState?: string;
   bankContact?: string;
   additionalInfo?: string | { key: string; value: string }[];
+  _id?: string;
+  createdBy?: string;
+  id?: string;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface ClientFormFieldType {

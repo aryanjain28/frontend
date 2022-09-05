@@ -34,10 +34,10 @@ const ClientForm = (props: ClientFormProps) => {
   const router = useRouter();
 
   const { data: location, isFetching: isFetchingLocation } =
-    useGetPincodeDetails(formValues.pincode || "");
+    useGetPincodeDetails(formValues.pincode?.trim() || "");
 
   const { data: bankDetails, isFetching: isFetchingBankDetails } =
-    useGetBankDetails(formValues.bankIFSC || "");
+    useGetBankDetails(formValues.bankIFSC?.trim() || "");
 
   useEffect(() => {
     if (!formValues.pincode) {
