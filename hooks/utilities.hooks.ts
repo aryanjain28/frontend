@@ -9,6 +9,7 @@ import {
 export const useGetAllOptions = () => {
   return useQuery([QUERY_KEYS.GET_OPTIONS], () => getAllOptions(), {
     placeholderData: null,
+    refetchOnMount: true,
   });
 };
 
