@@ -38,7 +38,10 @@ Below are some screenshots:
 (Integrated Amazon's SNS)
 ![Register_Image](https://github.com/aryanjain28/frontend/blob/master/assets/images/SS1.png?raw=true)
 
-## 4. New Client Form
+## 4. Adding new types of tasks - (Admin Control)
+![Task Types](https://github.com/aryanjain28/frontend/blob/master/assets/images/SS0.png?raw=true)
+
+## 5. New Client Form
 ![Register_Image](https://github.com/aryanjain28/frontend/blob/master/assets/images/SS5.png?raw=true)
 
 
